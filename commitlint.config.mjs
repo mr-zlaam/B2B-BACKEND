@@ -20,7 +20,7 @@ export default {
         "build", // dependency related changes
         "update", // update the code which is not necessary
         "deps", // dependency related changes
-        "scripts", // scripts related changes
+        "script", // scripts related changes
       ],
     ],
     "header-max-length": [2, "always", 100],
