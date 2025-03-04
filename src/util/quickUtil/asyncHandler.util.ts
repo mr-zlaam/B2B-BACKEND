@@ -1,5 +1,5 @@
+/* eslint-disable no-unused-vars */
 import { type NextFunction, type Request, type Response } from "express";
-// eslint-disable-next-line no-unused-vars
 type AsyncRequestHandler<T> = (
   req: Request,
   res: Response,
