@@ -33,8 +33,8 @@ export async function connectDB() {
       return process.exit(1);
     }));
 }
-export async function migrateDb() {
-  await migrate(db, { migrationsFolder: "./src/databases/schemas" });
+export async function runMigrations() {
+  await migrate(db, { migrationsFolder: "./src/db/migrations" });
 }
 export const closeDbConnection = async (): Promise<void> => {
   await pool.end();

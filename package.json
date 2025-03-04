@@ -19,9 +19,11 @@
     "precommit": "bun run lint",
     "commit": "git add .",
     "pre-push": "bun run lint",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
+    "db:makemigrations": "drizzle-kit generate",
+    "db:migrate": "bun run ./scripts/migrate.script.ts",
     "db:push": "drizzle-kit push",
+    "db:rollback": "drizzle-kit rollback",
+    "db:studio": "drizzle-kit studio",
     "prepare": "husky"
   },
   "devDependencies": {
