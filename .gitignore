@@ -182,3 +182,4 @@ dist/
 logs/*
 logs
 config.env.ts
+types/
