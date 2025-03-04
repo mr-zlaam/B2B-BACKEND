@@ -4,9 +4,9 @@ import {
   text,
   index,
   uuid,
+  boolean,
   varchar,
   pgEnum,
-  uniqueIndex,
 } from "drizzle-orm/pg-core";
 export const userRoleEnum = pgEnum("userRole", ["ADMIN", "VENDOR", "BUYER"]);
 
@@ -19,16 +19,19 @@ export const userSchema = pgTable(
     email: varchar("email", { length: 100 }).notNull().unique(),
     password: text("password").notNull(),
     role: userRoleEnum("role").notNull(),
+    OTP_TOKEN: text("OTP_TOKEN").unique(),
+    OTP_EXPIRY: timestamp("OTP_EXPIRY"),
+    isVerified: boolean("isVerified").notNull().default(false),
     createdAt: timestamp("createdAt").notNull(),
     updatedAt: timestamp("updatedAt").notNull(),
   },
   (table) => [
-    uniqueIndex("email_idx").on(table.email),
-    uniqueIndex("username_idx").on(table.username),
     index("role_idx").on(table.role),
     index("createdAt_idx").on(table.createdAt),
     index("updatedAt_idx").on(table.updatedAt),
     index("fullName_idx").on(table.fullName),
+    index("otp_token_expiry_idx").on(table.OTP_EXPIRY),
+    index("isVerified_idx").on(table.isVerified),
   ],
 );
 export type IUSER = typeof userSchema.$inferSelect;
