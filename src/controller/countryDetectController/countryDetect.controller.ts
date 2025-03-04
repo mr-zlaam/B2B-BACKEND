@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import geopip from "geoip-lite";
-import { throwError } from "../../util/quickUtil/throwError.util.js";
+import { throwError } from "../../util/appUtil/throwError.util.js";
 import reshttp from "reshttp";
 import { httpResponse } from "../../util/appUtil/apiResponse.util.js";
 export default {
