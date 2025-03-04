@@ -1,11 +1,11 @@
 import { defineConfig } from "drizzle-kit";
-import envConfig from "./src/config/env.config.js";
+import process from "node:process";
 export default defineConfig({
-  out: "./src/databases/migrations",
-  schema: "./src/databases/schemas",
+  out: "./src/db/migrations",
+  schema: "./src/db/schemas",
   dialect: "postgresql",
   dbCredentials: {
-    url: envConfig.DATABASE_URI,
+    url: process.env.DATABASE_URI as string,
   },
 });
 // toodo install multer
