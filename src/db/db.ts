@@ -10,8 +10,7 @@ const pool = new Pool({
   max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 5000,
-  ssl:
-    envConfig.NODE_ENV === "production" ? { rejectUnauthorized: true } : false,
+  ssl: envConfig.NODE_ENV === "production" ? { rejectUnauthorized: true } : false
 });
 
 export const db = drizzle(pool, { logger: true });
@@ -20,9 +19,7 @@ export async function connectDB() {
     .connect()
     .then(() => {
       app.listen(envConfig.PORT, () => {
-        logger.info(
-          `Connected to the database successfully ✅ \n  SERVER:: Server is running on port http://localhost:${envConfig.PORT} 🚀`,
-        );
+        logger.info(`Connected to the database successfully ✅ \n  SERVER:: Server is running on port http://localhost:${envConfig.PORT} 🚀`);
       });
     })
     .catch((err: unknown) => {
@@ -40,18 +37,13 @@ export const closeDbConnection = async (): Promise<void> => {
   await pool.end();
   logger.info("Database connection closed.");
 };
-export const executeWithRetry = async <T>(
-  operation: () => Promise<T>,
-  retries = 3,
-): Promise<T> => {
+export const executeWithRetry = async <T>(operation: () => Promise<T>, retries = 3): Promise<T> => {
   try {
     await closeDbConnection();
     return await operation();
   } catch (error) {
     if (retries <= 0) throw error;
-    logger.warn(
-      `Database operation failed, retrying (${retries} attempts left)`,
-    );
+    logger.warn(`Database operation failed, retrying (${retries} attempts left)`);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     return executeWithRetry(operation, retries - 1);
   }

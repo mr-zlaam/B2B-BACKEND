@@ -8,5 +8,5 @@ applicationInsightRouter.route("/").get(
      * handle function will express req:Request, res:Response, next:NextFunction and then it will except point ratelimiter will consume then message and totalPoints and duration
      (req, res, next) =>
        rateLimiterMiddleware.handle(req, res, next, 10, undefined, 50, 10), */
-  applicationInsightCon.getPerformance,
+  applicationInsightCon.getPerformance
 );

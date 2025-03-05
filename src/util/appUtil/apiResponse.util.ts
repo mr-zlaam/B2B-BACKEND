@@ -6,7 +6,7 @@ const jsonResponse = (
   message: string = "OK",
   data: object | null | object[] = null,
   metaData: object | null | object[] = null,
-  optMessage: string = "",
+  optMessage: string = ""
 ) => {
   return {
     success: status < 400,
@@ -14,16 +14,10 @@ const jsonResponse = (
     message: message,
     data: data,
     metaData: metaData,
-    optMessage: optMessage,
+    optMessage: optMessage
   };
 };
-const httpResponse = (
-  req: Request,
-  res: Response,
-  statusCode: number,
-  message: string,
-  data: unknown = null,
-): Response => {
+const httpResponse = (req: Request, res: Response, statusCode: number, message: string, data: unknown = null): Response => {
   const response: IHTTPRESPONSE = {
     success: statusCode < 400,
     status: statusCode,
@@ -32,8 +26,8 @@ const httpResponse = (
     requestInfo: {
       url: req.originalUrl,
       ip: req?.ip,
-      method: req.method,
-    },
+      method: req.method
+    }
   };
   if (ENV && ENV === "production" && response.requestInfo) {
     delete response.requestInfo.ip;

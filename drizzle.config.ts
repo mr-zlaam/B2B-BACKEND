@@ -5,7 +5,7 @@ export default defineConfig({
   schema: "./src/db/schemas",
   dialect: "postgresql",
   dbCredentials: {
-    url: process.env.DATABASE_URI as string,
-  },
+    url: process.env.DATABASE_URI as string
+  }
 });
 // toodo install multer

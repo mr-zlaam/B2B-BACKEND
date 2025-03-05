@@ -16,29 +16,19 @@ const transporter = nodemailer.createTransport({
 
   auth: {
     user: envConfig.HOST_EMAIL,
-    pass: envConfig.HOST_EMAIL_SECRET,
-  },
+    pass: envConfig.HOST_EMAIL_SECRET
+  }
 });
 
-export async function gloabalMailMessage(
-  to: string,
-  message?: string | null,
-  subject?: string,
-  header?: string,
-  addsOn?: string,
-  senderIntro?: string,
-) {
-  const templatePath = path.resolve(
-    __dirname,
-    "../../templates/globalEmail.template.html",
-  );
+export async function gloabalMailMessage(to: string, message: string, subject: string, header?: string, addsOn?: string, senderIntro?: string) {
+  const templatePath = path.resolve(__dirname, "../../templates/globalEmail.template.html");
   let htmlTemplate = fs.readFileSync(templatePath, "utf8");
   const placeholders = {
     companyname: appConstant.COMPANY_NAME,
     senderIntro: senderIntro || "",
     message: message || "",
     header: header || "",
-    addsOn: addsOn || "",
+    addsOn: addsOn || ""
   };
   htmlTemplate = replaceAllPlaceholders(htmlTemplate, placeholders);
   const randomStr = generateRandomStrings(10);
@@ -51,10 +41,10 @@ export async function gloabalMailMessage(
       "X-Auto-Response-Suppress": "All",
       Precedence: "bulk",
       "Auto-Submitted": "auto-generated",
-      "Message-ID": `<${randomStr}.dev>`,
+      "Message-ID": `<${randomStr}.dev>`
     },
 
-    replyTo: "support@b2b.com",
+    replyTo: "support@b2b.com"
   };
 
   try {
@@ -63,15 +53,9 @@ export async function gloabalMailMessage(
   } catch (error) {
     if (error instanceof Error) {
       logger.error(`Error Email message sending :${error.message}`);
-      throwError(
-        reshttp.internalServerErrorCode,
-        reshttp.internalServerErrorMessage,
-      );
+      throwError(reshttp.internalServerErrorCode, reshttp.internalServerErrorMessage);
     }
     logger.error(`Error sending Email  message:${error as string}`);
-    throwError(
-      reshttp.internalServerErrorCode,
-      reshttp.internalServerErrorMessage,
-    );
+    throwError(reshttp.internalServerErrorCode, reshttp.internalServerErrorMessage);
   }
 }

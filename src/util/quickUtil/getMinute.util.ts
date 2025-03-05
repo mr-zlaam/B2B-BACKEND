@@ -13,10 +13,7 @@ const getMinutes = (seconds: number): string => {
 
   let hoursWithFraction = (seconds / 3600).toFixed(1);
   if (hoursWithFraction.endsWith(".0")) {
-    hoursWithFraction = hoursWithFraction.slice(
-      0,
-      hoursWithFraction.length - 2,
-    );
+    hoursWithFraction = hoursWithFraction.slice(0, hoursWithFraction.length - 2);
   }
 
   if (remainingMinutes === 0) {

@@ -40,10 +40,7 @@ class RateLimiterDrizzle {
     const now = new Date();
 
     // First, try to find an existing record
-    const records = await this.storeClient
-      .select()
-      .from(rateLimiterFlexible)
-      .where(eq(rateLimiterFlexible.key, key));
+    const records = await this.storeClient.select().from(rateLimiterFlexible).where(eq(rateLimiterFlexible.key, key));
 
     const record = records[0];
 
@@ -53,16 +50,14 @@ class RateLimiterDrizzle {
 
       // If record exists but expired, delete it
       if (record) {
-        await this.storeClient
-          .delete(rateLimiterFlexible)
-          .where(eq(rateLimiterFlexible.key, key));
+        await this.storeClient.delete(rateLimiterFlexible).where(eq(rateLimiterFlexible.key, key));
       }
 
       // Create new record
       await this.storeClient.insert(rateLimiterFlexible).values({
         key,
         points,
-        expire,
+        expire
       });
 
       return { remainingPoints: this.points - points };
@@ -73,13 +68,11 @@ class RateLimiterDrizzle {
 
     // Check if limit exceeded
     if (newPoints > this.points) {
-      const msBeforeNext = record.expire
-        ? record.expire.getTime() - now.getTime()
-        : this.duration * 1000;
+      const msBeforeNext = record.expire ? record.expire.getTime() - now.getTime() : this.duration * 1000;
 
       throw {
         remainingPoints: 0,
-        msBeforeNext,
+        msBeforeNext
       } as ErrorLimiter;
     }
 
@@ -87,7 +80,7 @@ class RateLimiterDrizzle {
     await this.storeClient
       .update(rateLimiterFlexible)
       .set({
-        points: newPoints,
+        points: newPoints
       })
       .where(eq(rateLimiterFlexible.key, key));
 
@@ -107,21 +100,17 @@ export class RateLimiterMiddleware {
     consumptionPoints = 1,
     message?: string,
     totalPoints?: number,
-    duration = 60,
+    duration = 60
   ): Promise<void> {
     try {
       if (ENV === "DEVELOPMENT") return next();
 
       // Initialize or reinitialize rate limiter only if totalPoints or duration have changed
-      if (
-        !this.rateLimiter ||
-        this.currentTotalPoints !== totalPoints ||
-        this.currentDuration !== duration
-      ) {
+      if (!this.rateLimiter || this.currentTotalPoints !== totalPoints || this.currentDuration !== duration) {
         this.rateLimiter = new RateLimiterDrizzle({
           storeClient: db,
           points: totalPoints || 10, // Default points if none provided
-          duration,
+          duration
         });
         this.currentTotalPoints = totalPoints || 10;
         this.currentDuration = duration;
@@ -135,44 +124,25 @@ export class RateLimiterMiddleware {
         if (err.remainingPoints === 0) {
           const remainingSeconds = Math.ceil(err.msBeforeNext / 1000); // Convert ms to seconds
           const remainingDuration = getMinutes(remainingSeconds);
-          httpResponse(
-            req,
-            res,
-            reshttp.tooManyRequestsCode,
-            message || `${reshttp.tooManyRequestsMessage} ${remainingDuration}`,
-            null,
-          ).end();
+          httpResponse(req, res, reshttp.tooManyRequestsCode, message || `${reshttp.tooManyRequestsMessage} ${remainingDuration}`, null).end();
         }
       } else {
         const errorMessage = err instanceof Error ? err.message : String(err);
-        httpResponse(
-          req,
-          res,
-          reshttp.internalServerErrorCode,
-          `something went wrong in rateLimiter middleware: ${errorMessage}`,
-          null,
-        );
+        httpResponse(req, res, reshttp.internalServerErrorCode, `something went wrong in rateLimiter middleware: ${errorMessage}`, null);
       }
     }
   }
 
   // Type guard for ErrorLimiter
   private isErrorLimiter(error: unknown): error is ErrorLimiter {
-    return (
-      typeof error === "object" &&
-      error !== null &&
-      "remainingPoints" in error &&
-      "msBeforeNext" in error
-    );
+    return typeof error === "object" && error !== null && "remainingPoints" in error && "msBeforeNext" in error;
   }
 
   // Utility method to clean up expired records periodically
   public async cleanUp(): Promise<void> {
     const now = new Date();
     try {
-      await db
-        .delete(rateLimiterFlexible)
-        .where(lte(rateLimiterFlexible.expire, now));
+      await db.delete(rateLimiterFlexible).where(lte(rateLimiterFlexible.expire, now));
     } catch (error) {
       logger.error("Error cleaning up rate limiter records:", { error });
     }

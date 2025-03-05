@@ -5,8 +5,8 @@ export const rateLimiterFlexible = pgTable(
   {
     key: text("key").notNull().primaryKey(),
     points: integer("points").notNull(),
-    expire: timestamp("expire", { mode: "date" }),
+    expire: timestamp("expire", { mode: "date" })
   },
-  (table) => [index("key_idx").on(table.key)],
+  (table) => [index("key_idx").on(table.key)]
 );
 export type RateLimiterRecord = typeof rateLimiterFlexible.$inferSelect;

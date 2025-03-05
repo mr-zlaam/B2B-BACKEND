@@ -1,3 +1,3 @@
 export default {
-  COMPANY_NAME: "B2B",
+  COMPANY_NAME: "B2B"
 };

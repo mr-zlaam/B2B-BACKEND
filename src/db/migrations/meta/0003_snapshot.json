@@ -1,6 +1,6 @@
 {
-  "id": "10f4ca19-a532-4546-b9d9-01756a4e9e01",
-  "prevId": "600bf122-247d-42f5-96ac-d03570901fd8",
+  "id": "fb9929be-7243-4a7a-8720-81fe9696f07e",
+  "prevId": "8adbfe5b-f376-4c3b-aaec-8940c300a252",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -92,6 +92,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "country": {
+          "name": "country",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
         "OTP_TOKEN": {
           "name": "OTP_TOKEN",
           "type": "text",
@@ -103,6 +109,13 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
+        },
+        "isVerified": {
+          "name": "isVerified",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
         },
         "createdAt": {
           "name": "createdAt",
@@ -118,36 +131,6 @@
         }
       },
       "indexes": {
-        "email_idx": {
-          "name": "email_idx",
-          "columns": [
-            {
-              "expression": "email",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "username_idx": {
-          "name": "username_idx",
-          "columns": [
-            {
-              "expression": "username",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
         "role_idx": {
           "name": "role_idx",
           "columns": [
@@ -208,11 +191,26 @@
           "method": "btree",
           "with": {}
         },
-        "otp_token_idx": {
-          "name": "otp_token_idx",
+        "otp_token_expiry_idx": {
+          "name": "otp_token_expiry_idx",
           "columns": [
             {
-              "expression": "fullName",
+              "expression": "OTP_EXPIRY",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "isVerified_idx": {
+          "name": "isVerified_idx",
+          "columns": [
+            {
+              "expression": "isVerified",
               "isExpression": false,
               "asc": true,
               "nulls": "last"

@@ -1,0 +1,1 @@
+ALTER TABLE "users" ADD COLUMN "country" varchar(50) NOT NULL;

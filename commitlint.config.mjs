@@ -20,10 +20,10 @@ export default {
         "build", // dependency related changes
         "update", // update the code which is not necessary
         "deps", // dependency related changes
-        "script", // scripts related changes
-      ],
+        "script" // scripts related changes
+      ]
     ],
     "header-max-length": [2, "always", 100],
-    "subject-case": [2, "always", ["sentence-case"]],
-  },
+    "subject-case": [2, "always", ["sentence-case"]]
+  }
 };

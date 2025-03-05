@@ -1,10 +1,7 @@
 import express, { type Application } from "express";
 import cors from "cors";
 import helmet from "helmet";
-import {
-  errorHandler,
-  notFoundHandler,
-} from "./middleware/error.middleware.js";
+import { errorHandler, notFoundHandler } from "./middleware/error.middleware.js";
 import endPointsConstant from "./constant/endPoints.constant.js";
 import { defaultRouter } from "./router/default.router.js";
 export const app: Application = express();

@@ -7,14 +7,14 @@ class PerformanceController {
     try {
       const healthData = {
         applicationHealth: SystemInsights.getApplicationHealth(),
-        systemHealth: SystemInsights.getSystemHealth(),
+        systemHealth: SystemInsights.getSystemHealth()
       };
       httpResponse(req, res, reshttp.okCode, reshttp.okMessage, healthData);
     } catch (error) {
       if (error instanceof Error) {
         throw {
           status: reshttp.internalServerErrorCode,
-          message: error.message || reshttp.internalServerErrorMessage,
+          message: error.message || reshttp.internalServerErrorMessage
         };
       }
     }

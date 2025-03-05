@@ -1,14 +1,5 @@
-import {
-  pgTable,
-  timestamp,
-  text,
-  index,
-  uuid,
-  boolean,
-  varchar,
-  pgEnum,
-} from "drizzle-orm/pg-core";
-export const userRoleEnum = pgEnum("userRole", ["ADMIN", "VENDOR", "BUYER"]);
+import { pgTable, timestamp, text, index, uuid, boolean, varchar, pgEnum } from "drizzle-orm/pg-core";
+export const userRoleEnum = pgEnum("userRole", ["ADMIN", "MODERATOR", "VENDOR", "BUYER"]);
 
 export const userSchema = pgTable(
   "users",
@@ -19,11 +10,13 @@ export const userSchema = pgTable(
     email: varchar("email", { length: 100 }).notNull().unique(),
     password: text("password").notNull(),
     role: userRoleEnum("role").notNull(),
+    country: varchar("country", { length: 50 }).notNull(),
+    phone: varchar("phone", { length: 15 }).notNull().unique(),
     OTP_TOKEN: text("OTP_TOKEN").unique(),
     OTP_EXPIRY: timestamp("OTP_EXPIRY"),
     isVerified: boolean("isVerified").notNull().default(false),
     createdAt: timestamp("createdAt").notNull(),
-    updatedAt: timestamp("updatedAt").notNull(),
+    updatedAt: timestamp("updatedAt").notNull()
   },
   (table) => [
     index("role_idx").on(table.role),
@@ -31,7 +24,7 @@ export const userSchema = pgTable(
     index("updatedAt_idx").on(table.updatedAt),
     index("fullName_idx").on(table.fullName),
     index("otp_token_expiry_idx").on(table.OTP_EXPIRY),
-    index("isVerified_idx").on(table.isVerified),
-  ],
+    index("isVerified_idx").on(table.isVerified)
+  ]
 );
 export type IUSER = typeof userSchema.$inferSelect;

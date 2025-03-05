@@ -1,3 +1,3 @@
 export default {
-  DEFAULT_ENDPOINT: "/api/v1",
+  DEFAULT_ENDPOINT: "/api/v1"
 };

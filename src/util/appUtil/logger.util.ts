@@ -16,7 +16,7 @@ const devFileTransport = new winston.transports.DailyRotateFile({
   datePattern: "YYYY-MM-DD",
   zippedArchive: true,
   maxSize: "20m",
-  maxFiles: "14d",
+  maxFiles: "14d"
 });
 
 const prodFileTransport = new winston.transports.DailyRotateFile({
@@ -24,7 +24,7 @@ const prodFileTransport = new winston.transports.DailyRotateFile({
   datePattern: "YYYY-MM-DD",
   zippedArchive: true,
   maxSize: "20m",
-  maxFiles: "14d",
+  maxFiles: "14d"
 });
 
 const consoleTransport = new winston.transports.Console({
@@ -32,17 +32,9 @@ const consoleTransport = new winston.transports.Console({
     winston.format.prettyPrint(),
     winston.format.printf(({ timestamp, level, message, ...meta }) => {
       const customLevel = colorizeLevel(
-        level.includes("error")
-          ? "ERROR"
-          : level.includes("info")
-            ? "INFO"
-            : level.includes("warn")
-              ? "WARN"
-              : "DEBUG",
+        level.includes("error") ? "ERROR" : level.includes("info") ? "INFO" : level.includes("warn") ? "WARN" : "DEBUG"
       );
-      const customTimeStamp = moment(timestamp as string).format(
-        "DD/MM/YYYY  hh:mm:ss A",
-      );
+      const customTimeStamp = moment(timestamp as string).format("DD/MM/YYYY  hh:mm:ss A");
       const customLog = `
 -------------------------------------------------------------------------------
   ${customLevel}::${message as string} 
@@ -51,8 +43,8 @@ const consoleTransport = new winston.transports.Console({
 -------------------------------------------------------------------------------`;
 
       return customLog;
-    }),
-  ),
+    })
+  )
 });
 
 const logLevel = ENV === "production" ? "warn" : "info";
@@ -61,16 +53,13 @@ const logger = winston.createLogger({
   level: logLevel,
   format: winston.format.combine(
     winston.format.timestamp({
-      format: "YYYY-MM-DD HH:mm:ss",
+      format: "YYYY-MM-DD HH:mm:ss"
     }),
     winston.format.printf(({ timestamp, level, message, ...meta }) => {
       return `[${level}]: ${message as string} \n[time]: ${moment(timestamp as string).format("YYYY-MM-DD HH:mm:ss")} \nmeta: ${JSON.stringify(meta)}`;
-    }),
+    })
   ),
-  transports: [
-    consoleTransport,
-    ...(ENV === "production" ? [prodFileTransport] : [devFileTransport]),
-  ],
+  transports: [consoleTransport, ...(ENV === "production" ? [prodFileTransport] : [devFileTransport])]
 });
 
 export default logger;

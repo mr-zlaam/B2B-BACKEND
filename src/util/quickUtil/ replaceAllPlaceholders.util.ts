@@ -1,7 +1,4 @@
-export function replaceAllPlaceholders(
-  template: string,
-  placeholders: Record<string, string>,
-): string {
+export function replaceAllPlaceholders(template: string, placeholders: Record<string, string>): string {
   let modifiedTemplate = template;
 
   for (const [key, value] of Object.entries(placeholders)) {
