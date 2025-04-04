@@ -1,8 +1,8 @@
 import reshttp from "reshttp";
 import { type IUSER } from "../../db/schemas/user.schema.js";
-import { httpResponse } from "../../util/appUtil/apiResponse.util.js";
-import { asyncHandler } from "../../util/appUtil/asyncHandler.util.js";
-import { checkExistingUser, handleUnverifiedUser, handleVerifiedUser, handleNewUser } from "../../util/appUtil/userAuth.util.js";
+import { httpResponse } from "../../util/globalUtil/apiResponse.util.js";
+import { asyncHandler } from "../../util/globalUtil/asyncHandler.util.js";
+import { checkExistingUser, handleUnverifiedUser, handleVerifiedUser, handleNewUser } from "../../util/appUtil/authUtil/userAuth.util.js";
 
 export default {
   createUser: asyncHandler(async (req, res) => {

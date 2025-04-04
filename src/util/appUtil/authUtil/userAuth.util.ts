@@ -1,17 +1,17 @@
 import { and, eq, or, sql } from "drizzle-orm";
 import type { Response } from "express";
-import { db } from "../../db/db.js";
-import { type IUSER, userSchema } from "../../db/schemas/user.schema.js";
-import { generateOtp } from "../quickUtil/slugStringGenerator.util.js";
-import tokenGeneratorUtil from "../appUtil/tokenGenerator.util.js";
-import envConfig from "../../config/env.config.js";
-import emailResponsesConstant from "../../constant/emailResponses.constant.js";
-import { gloabalMailMessage } from "../../service/globalEmail.service.js";
-import logger from "../appUtil/logger.util.js";
-import { throwError } from "../appUtil/throwError.util.js";
+import { db } from "../../../db/db.js";
+import { type IUSER, userSchema } from "../../../db/schemas/user.schema.js";
+import { generateOtp } from "../../quickUtil/slugStringGenerator.util.js";
+import tokenGeneratorUtil from "../../globalUtil/tokenGenerator.util.js";
+import envConfig from "../../../config/env.config.js";
+import emailResponsesConstant from "../../../constant/emailResponses.constant.js";
+import { gloabalMailMessage } from "../../../service/globalService/globalEmail.service.js";
+import logger from "../../globalUtil/logger.util.js";
 import reshttp from "reshttp";
-import { passwordHasher } from "./passwordHasher.util.js";
 import { isAdmin } from "./checkIfUserIsAdmin.util.js";
+import { throwError } from "../../globalUtil/throwError.util.js";
+import { passwordHasher } from "../../globalUtil/passwordHasher.util.js";
 
 const checkUserExistsStmt = db
   .select({ uid: userSchema.uid, isVerified: userSchema.isVerified, email: userSchema.email })

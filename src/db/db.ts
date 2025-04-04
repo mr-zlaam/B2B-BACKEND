@@ -3,7 +3,7 @@ import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { Pool } from "pg";
 import { app } from "../app.js";
 import envConfig from "../config/env.config.js";
-import logger from "../util/appUtil/logger.util.js";
+import logger from "../util/globalUtil/logger.util.js";
 
 const pool = new Pool({
   connectionString: envConfig.DATABASE_URI,

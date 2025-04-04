@@ -3,11 +3,11 @@ import { eq, lte } from "drizzle-orm";
 import type { NodePgDatabase } from "drizzle-orm/node-postgres";
 import { db } from "../db/db.js";
 import { rateLimiterFlexible } from "../db/schemas/ratelimiter.schema.js";
-import { httpResponse } from "../util/appUtil/apiResponse.util.js";
+import { httpResponse } from "../util/globalUtil/apiResponse.util.js";
 import getMinutes from "../util/quickUtil/getMinute.util.js";
 import envConfig from "../config/env.config.js";
 import reshttp from "reshttp";
-import logger from "../util/appUtil/logger.util.js";
+import logger from "../util/globalUtil/logger.util.js";
 
 const ENV = envConfig.NODE_ENV;
 type ErrorLimiter = {
