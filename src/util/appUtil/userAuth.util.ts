@@ -56,7 +56,7 @@ export const handleVerifiedUser = () => {
   throwError(reshttp.conflictCode, "Account already exists with these details");
 };
 
-export const hanldeNewUser = async (user: IUSER, res: Response) => {
+export const handleNewUser = async (user: IUSER, res: Response) => {
   const { OTP_TOKEN, otpExpiry } = generateVerificationOtp(res);
   const hashedPassword = (await passwordHasher(user.password, res)) as string;
   await db

@@ -2,7 +2,7 @@ import reshttp from "reshttp";
 import { type IUSER } from "../../db/schemas/user.schema.js";
 import { httpResponse } from "../../util/appUtil/apiResponse.util.js";
 import { asyncHandler } from "../../util/appUtil/asyncHandler.util.js";
-import { checkExistingUser, handleUnverifiedUser, handleVerifiedUser, hanldeNewUser } from "../../util/appUtil/userAuth.util.js";
+import { checkExistingUser, handleUnverifiedUser, handleVerifiedUser, handleNewUser } from "../../util/appUtil/userAuth.util.js";
 
 export default {
   createUser: asyncHandler(async (req, res) => {
@@ -24,7 +24,7 @@ export default {
       }
     }
     /* if user doesn't exist at all*/
-    await hanldeNewUser(userBody, res);
+    await handleNewUser(userBody, res);
     httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "Please check your email account for verification" });
   })
 };
