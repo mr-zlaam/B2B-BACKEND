@@ -6,7 +6,7 @@ import { generateOtp } from "../quickUtil/slugStringGenerator.util.js";
 import tokenGeneratorUtil from "../appUtil/tokenGenerator.util.js";
 import envConfig from "../../config/env.config.js";
 import emailResponsesConstant from "../../constant/emailResponses.constant.js";
-import { gloabalMailMessage } from "../../service/ globalEmail.service.js";
+import { gloabalMailMessage } from "../../service/globalEmail.service.js";
 import logger from "../appUtil/logger.util.js";
 import { throwError } from "../appUtil/throwError.util.js";
 import reshttp from "reshttp";

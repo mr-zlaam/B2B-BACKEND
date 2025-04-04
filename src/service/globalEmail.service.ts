@@ -6,7 +6,7 @@ import appConstant from "../constant/app.constant.js";
 import logger from "../util/appUtil/logger.util.js";
 import { throwError } from "../util/appUtil/throwError.util.js";
 import reshttp from "reshttp";
-import { replaceAllPlaceholders } from "../util/quickUtil/ replaceAllPlaceholders.util.js";
+import { replaceAllPlaceholders } from "../util/quickUtil/replaceAllPlaceholders.util.js";
 import { generateRandomStrings } from "../util/quickUtil/slugStringGenerator.util.js";
 
 const transporter = nodemailer.createTransport({
