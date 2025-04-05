@@ -1,2 +1,1 @@
-bunx lint-staged
-bunx tsc --noEmit && git add .
+bun lint-staged && bun run type-check 
