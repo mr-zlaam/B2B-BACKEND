@@ -5,7 +5,7 @@ import { asyncHandler } from "../../util/globalUtil/asyncHandler.util.js";
 import { checkExistingUser, handleUnverifiedUser, handleVerifiedUser, handleNewUser } from "../../util/appUtil/authUtil/userAuth.util.js";
 
 export default {
-  createUser: asyncHandler(async (req, res) => {
+  registerUser: asyncHandler(async (req, res) => {
     const userBody = req.body as IUSER;
     // TODO: VALIDATION NEEDED
     /*
