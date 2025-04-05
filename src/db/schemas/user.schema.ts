@@ -1,5 +1,5 @@
 import { pgTable, timestamp, text, index, uuid, boolean, varchar, pgEnum } from "drizzle-orm/pg-core";
-export const userRoleEnum = pgEnum("userRole", ["ADMIN", "MODERATOR", "VENDOR", "BUYER"]);
+export const userRoleEnum = pgEnum("role", ["ADMIN", "MODERATOR", "VENDOR", "BUYER"]);
 
 export const userSchema = pgTable(
   "users",
@@ -9,12 +9,14 @@ export const userSchema = pgTable(
     fullName: varchar("fullName", { length: 50 }).notNull(),
     email: varchar("email", { length: 100 }).notNull().unique(),
     password: text("password").notNull(),
-    role: userRoleEnum("role").notNull(),
+    role: userRoleEnum().notNull(),
     country: varchar("country", { length: 50 }).notNull(),
     phone: varchar("phone", { length: 15 }).notNull().unique(),
+    isVerified: boolean("isVerified").notNull().default(false),
+    companyName: varchar("companyName", { length: 50 }),
+    companyURI: varchar("companyAddress", { length: 1000 }),
     OTP_TOKEN: text("OTP_TOKEN").unique(),
     OTP_EXPIRY: timestamp("OTP_EXPIRY"),
-    isVerified: boolean("isVerified").notNull().default(false),
     createdAt: timestamp("createdAt").notNull(),
     updatedAt: timestamp("updatedAt").notNull()
   },

@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1741117647840,
-      "tag": "0000_deep_riptide",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1741121998785,
-      "tag": "0001_smooth_winter_soldier",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1741128562371,
-      "tag": "0002_chemical_switch",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1741129030879,
-      "tag": "0003_mute_fabian_cortez",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1741147926063,
-      "tag": "0004_careless_the_twelve",
+      "when": 1743887411531,
+      "tag": "0000_spooky_mother_askani",
       "breakpoints": true
     }
   ]

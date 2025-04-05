@@ -6,6 +6,7 @@ export default defineConfig({
   dialect: "postgresql",
   dbCredentials: {
     url: process.env.DATABASE_URI as string
-  }
+  },
+  migrations: { prefix: "index", table: "__drizzle_migrations__", schema: "public" }
 });
 // toodo install multer

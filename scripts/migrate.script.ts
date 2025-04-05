@@ -1,6 +1,6 @@
 import { runMigrations } from "../src/db/db.js";
-import logger from "../src/util/appUtil/logger.util.js";
-import { throwError } from "../src/util/appUtil/throwError.util.js";
+import logger from "../src/util/globalUtil/logger.util.js";
+import { throwError } from "../src/util/globalUtil/throwError.util.js";
 await runMigrations()
   .then(() => {
     logger.info("Migrations ran successfully");

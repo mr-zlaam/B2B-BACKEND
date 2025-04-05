@@ -1,5 +1,5 @@
 {
-  "id": "600bf122-247d-42f5-96ac-d03570901fd8",
+  "id": "bb07eb8a-d2b5-4588-aefc-716030194f67",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -87,10 +87,53 @@
         },
         "role": {
           "name": "role",
-          "type": "userRole",
+          "type": "role",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
+        },
+        "country": {
+          "name": "country",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "phone": {
+          "name": "phone",
+          "type": "varchar(15)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "isVerified": {
+          "name": "isVerified",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "companyName": {
+          "name": "companyName",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "companyAddress": {
+          "name": "companyAddress",
+          "type": "varchar(1000)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "OTP_TOKEN": {
+          "name": "OTP_TOKEN",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "OTP_EXPIRY": {
+          "name": "OTP_EXPIRY",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
         },
         "createdAt": {
           "name": "createdAt",
@@ -106,36 +149,6 @@
         }
       },
       "indexes": {
-        "email_idx": {
-          "name": "email_idx",
-          "columns": [
-            {
-              "expression": "email",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "username_idx": {
-          "name": "username_idx",
-          "columns": [
-            {
-              "expression": "username",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
         "role_idx": {
           "name": "role_idx",
           "columns": [
@@ -195,6 +208,36 @@
           "concurrently": false,
           "method": "btree",
           "with": {}
+        },
+        "otp_token_expiry_idx": {
+          "name": "otp_token_expiry_idx",
+          "columns": [
+            {
+              "expression": "OTP_EXPIRY",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "isVerified_idx": {
+          "name": "isVerified_idx",
+          "columns": [
+            {
+              "expression": "isVerified",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
         }
       },
       "foreignKeys": {},
@@ -203,17 +246,37 @@
         "users_uid_unique": {
           "name": "users_uid_unique",
           "nullsNotDistinct": false,
-          "columns": ["uid"]
+          "columns": [
+            "uid"
+          ]
         },
         "users_username_unique": {
           "name": "users_username_unique",
           "nullsNotDistinct": false,
-          "columns": ["username"]
+          "columns": [
+            "username"
+          ]
         },
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": ["email"]
+          "columns": [
+            "email"
+          ]
+        },
+        "users_phone_unique": {
+          "name": "users_phone_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "phone"
+          ]
+        },
+        "users_OTP_TOKEN_unique": {
+          "name": "users_OTP_TOKEN_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "OTP_TOKEN"
+          ]
         }
       },
       "policies": {},
@@ -222,10 +285,15 @@
     }
   },
   "enums": {
-    "public.userRole": {
-      "name": "userRole",
+    "public.role": {
+      "name": "role",
       "schema": "public",
-      "values": ["ADMIN", "VENDOR", "BUYER"]
+      "values": [
+        "ADMIN",
+        "MODERATOR",
+        "VENDOR",
+        "BUYER"
+      ]
     }
   },
   "schemas": {},

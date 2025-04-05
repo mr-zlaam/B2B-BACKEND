@@ -21,7 +21,7 @@
     "pre-push": "bun run lint",
     "db:makemigrations": "drizzle-kit generate",
     "db:migrate": "bun run ./scripts/migrate.script.ts",
-    "db:push": "drizzle-kit push",
+    "db:push": "drizzle-kit push --force",
     "db:rollback": "drizzle-kit rollback",
     "db:studio": "drizzle-kit studio",
     "postinstall": "[ -z \"$CI\" ] && husky || echo \"Skipping husky in CI\"",
