@@ -1,2 +1,2 @@
 #!/bin/sh
-pnpm run commit-lint "$1"
+bun run commit-lint "$1"
