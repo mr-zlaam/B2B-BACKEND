@@ -30,12 +30,12 @@ export const manageUsers = (db: DatabaseClient) => {
 
   const sendVerificationEmail = async (email: string, token: string) => {
     const verificationUrl = `${envConfig.FRONTEND_APP_URI}/verify?token=${token}`;
+    logger.info(verificationUrl);
     const emailContent = emailResponsesConstant.OTP_SENDER_MESSAGE(verificationUrl, "30");
     return await gloabalMailMessage(email, emailContent, "About your account verification");
   };
 
   const handleUnverifiedUser = () => {
-    logger.warn("User already exists but unverified");
     throwError(reshttp.conflictCode, "An unverified Account already exists with these details");
   };
   const handleVerifiedUser = () => {
