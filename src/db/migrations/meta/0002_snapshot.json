@@ -249,37 +249,27 @@
         "users_uid_unique": {
           "name": "users_uid_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "uid"
-          ]
+          "columns": ["uid"]
         },
         "users_username_unique": {
           "name": "users_username_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "username"
-          ]
+          "columns": ["username"]
         },
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         },
         "users_phone_unique": {
           "name": "users_phone_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "phone"
-          ]
+          "columns": ["phone"]
         },
         "users_OTP_TOKEN_unique": {
           "name": "users_OTP_TOKEN_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "OTP_TOKEN"
-          ]
+          "columns": ["OTP_TOKEN"]
         }
       },
       "policies": {},
@@ -291,12 +281,7 @@
     "public.role": {
       "name": "role",
       "schema": "public",
-      "values": [
-        "ADMIN",
-        "MODERATOR",
-        "VENDOR",
-        "BUYER"
-      ]
+      "values": ["ADMIN", "MODERATOR", "VENDOR", "BUYER"]
     }
   },
   "schemas": {},
