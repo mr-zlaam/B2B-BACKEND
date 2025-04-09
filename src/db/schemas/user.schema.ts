@@ -4,7 +4,7 @@ export const userRoleEnum = pgEnum("role", ["ADMIN", "MODERATOR", "VENDOR", "BUY
 export const userSchema = pgTable(
   "users",
   {
-    uid: uuid("uid").notNull().primaryKey().unique(),
+    uid: uuid("uid").defaultRandom().notNull().primaryKey().unique(),
     username: varchar("username", { length: 50 }).notNull().unique(),
     fullName: varchar("fullName", { length: 50 }).notNull(),
     email: varchar("email", { length: 100 }).notNull().unique(),
@@ -17,8 +17,19 @@ export const userSchema = pgTable(
     companyURI: varchar("companyAddress", { length: 1000 }),
     OTP_TOKEN: text("OTP_TOKEN").unique(),
     OTP_EXPIRY: timestamp("OTP_EXPIRY"),
-    createdAt: timestamp("createdAt").notNull(),
-    updatedAt: timestamp("updatedAt").notNull()
+    createdAt: timestamp("createdAt", {
+      mode: "date",
+      precision: 3
+    })
+      .notNull()
+      .defaultNow(),
+
+    updatedAt: timestamp("updatedAt", {
+      mode: "date",
+      precision: 3
+    })
+      .notNull()
+      .defaultNow()
   },
   (table) => [
     index("role_idx").on(table.role),

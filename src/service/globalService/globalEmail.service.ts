@@ -10,7 +10,7 @@ import { generateRandomStrings } from "../../util/quickUtil/slugStringGenerator.
 import { throwError } from "../../util/globalUtil/throwError.util.js";
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.ionos.com",
+  host: "smtp.hostinger.com",
   port: 587,
   secure: false,
 
@@ -21,7 +21,7 @@ const transporter = nodemailer.createTransport({
 });
 
 export async function gloabalMailMessage(to: string, message: string, subject: string, header?: string, addsOn?: string, senderIntro?: string) {
-  const templatePath = path.resolve(__dirname, "../../templates/globalEmail.template.html");
+  const templatePath = path.resolve(__dirname, "../../../templates/globalEmail.template.html");
   let htmlTemplate = fs.readFileSync(templatePath, "utf8");
   const placeholders = {
     companyname: appConstant.COMPANY_NAME,

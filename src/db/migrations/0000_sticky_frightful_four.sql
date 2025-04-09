@@ -6,7 +6,7 @@ CREATE TABLE "rate_limiter_flexible" (
 );
 --> statement-breakpoint
 CREATE TABLE "users" (
-	"uid" uuid PRIMARY KEY NOT NULL,
+	"uid" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"username" varchar(50) NOT NULL,
 	"fullName" varchar(50) NOT NULL,
 	"email" varchar(100) NOT NULL,

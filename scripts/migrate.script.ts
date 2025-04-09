@@ -1,7 +1,8 @@
-import { runMigrations } from "../src/db/db.js";
+import { database } from "../src/db/db.js";
 import logger from "../src/util/globalUtil/logger.util.js";
 import { throwError } from "../src/util/globalUtil/throwError.util.js";
-await runMigrations()
+await database
+  .runMigrations()
   .then(() => {
     logger.info("Migrations ran successfully");
     process.exit(0);
