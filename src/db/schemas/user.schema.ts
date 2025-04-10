@@ -1,4 +1,4 @@
-import { pgTable, timestamp, text, index, uuid, boolean, varchar, pgEnum } from "drizzle-orm/pg-core";
+import { pgTable, timestamp, integer, text, index, uuid, boolean, varchar, pgEnum } from "drizzle-orm/pg-core";
 export const userRoleEnum = pgEnum("role", ["ADMIN", "MODERATOR", "VENDOR", "BUYER"]);
 
 export const userSchema = pgTable(
@@ -16,7 +16,7 @@ export const userSchema = pgTable(
     companyName: varchar("companyName", { length: 50 }),
     companyURI: varchar("companyAddress", { length: 1000 }),
     OTP_TOKEN: text("OTP_TOKEN").unique(),
-    OTP_EXPIRY: timestamp("OTP_EXPIRY"),
+    OTP_TOKEN_VERSION: integer("OTP_TOKEN_VERSION").notNull().default(0),
     createdAt: timestamp("createdAt", {
       mode: "date",
       precision: 3
@@ -36,8 +36,8 @@ export const userSchema = pgTable(
     index("createdAt_idx").on(table.createdAt),
     index("updatedAt_idx").on(table.updatedAt),
     index("fullName_idx").on(table.fullName),
-    index("otp_token_expiry_idx").on(table.OTP_EXPIRY),
     index("isVerified_idx").on(table.isVerified)
   ]
 );
-export type IUSER = typeof userSchema.$inferSelect;
+export type TUSER = typeof userSchema.$inferSelect;
+export type TROLE = typeof userRoleEnum.schema;

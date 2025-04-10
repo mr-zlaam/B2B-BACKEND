@@ -1,19 +1,22 @@
 import type { Response } from "express";
+import { verify } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
 import envConfig from "../../config/env.config.js";
+import appConstant from "../../constant/app.constant.js";
+import type { TROLE } from "../../db/schemas/user.schema.js";
 
 export interface IPAYLOAD {
   uid: string;
-  tokenVersion: number;
-  role: "ADMIN" | "VENDOR" | "BUYER";
-  isVerified: Date | null;
+  OTP_TOKEN_VERSION: number;
+  role: TROLE;
+  isVerified: boolean;
 }
 
 export default {
   generateAccessToken: (payload: IPAYLOAD, res: Response): string | Response => {
     try {
       const token = jwt.sign(payload, envConfig.JWT_SECRET, {
-        expiresIn: "14m"
+        expiresIn: appConstant.ACCESS_TOKEN_EXPIRY
       });
       return token;
     } catch (error: unknown) {
@@ -33,7 +36,9 @@ export default {
   },
   generateRefreshToken: (payload: IPAYLOAD, res: Response): string | Response => {
     try {
-      const token = jwt.sign({ uid: payload.uid, tokenVersion: payload.tokenVersion }, envConfig.JWT_SECRET, { expiresIn: "7d" });
+      const token = jwt.sign({ uid: payload.uid, tokenVersion: payload.OTP_TOKEN_VERSION }, envConfig.JWT_SECRET, {
+        expiresIn: appConstant.REFRESH_TOKEN_EXPIRY
+      });
       return token;
     } catch (error: unknown) {
       if (error instanceof Error)
@@ -72,7 +77,7 @@ export default {
   },
   generateOTPToken: (payload: { OTP?: string }, res: Response): string | Response => {
     try {
-      const token = jwt.sign(payload, envConfig.JWT_SECRET);
+      const token = jwt.sign(payload, envConfig.JWT_SECRET, { expiresIn: appConstant.OTP_EXPIRY });
       return token;
     } catch (error: unknown) {
       if (error instanceof Error)
@@ -90,3 +95,12 @@ export default {
     }
   }
 };
+export function verifyToken<T>(token: string, secret: string = envConfig.JWT_SECRET): [Error | null, T | null] {
+  try {
+    const decoded = verify(token, secret) as T;
+    return [null, decoded];
+  } catch (error: unknown) {
+    if (error instanceof Error) return [new Error(error.message || `Invalid Token::${error}`), null];
+    else return [Error(`Internal server error while verifying token :: ${error as string}`), null];
+  }
+}

@@ -1,19 +1,19 @@
 import { eq, or } from "drizzle-orm";
 import type { Response } from "express";
 import { type DatabaseClient } from "../../../db/db.js";
-import { type IUSER, userSchema } from "../../../db/schemas/user.schema.js";
-import { generateOtp } from "../../quickUtil/slugStringGenerator.util.js";
-import tokenGeneratorUtil from "../../globalUtil/tokenGenerator.util.js";
+import { type TUSER, userSchema } from "../../../db/schemas/user.schema.js";
 import envConfig from "../../../config/env.config.js";
 import emailResponsesConstant from "../../../constant/emailResponses.constant.js";
 import { gloabalMailMessage } from "../../../service/globalService/globalEmail.service.js";
-import logger from "../../globalUtil/logger.util.js";
 import reshttp from "reshttp";
-import { isAdmin } from "./checkIfUserIsAdmin.util.js";
-import { throwError } from "../../globalUtil/throwError.util.js";
-import { passwordHasher } from "../../globalUtil/passwordHasher.util.js";
+import { generateOtp } from "../../../util/quickUtil/slugStringGenerator.util.js";
+import tokenGeneratorUtil, { verifyToken } from "../../../util/globalUtil/tokenGenerator.util.js";
+import logger from "../../../util/globalUtil/logger.util.js";
+import { throwError } from "../../../util/globalUtil/throwError.util.js";
+import { passwordHasher } from "../../../util/globalUtil/passwordHasher.util.js";
+import { isAdmin } from "../../../util/appUtil/authUtil/checkIfUserIsAdmin.util.js";
 export const manageUsers = (db: DatabaseClient) => {
-  const checkExistingUser = async ({ email, username, phone }: IUSER) => {
+  const checkExistingUser = async ({ email, username, phone }: TUSER) => {
     const existingUser = await db
       .select({ uid: userSchema.uid, isVerified: userSchema.isVerified, email: userSchema.email })
       .from(userSchema)
@@ -43,15 +43,14 @@ export const manageUsers = (db: DatabaseClient) => {
     throwError(reshttp.conflictCode, "Account already exists with these details");
   };
 
-  const handleNewUser = async (user: IUSER, res: Response) => {
-    const { OTP_TOKEN, otpExpiry } = generateVerificationOtp(res);
+  const handleNewUser = async (user: TUSER, res: Response) => {
+    const { OTP_TOKEN } = generateVerificationOtp(res);
     const hashedPassword = (await passwordHasher(user.password, res)) as string;
     await db
       .insert(userSchema)
       .values({
         ...user,
         OTP_TOKEN: OTP_TOKEN as string,
-        OTP_EXPIRY: otpExpiry,
         password: hashedPassword,
         role: isAdmin(user.email) ? "ADMIN" : user.role
       })
@@ -61,5 +60,33 @@ export const manageUsers = (db: DatabaseClient) => {
         throwError(reshttp.internalServerErrorCode, reshttp.internalServerErrorMessage);
       });
   };
-  return { checkExistingUser, handleNewUser, handleUnverifiedUser, handleVerifiedUser };
+
+  const verifyUser = async (OTP_TOKEN: string) => {
+    const [user] = await db.select().from(userSchema).where(eq(userSchema.OTP_TOKEN, OTP_TOKEN)).limit(1);
+    if (user === null || user === undefined) {
+      logger.info("User not found while verifying user because he/she sent invalid token");
+      throwError(reshttp.notFoundCode, reshttp.notFoundMessage);
+    }
+    if (user.isVerified) {
+      throwError(reshttp.conflictCode, "Account already verified");
+    }
+    const [err] = verifyToken<{ OTP: string }>(user?.OTP_TOKEN as string, envConfig.JWT_SECRET);
+    if (err) {
+      logger.info("TOKEN was expired long ago");
+      await db
+        .update(userSchema)
+        .set({ isVerified: false, OTP_TOKEN: null, OTP_TOKEN_VERSION: user.OTP_TOKEN_VERSION + 1 })
+        .where(eq(userSchema.OTP_TOKEN, OTP_TOKEN));
+      throwError(reshttp.unauthorizedCode, `Invalid token ${err.message}`);
+    }
+    await db
+      .update(userSchema)
+      .set({ isVerified: true })
+      .where(eq(userSchema.OTP_TOKEN, OTP_TOKEN))
+      .catch((err: unknown) => {
+        logger.error("Something went wrong while verifying user", { err });
+        throwError(reshttp.internalServerErrorCode, reshttp.internalServerErrorMessage);
+      });
+  };
+  return { checkExistingUser, handleNewUser, handleUnverifiedUser, handleVerifiedUser, verifyUser };
 };
