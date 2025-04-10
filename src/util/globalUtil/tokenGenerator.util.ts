@@ -1,10 +1,8 @@
 import type { Response } from "express";
-import { verify } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
 import envConfig from "../../config/env.config.js";
 import appConstant from "../../constant/app.constant.js";
 import type { TROLE } from "../../db/schemas/user.schema.js";
-
 export interface IPAYLOAD {
   uid: string;
   OTP_TOKEN_VERSION: number;
@@ -97,7 +95,7 @@ export default {
 };
 export function verifyToken<T>(token: string, secret: string = envConfig.JWT_SECRET): [Error | null, T | null] {
   try {
-    const decoded = verify(token, secret) as T;
+    const decoded = jwt.verify(token, secret) as T;
     return [null, decoded];
   } catch (error: unknown) {
     if (error instanceof Error) return [new Error(error.message || `Invalid Token::${error}`), null];

@@ -1,19 +1,19 @@
 import { drizzle, type NodePgDatabase } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
-import { Pool } from "pg";
+import pg from "pg";
 import envConfig from "../config/env.config.js";
 import logger from "../util/globalUtil/logger.util.js";
 
 export type DatabaseClient = NodePgDatabase<Record<string, never>> & {
-  $client: Pool;
+  $client: pg.Pool;
 };
 
 export class Database {
-  private pool: Pool;
+  private pool: pg.Pool;
   private _db: DatabaseClient | null = null;
 
   constructor() {
-    this.pool = new Pool({
+    this.pool = new pg.Pool({
       connectionString: envConfig.DATABASE_URI,
       max: 20,
       idleTimeoutMillis: 30000,

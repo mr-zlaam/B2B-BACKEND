@@ -8,7 +8,7 @@ async function StartServer() {
     .connect()
     .then(() => {
       app.listen(envConfig.PORT, () => {
-        logger.info(`✅ Database connected successfully \n Server is running on ${envConfig.PORT}`);
+        logger.info(`✅ Database connected successfully \n  Server is running on http://localhost:${envConfig.PORT}`);
       });
     })
     .catch((err: unknown) => {
