@@ -28,3 +28,5 @@ authRouter.route("/loginUser").post(
   },
   authController.loginUser
 );
+
+authRouter.route("/refreshAccessToken").post(authController.refreshAccessToken);
