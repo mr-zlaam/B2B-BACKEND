@@ -43,3 +43,4 @@ export const registerUserSchema = z.object({
 });
 
 export const resendOTPSchema = z.object({ email: z.string().email().toLowerCase() });
+export const loginUserSchema = z.object({ email: z.string().email().toLowerCase(), password: z.string() });

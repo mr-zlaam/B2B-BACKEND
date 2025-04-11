@@ -10,7 +10,7 @@ import { generateOtp } from "../../../util/quickUtil/slugStringGenerator.util.js
 import tokenGeneratorUtil, { verifyToken } from "../../../util/globalUtil/tokenGenerator.util.js";
 import logger from "../../../util/globalUtil/logger.util.js";
 import { throwError } from "../../../util/globalUtil/throwError.util.js";
-import { passwordHasher } from "../../../util/globalUtil/passwordHasher.util.js";
+import { passwordHasher, verifyPassword } from "../../../util/globalUtil/passwordHasher.util.js";
 import { isAdmin } from "../../../util/appUtil/authUtil/checkIfUserIsAdmin.util.js";
 import { setTokensAndCookies } from "../../../util/globalUtil/setCookies.util.js";
 import { userRepo } from "../../../repositories/userRepository/user.repo.js";
@@ -107,6 +107,28 @@ export const manageUsers = (db: DatabaseClient) => {
         throwError(reshttp.internalServerErrorCode, reshttp.internalServerErrorMessage);
       });
   };
+  // ** login user
+
+  const loginUser = async (email: string, password: string, res: Response) => {
+    const user = await userRepo(db).getUserByEmail(email);
+    if (user === null || user === undefined) {
+      logger.info("User not found while verifying user because he/she sent invalid email which doesn't exist in database");
+      throwError(reshttp.notFoundCode, "Invalid Credentials");
+    }
+    const isPasswordMatch = await verifyPassword(password, user.password, res);
+    if (!isPasswordMatch) {
+      logger.info("Incorrect password");
+      throwError(reshttp.notFoundCode, "Invalid Credentials");
+    }
+    if (!user.isVerified) {
+      logger.info("User is not verified so he/she can't login");
+      throwError(reshttp.badRequestCode, reshttp.badGatewayMessage);
+    }
+
+    const { accessToken, refreshToken } = setTokensAndCookies(user, res, true, true);
+    return { accessToken, refreshToken };
+  };
   // Return functions from HOF
-  return { checkExistingUser, handleNewUser, handleUnverifiedUser, handleVerifiedUser, verifyUser, resendOTPToken };
+
+  return { checkExistingUser, handleNewUser, handleUnverifiedUser, handleVerifiedUser, verifyUser, resendOTPToken, loginUser };
 };

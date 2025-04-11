@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { AuthController } from "../../controller/userController/auth.controller.js";
 import { validator } from "../../middleware/validation.middleware.js";
-import { registerUserSchema, resendOTPSchema } from "../../validation/userValidation/auth.validation.js";
+import { loginUserSchema, registerUserSchema, resendOTPSchema } from "../../validation/userValidation/auth.validation.js";
 import { database } from "../../db/db.js";
 import rateLimiterMiddleware from "../../middleware/ratelimiter.middleware.js";
 export const authRouter: Router = Router();
@@ -18,4 +18,13 @@ authRouter.route("/resendOTP").post(
     await rateLimiterMiddleware.handle(req, res, next, 1, undefined, 1, 120);
   },
   authController.resendOTP
+);
+
+authRouter.route("/loginUser").post(
+  validator(loginUserSchema),
+  // Rate limiter that user can get only 1 otp per 2 minutes
+  async (req, res, next) => {
+    await rateLimiterMiddleware.handle(req, res, next, 1, undefined, 5, 120);
+  },
+  authController.loginUser
 );

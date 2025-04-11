@@ -45,4 +45,13 @@ export class AuthController {
     await resendOTPToken(email, res);
     httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "OTP has been resent successfully" });
   });
+  // ** Login User
+  public loginUser = asyncHandler(async (req, res) => {
+    const { email, password } = req.body as { email: string; password: string };
+    if (email === null || email === undefined) return throwError(reshttp.badRequestCode, "email is required");
+    if (password === null || password === undefined) return throwError(reshttp.badRequestCode, "password is required");
+    const { loginUser } = manageUsers(this._db);
+    const { accessToken, refreshToken } = await loginUser(email, password, res);
+    httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "User has been logged in", accessToken, refreshToken });
+  });
 }
