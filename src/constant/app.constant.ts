@@ -1,6 +1,7 @@
 import type ms from "ms";
 import envConfig from "../config/env.config.js";
 import type { ICOOKIEOPTIONS } from "../type/types.js";
+import type { CorsOptions } from "cors";
 export default {
   COMPANY_NAME: "B2B",
   OTP_EXPIRY: "30m" as number | ms.StringValue | undefined,
@@ -19,5 +20,10 @@ export default {
       sameSite: "none",
       expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days in milliseconds
     } as ICOOKIEOPTIONS
-  }
+  },
+  CORS_OPTIONS: {
+    methods: ["GET", "OPTIONS", "POST", "PUT", "DELETE", "PATCH", "HEAD"],
+    credentials: true,
+    origin: envConfig.ALLOWED_REGIONS
+  } as CorsOptions
 };

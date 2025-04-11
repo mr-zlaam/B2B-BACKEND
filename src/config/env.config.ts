@@ -8,6 +8,7 @@ interface IENVIRONMENTCONFIG {
   HOST_EMAIL: string;
   HOST_EMAIL_SECRET: string;
   WHITE_LIST_MAILS: string;
+  ALLOWED_REGIONS: string;
 }
 export default {
   PORT: process.env.PORT ? parseInt(process.env.PORT) : "Unable to fetch PORT from .env file",
@@ -18,5 +19,6 @@ export default {
   NODE_ENV: process.env.NODE_ENV ? process.env.NODE_ENV : "Unable to fetch NODE_ENV from .env file",
   HOST_EMAIL: process.env.HOST_EMAIL ? process.env.HOST_EMAIL : "Unable to fetch HOST_EMAIL from .env file",
   HOST_EMAIL_SECRET: process.env.HOST_EMAIL_SECRET ? process.env.HOST_EMAIL_SECRET : "Unable to fetch HOST_EMAIL_SECRET from .env file",
-  WHITE_LIST_MAILS: process.env.WHITE_LIST_MAILS ? process.env.WHITE_LIST_MAILS : "Unable to fetch WHITE_LIST_MAILS from .env file"
+  WHITE_LIST_MAILS: process.env.WHITE_LIST_MAILS ? process.env.WHITE_LIST_MAILS : "Unable to fetch WHITE_LIST_MAILS from .env file",
+  ALLOWED_REGIONS: process.env.ALLOWED_REGIONS ? process.env.ALLOWED_REGIONS : "Unable to fetch ALLOWED_REGIONS from .env file"
 } as IENVIRONMENTCONFIG;
