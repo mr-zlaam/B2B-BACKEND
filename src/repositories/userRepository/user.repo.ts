@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import type { DatabaseClient } from "../../db/db.js";
-import { userSchema } from "../../db/schemas/user.schema.js";
+import { type TUSER, userSchema } from "../../db/schemas/user.schema.js";
 import { throwError } from "../../util/globalUtil/throwError.util.js";
 import reshttp from "reshttp";
 import logger from "../../util/globalUtil/logger.util.js";
@@ -24,4 +24,14 @@ export class UserRepository {
       }
     }
   }
+
+  public async getUserByEmail(email: string): Promise<TUSER> {
+    const user = await this._db.select().from(userSchema).where(eq(userSchema.email, email)).limit(1);
+    if (user.length === 0) {
+      logger.info("User not found while verifying user because he/she sent invalid email which doesn't exist in database");
+      throwError(reshttp.notFoundCode, reshttp.notFoundMessage);
+    }
+    return user[0];
+  }
 }
+export const userRepo = (db: DatabaseClient) => new UserRepository(db);

@@ -5,7 +5,8 @@ export const rateLimiterFlexible = pgTable(
   {
     key: text("key").notNull().primaryKey(),
     points: integer("points").notNull(),
-    expire: timestamp("expire", { mode: "date" })
+    expire: timestamp("expire", { mode: "date" }),
+    previousDelay: integer("previousDelay").notNull().default(0)
   },
   (table) => [index("key_idx").on(table.key)]
 );

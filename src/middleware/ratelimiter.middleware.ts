@@ -8,8 +8,9 @@ import getMinutes from "../util/quickUtil/getMinute.util.js";
 import envConfig from "../config/env.config.js";
 import reshttp from "reshttp";
 import logger from "../util/globalUtil/logger.util.js";
+import { doubleNumber } from "../util/globalUtil/doubleNumber.uitl.js";
 const db: DatabaseClient = database.db;
-const ENV = envConfig.NODE_ENV;
+
 type ErrorLimiter = {
   remainingPoints: number;
   msBeforeNext: number;
@@ -41,32 +42,46 @@ class RateLimiterDrizzle {
 
     // First, try to find an existing record
     const records = await this.storeClient.select().from(rateLimiterFlexible).where(eq(rateLimiterFlexible.key, key));
-
     const record = records[0];
 
-    // If no record or expired record, create a new one
-    if (!record || (record.expire && record.expire < now)) {
-      const expire = new Date(now.getTime() + this.duration * 1000);
+    // If no record exists or expired, create a new one
+    if (!record) {
+      const expire = new Date(now.getTime() + this.duration * 1000); // Initial expiration based on the duration
 
-      // If record exists but expired, delete it
-      if (record) {
-        await this.storeClient.delete(rateLimiterFlexible).where(eq(rateLimiterFlexible.key, key));
-      }
-
-      // Create new record
       await this.storeClient.insert(rateLimiterFlexible).values({
         key,
         points,
-        expire
+        expire,
+        previousDelay: this.duration // Set the initial delay
       });
 
       return { remainingPoints: this.points - points };
     }
 
-    // Record exists and is not expired
+    // If record exists and is expired, handle delay doubling
+    if (record.expire && record.expire < now) {
+      const prevDelay = record.previousDelay || this.duration; // Use existing delay or the initial duration if first request
+      const newDelay = doubleNumber(prevDelay); // Double the previous delay
+
+      const expire = new Date(now.getTime() + newDelay * 1000); // New expiration time
+
+      // Update the record with the new delay and expiration
+      await this.storeClient
+        .update(rateLimiterFlexible)
+        .set({
+          points: record.points + points, // Increment the points
+          expire,
+          previousDelay: newDelay // Update to the doubled delay
+        })
+        .where(eq(rateLimiterFlexible.key, key));
+
+      return { remainingPoints: this.points - (record.points + points) };
+    }
+
+    // If the record exists and is not expired, just update the points
     const newPoints = record.points + points;
 
-    // Check if limit exceeded
+    // Check if the limit is exceeded
     if (newPoints > this.points) {
       const msBeforeNext = record.expire ? record.expire.getTime() - now.getTime() : this.duration * 1000;
 
@@ -76,7 +91,7 @@ class RateLimiterDrizzle {
       } as ErrorLimiter;
     }
 
-    // Update existing record
+    // Update the points
     await this.storeClient
       .update(rateLimiterFlexible)
       .set({
@@ -103,7 +118,7 @@ export class RateLimiterMiddleware {
     duration = 60
   ): Promise<void> {
     try {
-      if (ENV === "DEVELOPMENT") return next();
+      if (envConfig.NODE_ENV === "development") return next();
 
       // Initialize or reinitialize rate limiter only if totalPoints or duration have changed
       if (!this.rateLimiter || this.currentTotalPoints !== totalPoints || this.currentDuration !== duration) {

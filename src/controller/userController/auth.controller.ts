@@ -29,12 +29,20 @@ export class AuthController {
     await handleNewUser(userBody, res);
     httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "Please check your email account for verification" });
   });
-
+  // ** Verify User after Registeration
   public verifyUser = asyncHandler(async (req, res) => {
     const { token } = req.query as { token: string };
     if (token === null || token === undefined) return throwError(reshttp.badRequestCode, "Token is required");
     const { verifyUser } = manageUsers(this._db);
-    await verifyUser(token);
-    httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "User has been verified" });
+    const { accessToken, refreshToken } = await verifyUser(token, res);
+    httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "User has been verified", accessToken, refreshToken });
+  });
+  // ** Resent OTP Token incase user wasn't able to verify himself
+  public resendOTP = asyncHandler(async (req, res) => {
+    const { email } = req.body as { email: string };
+    if (email === null || email === undefined) return throwError(reshttp.badRequestCode, "email is required");
+    const { resendOTPToken } = manageUsers(this._db);
+    await resendOTPToken(email, res);
+    httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "OTP has been resent successfully" });
   });
 }

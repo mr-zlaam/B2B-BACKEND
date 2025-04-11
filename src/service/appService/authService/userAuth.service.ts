@@ -12,6 +12,8 @@ import logger from "../../../util/globalUtil/logger.util.js";
 import { throwError } from "../../../util/globalUtil/throwError.util.js";
 import { passwordHasher } from "../../../util/globalUtil/passwordHasher.util.js";
 import { isAdmin } from "../../../util/appUtil/authUtil/checkIfUserIsAdmin.util.js";
+import { setTokensAndCookies } from "../../../util/globalUtil/setCookies.util.js";
+import { userRepo } from "../../../repositories/userRepository/user.repo.js";
 export const manageUsers = (db: DatabaseClient) => {
   const checkExistingUser = async ({ email, username, phone }: TUSER) => {
     const existingUser = await db
@@ -61,7 +63,7 @@ export const manageUsers = (db: DatabaseClient) => {
       });
   };
 
-  const verifyUser = async (OTP_TOKEN: string) => {
+  const verifyUser = async (OTP_TOKEN: string, res: Response) => {
     const [user] = await db.select().from(userSchema).where(eq(userSchema.OTP_TOKEN, OTP_TOKEN)).limit(1);
     if (user === null || user === undefined) {
       logger.info("User not found while verifying user because he/she sent invalid token");
@@ -79,14 +81,32 @@ export const manageUsers = (db: DatabaseClient) => {
         .where(eq(userSchema.OTP_TOKEN, OTP_TOKEN));
       throwError(reshttp.unauthorizedCode, `Invalid token ${err.message}`);
     }
+    const [updatedUser] = await db
+      .update(userSchema)
+      .set({ isVerified: true, OTP_TOKEN: null, OTP_TOKEN_VERSION: user.OTP_TOKEN_VERSION + 1 })
+      .where(eq(userSchema.OTP_TOKEN, OTP_TOKEN))
+      .returning();
+
+    const { accessToken, refreshToken } = setTokensAndCookies(updatedUser, res, true);
+    return { accessToken, refreshToken };
+  };
+  const resendOTPToken = async (email: string, res: Response) => {
+    const { OTP_TOKEN } = generateVerificationOtp(res);
+    const user = await userRepo(db).getUserByEmail(email);
+    if (user.isVerified) {
+      logger.error("Account already verified. This route is at risk ");
+      throwError(reshttp.conflictCode, "Account already verified");
+    }
     await db
       .update(userSchema)
-      .set({ isVerified: true })
-      .where(eq(userSchema.OTP_TOKEN, OTP_TOKEN))
+      .set({ OTP_TOKEN: OTP_TOKEN as string })
+      .where(eq(userSchema.email, email))
+      .then(async () => await sendVerificationEmail(email, OTP_TOKEN as string))
       .catch((err: unknown) => {
-        logger.error("Something went wrong while verifying user", { err });
+        logger.error("Something went wrong while creating new user", { err });
         throwError(reshttp.internalServerErrorCode, reshttp.internalServerErrorMessage);
       });
   };
-  return { checkExistingUser, handleNewUser, handleUnverifiedUser, handleVerifiedUser, verifyUser };
+  // Return functions from HOF
+  return { checkExistingUser, handleNewUser, handleUnverifiedUser, handleVerifiedUser, verifyUser, resendOTPToken };
 };

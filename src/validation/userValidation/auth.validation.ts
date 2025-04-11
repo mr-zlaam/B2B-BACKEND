@@ -11,7 +11,7 @@ const phoneSchema = z.string().refine(
   }
 );
 
-export const authValidationSchema = z.object({
+export const registerUserSchema = z.object({
   username: z
     .string()
     .trim()
@@ -41,3 +41,5 @@ export const authValidationSchema = z.object({
   companyName: z.string().max(50, "companyName can only have 50 characters").optional(),
   companyURI: z.string().max(1000, "companyURI can only have 1000 characters").url("companyURI must be a valid URL").optional()
 });
+
+export const resendOTPSchema = z.object({ email: z.string().email().toLowerCase() });
