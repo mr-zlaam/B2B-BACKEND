@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import reshttp from "reshttp";
-import envConfig from "../config/env.config.js";
+import envConfig from "../../config/env.config.js";
 import { DrizzleError } from "drizzle-orm";
 interface CustomError extends Error {
   success?: boolean;

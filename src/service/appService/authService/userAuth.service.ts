@@ -13,8 +13,8 @@ import { throwError } from "../../../util/globalUtil/throwError.util.js";
 import { passwordHasher, verifyPassword } from "../../../util/globalUtil/passwordHasher.util.js";
 import { isAdmin } from "../../../util/appUtil/authUtil/checkIfUserIsAdmin.util.js";
 import { setTokensAndCookies } from "../../../util/globalUtil/setCookies.util.js";
-import { userRepo } from "../../../repositories/userRepository/user.repo.js";
-export const manageUsers = (db: DatabaseClient) => {
+import { userRepo } from "../../../repository/userRepository/user.repo.js";
+export const usrAuthService = (db: DatabaseClient) => {
   const checkExistingUser = async ({ email, username, phone }: TUSER) => {
     const existingUser = await db
       .select({ uid: userSchema.uid, isVerified: userSchema.isVerified, email: userSchema.email })

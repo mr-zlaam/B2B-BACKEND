@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import envConfig from "../../config/env.config.js";
 import appConstant from "../../constant/app.constant.js";
 import type { TROLE } from "../../db/schemas/user.schema.js";
+import logger from "./logger.util.js";
 export interface IPAYLOAD {
   uid: string;
   OTP_TOKEN_VERSION: number;
@@ -102,7 +103,12 @@ export function verifyToken<T>(token: string, secret: string = envConfig.JWT_SEC
     const decoded = jwt.verify(token, secret) as T;
     return [null, decoded];
   } catch (error: unknown) {
-    if (error instanceof Error) return [new Error(error.message || `Invalid Token::${error}`), null];
-    else return [Error(`Internal server error while verifying token :: ${error as string}`), null];
+    if (error instanceof Error) {
+      logger.info(`ERROR::${error.message || "Invalid access Token"}`, { error });
+      return [new Error(error.message || `Invalid Token::${error}`), null];
+    } else {
+      logger.info(`ERROR::${error as string}`, { error });
+      return [Error(`Internal server error while verifying token :: ${error as string}`), null];
+    }
   }
 }
