@@ -14,13 +14,9 @@ export interface IPAYLOAD {
 export default {
   generateAccessToken: (payload: IPAYLOAD, res: Response): string | Response => {
     try {
-      const token = jwt.sign(
-        { uid: payload.uid, OTP_TOKEN_VERSION: payload.OTP_TOKEN_VERSION, role: payload.role, isVerified: payload.isVerified },
-        envConfig.JWT_SECRET,
-        {
-          expiresIn: appConstant.ACCESS_TOKEN_EXPIRY
-        }
-      );
+      const token = jwt.sign({ uid: payload.uid, OTP_TOKEN_VERSION: payload.OTP_TOKEN_VERSION, role: payload.role }, envConfig.JWT_SECRET, {
+        expiresIn: appConstant.ACCESS_TOKEN_EXPIRY
+      });
       return token;
     } catch (error: unknown) {
       if (error instanceof Error)
@@ -39,7 +35,7 @@ export default {
   },
   generateRefreshToken: (payload: IPAYLOAD, res: Response): string | Response => {
     try {
-      const token = jwt.sign({ uid: payload.uid, OTP_TOKEN_VERSION: payload.OTP_TOKEN_VERSION }, envConfig.JWT_SECRET, {
+      const token = jwt.sign({ uid: payload.uid, OTP_TOKEN_VERSION: payload.OTP_TOKEN_VERSION, isExpired: false }, envConfig.JWT_SECRET, {
         expiresIn: appConstant.REFRESH_TOKEN_EXPIRY
       });
       return token;
