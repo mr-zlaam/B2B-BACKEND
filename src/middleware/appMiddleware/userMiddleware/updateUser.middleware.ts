@@ -42,4 +42,16 @@ export class UserUpdateMiddleware {
     logger.info("run middleware");
     return next();
   });
+  // ** Update userEmail ** //
+  updateUserEmail = asyncHandler(async (req: _Request, _, next) => {
+    const { email } = req.body as { email: string; userIDFromBody: string };
+    const checkIfUserCanUpdateToThisEmail = await this._db.select().from(userSchema).where(eq(userSchema.email, email)).limit(1);
+    if (checkIfUserCanUpdateToThisEmail.length > 0) {
+      // ** user not found with the username you've entered ** //
+      logger.info("user with this email is already exist in database.please try other email", { checkIfUserCanUpdateToThisEmail, email });
+      throwError(reshttp.conflictCode, reshttp.conflictMessage);
+    }
+
+    return next();
+  });
 }

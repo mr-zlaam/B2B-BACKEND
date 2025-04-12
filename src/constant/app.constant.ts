@@ -5,7 +5,7 @@ import type { CorsOptions } from "cors";
 export default {
   COMPANY_NAME: "B2B",
   OTP_EXPIRY: "30m" as number | ms.StringValue | undefined,
-  ACCESS_TOKEN_EXPIRY: "14m" as number | ms.StringValue | undefined,
+  ACCESS_TOKEN_EXPIRY: envConfig.NODE_ENV === "development" ? "7d" : ("14m" as number | ms.StringValue | undefined),
   REFRESH_TOKEN_EXPIRY: "30d" as number | ms.StringValue | undefined,
   COOKIEOPTIONS: {
     ACESSTOKENCOOKIEOPTIONS: {

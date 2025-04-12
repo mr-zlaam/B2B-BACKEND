@@ -7,12 +7,15 @@ import { asyncHandler } from "../../util/globalUtil/asyncHandler.util.js";
 import { throwError } from "../../util/globalUtil/throwError.util.js";
 import logger from "../../util/globalUtil/logger.util.js";
 import { httpResponse } from "../../util/globalUtil/apiResponse.util.js";
+import { setTokensAndCookies } from "../../util/globalUtil/setCookies.util.js";
 /* 
 @types of iupdae user
   */
 interface IUpdateUserController {
   // eslint-disable-next-line no-unused-vars
   updateBasicUserInformation: (_: TUSER) => Promise<TUSER>;
+  // eslint-disable-next-line no-unused-vars
+  updateUserEmail: (email: string, uid: string) => Promise<TUSER>;
 }
 export class UpdateUserController {
   private readonly _db: DatabaseClient;
@@ -36,5 +39,20 @@ export class UpdateUserController {
     // ** validation is already handled by middleware ** //
     await this._userUpdateService.updateBasicUserInformation(updateUserInformation);
     httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "User information has been updated successfully!!" });
+  });
+  // ** Update user email **//
+  public updateUserEmail = asyncHandler(async (req: _Request, res) => {
+    // ** Update user email ** //
+    const { email } = req.body as { email: string };
+    const { uid: userIDFromBody } = req.body as { uid: string };
+    const userIDFromToken = req.userFromToken?.uid as string;
+    if (!userIDFromBody && !userIDFromToken) {
+      logger.info("No uid have been provided by user or token");
+      throwError(reshttp.badRequestCode, reshttp.badRequestMessage);
+    }
+    const uid = userIDFromBody || userIDFromToken || "no id";
+    const updatedUser = await this._userUpdateService.updateUserEmail(email, uid);
+    const { accessToken, refreshToken } = setTokensAndCookies(updatedUser, res, true);
+    httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "User email has been updated successfully!!", accessToken, refreshToken });
   });
 }
