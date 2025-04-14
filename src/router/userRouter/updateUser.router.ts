@@ -41,7 +41,7 @@ updateUserRouter.route("/updateUserEmail").patch(
   userUpdateController.updateUserEmail
 );
 // ** Update user email ** //
-updateUserRouter.route("/updatePassword").patch(
+updateUserRouter.route("/updateUserPassword").patch(
   // Rate limiter will double the time every time user  will hit the limit
   validator(updateUserPasswordSchema),
   authMiddleware.checkToken,
@@ -51,7 +51,7 @@ updateUserRouter.route("/updatePassword").patch(
   },
   userUpdateController.updateUserPassword
 );
-updateUserRouter.route("/forgetPasswordRequest").patch(
+updateUserRouter.route("/forgetUserPasswordRequest").patch(
   validator(forgetPasswordSchema),
   // Rate limiter will double the time every time user  will hit the limit
   userUpdateMiddleware.checkIfUserCanForgetPassword,
@@ -61,4 +61,4 @@ updateUserRouter.route("/forgetPasswordRequest").patch(
   userUpdateController.forgotPasswordRequestFromUser
 );
 // ** Reset  and update password ** //
-updateUserRouter.route("/forgetPasswordRequest").patch(validator(resetPasswordSchema), userUpdateController.resetAndUpdateNewPassword);
+updateUserRouter.route("/resetAndUpdateNewPassword").patch(validator(resetPasswordSchema), userUpdateController.resetAndUpdateNewPassword);

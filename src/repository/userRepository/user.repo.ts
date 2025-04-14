@@ -38,7 +38,7 @@ export class UserRepository {
   public async getUserByusername(username: string): Promise<TUSER> {
     const user = await this._db.select().from(userSchema).where(eq(userSchema.username, username)).limit(1);
     if (user.length === 0) {
-      logger.info("User not found in database  because he/she sent invalid username which doesn't exist in database(getUserByEmail)");
+      logger.info("User not found in database  because he/she sent invalid username which doesn't exist in database(getUserbyUsername)");
       throwError(reshttp.notFoundCode, reshttp.notFoundMessage);
     }
     return user[0];
@@ -49,7 +49,7 @@ export class UserRepository {
   public async getUserByuid(uid: string): Promise<TUSER> {
     const user = await this._db.select().from(userSchema).where(eq(userSchema.uid, uid)).limit(1);
     if (user.length === 0) {
-      logger.info("User not found in database  because he/she sent invalid username which doesn't exist in database(getUserByEmail)");
+      logger.info("User not found in database  because he/she sent invalid uid which doesn't exist in database(getUserbyUid)");
       throwError(reshttp.notFoundCode, reshttp.notFoundMessage);
     }
     return user[0];

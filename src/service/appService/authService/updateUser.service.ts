@@ -28,7 +28,7 @@ export const userUpdateService = (db: DatabaseClient) => {
   // ** Update user password ** //
   const updateUserPassword = async (uid: string, newPassword: string, res: Response) => {
     const hashedNewPassword = (await passwordHasher(newPassword, res)) as string;
-    await db.update(userSchema).set({ password: hashedNewPassword }).where(eq(userSchema.uid, uid)).returning();
+    await db.update(userSchema).set({ password: hashedNewPassword, OTP_TOKEN: null }).where(eq(userSchema.uid, uid)).returning();
   };
   // ** utility functions returns here
 

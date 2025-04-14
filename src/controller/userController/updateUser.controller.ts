@@ -9,10 +9,10 @@ import logger from "../../util/globalUtil/logger.util.js";
 import { httpResponse } from "../../util/globalUtil/apiResponse.util.js";
 import { setTokensAndCookies } from "../../util/globalUtil/setCookies.util.js";
 import type { Response } from "express";
-import { generateVerificationOtpToken } from "../../util/globalUtil/verificationTokenGenerator.util.js";
 import { gloabalMailMessage } from "../../service/globalService/globalEmail.service.js";
 import emailResponsesConstant from "../../constant/emailResponses.constant.js";
 import { userRepo } from "../../repository/userRepository/user.repo.js";
+import envConfig from "../../config/env.config.js";
 /* 
 @types of iupdae user
   */
@@ -72,8 +72,10 @@ export class UpdateUserController {
   // ** forgot password request **//
   public forgotPasswordRequestFromUser = asyncHandler(async (req: _Request, res) => {
     const { email } = req.body as { email: string };
-    const { OTP_TOKEN } = generateVerificationOtpToken(res, "1h");
-    await gloabalMailMessage(email, emailResponsesConstant.SEND_OTP_FOR_RESET_PASSWORD_REQUEST(OTP_TOKEN, "1h"), "Password Reset Request");
+    const user = await userRepo(this._db).getUserByEmail(email);
+    const verificationUrl = `${envConfig.FRONTEND_APP_URI}/resetAndUpdateNewPassword?token=${user.OTP_TOKEN}`;
+    await gloabalMailMessage(email, emailResponsesConstant.SEND_OTP_FOR_RESET_PASSWORD_REQUEST(verificationUrl, "1h"), "Password Reset Request");
+    httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "Please check your email to reset your password!!" });
   });
   // ** Reset  and update new password **//
   public resetAndUpdateNewPassword = asyncHandler(async (req, res) => {

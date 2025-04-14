@@ -4,13 +4,13 @@ import { validateAndFormatPhone } from "../../util/appUtil/authUtil/phonevalidat
 // ** @description: This file contains the validation schema for updating user information username,fullName, phone,companyURI(optional), companyName(optional).
 export const updateUserSchema = z.object({
   username: z
-    .string()
+    .string({ message: "username must be string" })
     .trim()
     .min(3, "username required atleast 3 characters")
     .max(30, "username must not contain more than 30 characters")
     .regex(/^[a-z0-9_]+$/, "username can only contain lowercase, underscores and numbers"),
   fullName: z
-    .string()
+    .string({ message: "fullName must be string" })
     .trim()
     .min(3, "fullName required atleast 3 characters")
     .max(50, "fullName can only have 50 characters")
@@ -20,14 +20,18 @@ export const updateUserSchema = z.object({
     const result = validateAndFormatPhone(val);
     return result?.isValid ? result.formattedNumber : val;
   }),
-  companyName: z.string().max(50, "companyName can only have 50 characters").optional(),
-  companyURI: z.string().max(1000, "companyURI can only have 1000 characters").url("companyURI must be a valid URL").optional()
+  companyName: z.string({ message: "companyName must be string" }).max(50, "companyName can only have 50 characters").optional(),
+  companyURI: z
+    .string({ message: "companyURI must be string" })
+    .max(1000, "companyURI can only have 1000 characters")
+    .url("companyURI must be a valid URL")
+    .optional()
 });
 
 // ** @description: This file contains the validation schema for updating user information about email.
 export const updateUserEmailSchema = z.object({
   email: z
-    .string()
+    .string({ message: "email must be string" })
     .trim()
     .min(3, "email required atleast 3 characters")
     .max(100, "emails can only have 100 characters")
@@ -36,11 +40,17 @@ export const updateUserEmailSchema = z.object({
 // ** @description: This file contains the validation schema for updating user information about password.
 
 export const updateUserPasswordSchema = z.object({
-  oldPassword: z.string().min(8, "password must be atleast 8 characters").max(100, "password can only have 100 characters"),
-  newPassword: z.string().min(8, "password must be atleast 8 characters").max(100, "password can only have 100 characters")
+  oldPassword: z
+    .string({ message: "oldPassword must be string" })
+    .min(8, "password must be atleast 8 characters")
+    .max(100, "password can only have 100 characters"),
+  newPassword: z.string().min(8, "newPassword must be atleast 8 characters").max(100, "password can only have 100 characters")
 });
 
 export const forgetPasswordSchema = updateUserEmailSchema;
 export const resetPasswordSchema = z.object({
-  newPassword: z.string().min(8, "password must be atleast 8 characters").max(100, "password can only have 100 characters")
+  newPassword: z
+    .string({ message: "newPassword must be string" })
+    .min(8, "newPassword must be atleast 8 characters")
+    .max(100, "password can only have 100 characters")
 });
