@@ -10,7 +10,7 @@ import { generateRandomStrings } from "../../util/quickUtil/slugStringGenerator.
 import { throwError } from "../../util/globalUtil/throwError.util.js";
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.hostinger.com",
+  host: "smtp.ionos.com",
   port: 587,
   secure: false,
 
