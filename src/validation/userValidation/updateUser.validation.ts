@@ -39,3 +39,8 @@ export const updateUserPasswordSchema = z.object({
   oldPassword: z.string().min(8, "password must be atleast 8 characters").max(100, "password can only have 100 characters"),
   newPassword: z.string().min(8, "password must be atleast 8 characters").max(100, "password can only have 100 characters")
 });
+
+export const forgetPasswordSchema = updateUserEmailSchema;
+export const resetPasswordSchema = z.object({
+  newPassword: z.string().min(8, "password must be atleast 8 characters").max(100, "password can only have 100 characters")
+});

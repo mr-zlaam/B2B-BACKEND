@@ -9,6 +9,10 @@ import logger from "../../util/globalUtil/logger.util.js";
 import { httpResponse } from "../../util/globalUtil/apiResponse.util.js";
 import { setTokensAndCookies } from "../../util/globalUtil/setCookies.util.js";
 import type { Response } from "express";
+import { generateVerificationOtpToken } from "../../util/globalUtil/verificationTokenGenerator.util.js";
+import { gloabalMailMessage } from "../../service/globalService/globalEmail.service.js";
+import emailResponsesConstant from "../../constant/emailResponses.constant.js";
+import { userRepo } from "../../repository/userRepository/user.repo.js";
 /* 
 @types of iupdae user
   */
@@ -63,6 +67,24 @@ export class UpdateUserController {
     const uid = req.userFromToken?.uid as string;
     const { newPassword } = req.body as { newPassword: string };
     await this._userUpdateService.updateUserPassword(uid, newPassword, res);
+    httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "User password has been updated successfully!!" });
+  });
+  // ** forgot password request **//
+  public forgotPasswordRequestFromUser = asyncHandler(async (req: _Request, res) => {
+    const { email } = req.body as { email: string };
+    const { OTP_TOKEN } = generateVerificationOtpToken(res, "1h");
+    await gloabalMailMessage(email, emailResponsesConstant.SEND_OTP_FOR_RESET_PASSWORD_REQUEST(OTP_TOKEN, "1h"), "Password Reset Request");
+  });
+  // ** Reset  and update new password **//
+  public resetAndUpdateNewPassword = asyncHandler(async (req, res) => {
+    const { newPassword } = req.body as { newPassword: string };
+    const { token } = req.query as { token: string };
+    const user = await userRepo(this._db).getUserByToken(token);
+    if (token !== user.OTP_TOKEN) {
+      logger.info("Token is not valid or expired in reset and update password controller", { token, user });
+      throwError(reshttp.unauthorizedCode, reshttp.unauthorizedMessage);
+    }
+    await this._userUpdateService.updateUserPassword(user.uid, newPassword, res);
     httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "User password has been updated successfully!!" });
   });
 }

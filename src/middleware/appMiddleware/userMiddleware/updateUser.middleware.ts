@@ -8,6 +8,7 @@ import { asyncHandler } from "../../../util/globalUtil/asyncHandler.util.js";
 import type { _Request } from "../../globalMiddleware/auth.middleware.js";
 import { userRepo } from "../../../repository/userRepository/user.repo.js";
 import { verifyPassword } from "../../../util/globalUtil/passwordHasher.util.js";
+import { generateVerificationOtpToken } from "../../../util/globalUtil/verificationTokenGenerator.util.js";
 
 export class UserUpdateMiddleware {
   private readonly _db: DatabaseClient;
@@ -71,6 +72,15 @@ export class UserUpdateMiddleware {
       throwError(reshttp.badRequestCode, reshttp.badRequestMessage);
     }
 
+    return next();
+  });
+  // ** check if user can update password or check if old password is correct ** //
+  public checkIfUserCanForgetPassword = asyncHandler(async (req, res, next) => {
+    const { email } = req.body as { email: string };
+    // ** error is already handled in repo
+    const { OTP_TOKEN } = generateVerificationOtpToken(res, "1h");
+    await userRepo(this._db).getUserByEmail(email, "On password forget request user not found in database", "Invalid email");
+    await this._db.update(userSchema).set({ OTP_TOKEN: OTP_TOKEN }).where(eq(userSchema.email, email));
     return next();
   });
 }

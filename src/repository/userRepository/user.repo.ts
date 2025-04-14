@@ -11,28 +11,25 @@ export class UserRepository {
     this._db = db;
   }
   public async getUserByToken(OTP_TOKEN: string) {
-    try {
-      const user = await this._db.select().from(userSchema).where(eq(userSchema.OTP_TOKEN, OTP_TOKEN)).limit(1);
-      return [user, typeof user];
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        logger.warn(error.message, { error });
-        throwError(reshttp.internalServerErrorCode, error.message);
-      } else {
-        logger.error("Something went wrong while fetching user using top token", { error });
-        throwError(reshttp.internalServerErrorCode, reshttp.internalServerErrorMessage);
-      }
+    const user = await this._db.select().from(userSchema).where(eq(userSchema.OTP_TOKEN, OTP_TOKEN)).limit(1);
+    if (user.length === 0) {
+      logger.info(
+        "User not found while checking user exist in db or not. because he/she sent invalid token which doesn't exist in database(getUserByToken)"
+      );
+      throwError(reshttp.notFoundCode, reshttp.notFoundMessage);
     }
+    return user[0];
   }
 
   // ** Get user by email
-  public async getUserByEmail(email: string): Promise<TUSER> {
+  public async getUserByEmail(email: string, loggerErrorMessage?: string, orignalErrorMessage?: string): Promise<TUSER> {
     const user = await this._db.select().from(userSchema).where(eq(userSchema.email, email)).limit(1);
     if (user.length === 0) {
       logger.info(
-        "User not found while checking user exist in db or not. because he/she sent invalid email which doesn't exist in database(getUserByEmail)"
+        loggerErrorMessage ||
+          "User not found while checking user exist in db or not. because he/she sent invalid email which doesn't exist in database(getUserByEmail)"
       );
-      throwError(reshttp.notFoundCode, reshttp.notFoundMessage);
+      throwError(reshttp.notFoundCode, orignalErrorMessage ?? reshttp.notFoundMessage);
     }
     return user[0];
   }

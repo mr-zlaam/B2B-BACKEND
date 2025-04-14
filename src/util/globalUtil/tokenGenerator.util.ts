@@ -1,4 +1,5 @@
 import type { Response } from "express";
+import type ms from "ms";
 import jwt from "jsonwebtoken";
 import envConfig from "../../config/env.config.js";
 import appConstant from "../../constant/app.constant.js";
@@ -78,9 +79,9 @@ export default {
         });
     }
   },
-  generateOTPToken: (payload: { OTP?: string }, res: Response): string | Response => {
+  generateOTPToken: (payload: { OTP?: string }, res: Response, expiryTime?: number | ms.StringValue): string | Response => {
     try {
-      const token = jwt.sign(payload, envConfig.JWT_SECRET, { expiresIn: appConstant.OTP_EXPIRY });
+      const token = jwt.sign(payload, envConfig.JWT_SECRET, { expiresIn: expiryTime ?? appConstant.OTP_EXPIRY });
       return token;
     } catch (error: unknown) {
       if (error instanceof Error)
