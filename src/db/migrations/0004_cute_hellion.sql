@@ -1,1 +1,0 @@
-ALTER TABLE "rate_limiter_flexible" ADD COLUMN "previousDelay" integer DEFAULT 0 NOT NULL;

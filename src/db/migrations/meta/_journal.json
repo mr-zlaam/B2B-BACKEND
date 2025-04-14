@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1744235955750,
-      "tag": "0000_sticky_frightful_four",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1744236348366,
-      "tag": "0001_normal_gladiator",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1744236515535,
-      "tag": "0002_bright_ser_duncan",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1744313346046,
-      "tag": "0003_colossal_newton_destine",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1744389270302,
-      "tag": "0004_cute_hellion",
+      "when": 1744638109079,
+      "tag": "0000_lonely_sentinel",
       "breakpoints": true
     }
   ]

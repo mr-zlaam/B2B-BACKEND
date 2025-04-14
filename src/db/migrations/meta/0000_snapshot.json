@@ -1,5 +1,5 @@
 {
-  "id": "d4d7aa42-cf03-408c-9875-f4b456385d0a",
+  "id": "3301042f-c483-4fab-9b28-6813d8f28c6e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -25,6 +25,13 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
+        },
+        "previousDelay": {
+          "name": "previousDelay",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
         }
       },
       "indexes": {
@@ -130,23 +137,26 @@
           "primaryKey": false,
           "notNull": false
         },
-        "OTP_EXPIRY": {
-          "name": "OTP_EXPIRY",
-          "type": "timestamp",
+        "OTP_TOKEN_VERSION": {
+          "name": "OTP_TOKEN_VERSION",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": 0
         },
         "createdAt": {
           "name": "createdAt",
-          "type": "timestamp",
+          "type": "timestamp (3)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "now()"
         },
         "updatedAt": {
           "name": "updatedAt",
-          "type": "timestamp",
+          "type": "timestamp (3)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {
@@ -210,21 +220,6 @@
           "method": "btree",
           "with": {}
         },
-        "otp_token_expiry_idx": {
-          "name": "otp_token_expiry_idx",
-          "columns": [
-            {
-              "expression": "OTP_EXPIRY",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
         "isVerified_idx": {
           "name": "isVerified_idx",
           "columns": [
@@ -247,27 +242,37 @@
         "users_uid_unique": {
           "name": "users_uid_unique",
           "nullsNotDistinct": false,
-          "columns": ["uid"]
+          "columns": [
+            "uid"
+          ]
         },
         "users_username_unique": {
           "name": "users_username_unique",
           "nullsNotDistinct": false,
-          "columns": ["username"]
+          "columns": [
+            "username"
+          ]
         },
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": ["email"]
+          "columns": [
+            "email"
+          ]
         },
         "users_phone_unique": {
           "name": "users_phone_unique",
           "nullsNotDistinct": false,
-          "columns": ["phone"]
+          "columns": [
+            "phone"
+          ]
         },
         "users_OTP_TOKEN_unique": {
           "name": "users_OTP_TOKEN_unique",
           "nullsNotDistinct": false,
-          "columns": ["OTP_TOKEN"]
+          "columns": [
+            "OTP_TOKEN"
+          ]
         }
       },
       "policies": {},
@@ -279,7 +284,12 @@
     "public.role": {
       "name": "role",
       "schema": "public",
-      "values": ["ADMIN", "MODERATOR", "VENDOR", "BUYER"]
+      "values": [
+        "ADMIN",
+        "MODERATOR",
+        "VENDOR",
+        "BUYER"
+      ]
     }
   },
   "schemas": {},
