@@ -6,13 +6,15 @@ import { throwError } from "../../../util/globalUtil/throwError.util.js";
 import { and, eq, not, or } from "drizzle-orm";
 import { asyncHandler } from "../../../util/globalUtil/asyncHandler.util.js";
 import type { _Request } from "../../globalMiddleware/auth.middleware.js";
+import { userRepo } from "../../../repository/userRepository/user.repo.js";
+import { verifyPassword } from "../../../util/globalUtil/passwordHasher.util.js";
 
 export class UserUpdateMiddleware {
   private readonly _db: DatabaseClient;
   constructor(db: DatabaseClient) {
     this._db = db;
   }
-  checkIfUserCanUpdate = asyncHandler(async (req: _Request, _, next) => {
+  public checkIfUserCanUpdateBasicInfo = asyncHandler(async (req: _Request, _, next) => {
     const updateUserInformation = req.body as TUSER;
     const { uid: userIdFromBody } = req.body as { uid: string };
     const userIDFromToken = req.userFromToken?.uid as string;
@@ -43,13 +45,30 @@ export class UserUpdateMiddleware {
     return next();
   });
   // ** Update userEmail ** //
-  updateUserEmail = asyncHandler(async (req: _Request, _, next) => {
+  public checkIfUserCanUpdateEmail = asyncHandler(async (req: _Request, _, next) => {
     const { email } = req.body as { email: string; userIDFromBody: string };
     const checkIfUserCanUpdateToThisEmail = await this._db.select().from(userSchema).where(eq(userSchema.email, email)).limit(1);
     if (checkIfUserCanUpdateToThisEmail.length > 0) {
       // ** user not found with the username you've entered ** //
       logger.info("user with this email is already exist in database.please try other email", { checkIfUserCanUpdateToThisEmail, email });
       throwError(reshttp.conflictCode, reshttp.conflictMessage);
+    }
+
+    return next();
+  });
+  // ** check if user can update password or check if old password is correct ** //
+  public checkIfUserCanUpdatePassword = asyncHandler(async (req: _Request, res, next) => {
+    const { oldPassword } = req.body as { oldPassword: string };
+    const uid = req.userFromToken?.uid as string;
+    if (!uid) {
+      logger.info("No uid have been provided by user or token");
+      throwError(reshttp.badRequestCode, reshttp.badRequestMessage);
+    }
+    const user = await userRepo(this._db).getUserByuid(uid);
+    const isPasswordValid = await verifyPassword(oldPassword, user.password, res);
+    if (!isPasswordValid) {
+      logger.info("old password is not correct", { oldPassword, uid });
+      throwError(reshttp.badRequestCode, reshttp.badRequestMessage);
     }
 
     return next();

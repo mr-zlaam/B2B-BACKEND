@@ -8,6 +8,7 @@ import { throwError } from "../../util/globalUtil/throwError.util.js";
 import logger from "../../util/globalUtil/logger.util.js";
 import { httpResponse } from "../../util/globalUtil/apiResponse.util.js";
 import { setTokensAndCookies } from "../../util/globalUtil/setCookies.util.js";
+import type { Response } from "express";
 /* 
 @types of iupdae user
   */
@@ -16,6 +17,8 @@ interface IUpdateUserController {
   updateBasicUserInformation: (_: TUSER) => Promise<TUSER>;
   // eslint-disable-next-line no-unused-vars
   updateUserEmail: (email: string, uid: string) => Promise<TUSER>;
+  // eslint-disable-next-line no-unused-vars
+  updateUserPassword: (uid: string, newPassword: string, res: Response) => Promise<void>;
 }
 export class UpdateUserController {
   private readonly _db: DatabaseClient;
@@ -54,5 +57,12 @@ export class UpdateUserController {
     const updatedUser = await this._userUpdateService.updateUserEmail(email, uid);
     const { accessToken, refreshToken } = setTokensAndCookies(updatedUser, res, true);
     httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "User email has been updated successfully!!", accessToken, refreshToken });
+  });
+  // ** Update user password
+  public updateUserPassword = asyncHandler(async (req: _Request, res) => {
+    const uid = req.userFromToken?.uid as string;
+    const { newPassword } = req.body as { newPassword: string };
+    await this._userUpdateService.updateUserPassword(uid, newPassword, res);
+    httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "User password has been updated successfully!!" });
   });
 }

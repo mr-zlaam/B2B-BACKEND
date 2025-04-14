@@ -17,7 +17,7 @@ updateUserRouter.route("/updateBasicInfo").patch(
   validator(updateUserSchema),
   // Rate limiter that user can get only 1 otp per 2 minutes
   authMiddleware.checkToken,
-  userUpdateMiddleware.checkIfUserCanUpdate,
+  userUpdateMiddleware.checkIfUserCanUpdateBasicInfo,
   async (req, res, next) => {
     await rateLimiterMiddleware.handle(req, res, next, 1, undefined, 1, 86400);
   },
@@ -28,9 +28,20 @@ updateUserRouter.route("/updateUserEmail").patch(
   validator(updateUserEmailSchema),
   // Rate limiter that user can get only 1 otp per 2 minutes
   authMiddleware.checkToken,
-  userUpdateMiddleware.updateUserEmail,
+  userUpdateMiddleware.checkIfUserCanUpdateEmail,
   async (req, res, next) => {
     await rateLimiterMiddleware.handle(req, res, next, 1, undefined, 1, 86400);
   },
   userUpdateController.updateUserEmail
+);
+// ** Update user email ** //
+updateUserRouter.route("/updatePassword").patch(
+  validator(updateUserEmailSchema),
+  // Rate limiter that user can get only 1 otp per 2 minutes
+  authMiddleware.checkToken,
+  userUpdateMiddleware.checkIfUserCanUpdatePassword,
+  async (req, res, next) => {
+    await rateLimiterMiddleware.handle(req, res, next, 1, undefined, 1, 86400);
+  },
+  userUpdateController.updateUserPassword
 );
