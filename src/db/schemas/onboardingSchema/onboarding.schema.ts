@@ -1,22 +1,12 @@
-import { pgEnum, pgTable, serial, boolean, timestamp, text, index, uuid } from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
-import { userSchema } from "./user.schema";
-export const currentStageEnum = pgEnum("currentStage", [
-  "PORTAL_LOGIN",
-  "SELECT_PARTNERSHIP",
-  "APPLICATION_SUBMISSION",
-  "PRODUCT_PORTFOLIO",
-  "DOCUMENT_SUBMISSION",
-  "VENDOR_AGREEMENT",
-  "APPLICATION_STATUS",
-  "PARTNERSHIP_ACTIVATION"
-]);
+import { pgTable, serial, boolean, timestamp, text, index, uuid } from "drizzle-orm/pg-core";
+import { userSchema } from "..";
+import { onboardingCurrentStageEnum } from "../shared/enums";
 
 export const onboardingSchema = pgTable(
   "onboarding",
   {
     id: serial("id").primaryKey().notNull(),
-    currentStage: currentStageEnum().notNull().default("PORTAL_LOGIN"),
+    currentStage: onboardingCurrentStageEnum().notNull().default("PORTAL_LOGIN"),
     currentStageIndex: serial("currentStageIndex").notNull(),
     isCompleted: boolean("isCompleted").notNull().default(false),
     completedAt: timestamp("completedAt"),
@@ -50,11 +40,5 @@ export const onboardingSchema = pgTable(
 // ** types
 
 export type TONBOARDING = typeof onboardingSchema.$inferSelect;
-export type TCURRENTSTAGE = typeof currentStageEnum.schema;
+export type TCURRENTSTAGE = typeof onboardingCurrentStageEnum.schema;
 // Relations
-export const onboardingRelations = relations(onboardingSchema, ({ one }) => ({
-  user: one(userSchema, {
-    fields: [onboardingSchema.userId],
-    references: [userSchema.uid]
-  })
-}));

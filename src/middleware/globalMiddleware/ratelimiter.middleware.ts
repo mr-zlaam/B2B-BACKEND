@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import { eq, lte } from "drizzle-orm";
 import type { NodePgDatabase } from "drizzle-orm/node-postgres";
 import { database, type DatabaseClient } from "../../db/db";
-import { rateLimiterFlexible } from "../../db/schemas/ratelimiter.schema";
+import { rateLimiterFlexible } from "../../db/schemas/ratelimiterSchema/ratelimiter.schema";
 import { httpResponse } from "../../util/globalUtil/apiResponse.util";
 import getMinutes from "../../util/quickUtil/getMinute.util";
 import envConfig from "../../config/env.config";

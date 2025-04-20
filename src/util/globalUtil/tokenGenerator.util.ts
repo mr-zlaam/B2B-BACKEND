@@ -3,7 +3,7 @@ import type ms from "ms";
 import jwt from "jsonwebtoken";
 import envConfig from "../../config/env.config";
 import appConstant from "../../constant/app.constant";
-import type { TROLE } from "../../db/schemas/user.schema";
+import type { TROLE } from "../../db/schemas";
 import logger from "./logger.util";
 export interface IPAYLOAD {
   uid: string;

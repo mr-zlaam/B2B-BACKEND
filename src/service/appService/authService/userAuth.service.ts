@@ -1,7 +1,7 @@
 import { eq, or } from "drizzle-orm";
 import type { Response } from "express";
 import { type DatabaseClient } from "../../../db/db";
-import { type TUSER, userSchema } from "../../../db/schemas/user.schema";
+import { type TUSER, userSchema } from "../../../db/schemas";
 import envConfig from "../../../config/env.config";
 import emailResponsesConstant from "../../../constant/emailResponses.constant";
 import { gloabalMailMessage } from "../../../service/globalService/globalEmail.service";

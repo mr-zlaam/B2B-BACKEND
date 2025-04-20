@@ -1,7 +1,7 @@
 import { eq, sql } from "drizzle-orm";
 import type { Response } from "express";
 import type { DatabaseClient } from "../../../db/db";
-import { userSchema, type TUSER } from "../../../db/schemas/user.schema";
+import { userSchema, type TUSER } from "../../../db/schemas";
 import { passwordHasher } from "../../../util/globalUtil/passwordHasher.util";
 
 export const userUpdateService = (db: DatabaseClient) => {

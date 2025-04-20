@@ -1,6 +1,6 @@
 import reshttp from "reshttp";
 
-import { userSchema, type TUSER } from "../../db/schemas/user.schema";
+import { userSchema, type TUSER } from "../../db/schemas/";
 
 import { httpResponse } from "../../util/globalUtil/apiResponse.util";
 

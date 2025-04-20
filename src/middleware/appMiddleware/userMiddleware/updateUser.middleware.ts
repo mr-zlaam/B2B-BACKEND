@@ -1,6 +1,6 @@
 import reshttp from "reshttp";
 import type { DatabaseClient } from "../../../db/db";
-import { type TUSER, userSchema } from "../../../db/schemas/user.schema";
+import { type TUSER, userSchema } from "../../../db/schemas";
 import logger from "../../../util/globalUtil/logger.util";
 import { throwError } from "../../../util/globalUtil/throwError.util";
 import { and, eq, not, or } from "drizzle-orm";

@@ -1,6 +1,6 @@
 import reshttp from "reshttp";
 import type { DatabaseClient } from "../../db/db";
-import type { TUSER } from "../../db/schemas/user.schema";
+import type { TUSER } from "../../db/schemas/";
 import type { _Request } from "../../middleware/globalMiddleware/auth.middleware";
 import { userUpdateService } from "../../service/appService/authService/updateUser.service";
 import { asyncHandler } from "../../util/globalUtil/asyncHandler.util";

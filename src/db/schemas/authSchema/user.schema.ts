@@ -1,7 +1,5 @@
-import { relations } from "drizzle-orm";
-import { pgTable, timestamp, integer, text, index, uuid, boolean, varchar, pgEnum } from "drizzle-orm/pg-core";
-import { onboardingSchema } from "./onboarding.schema";
-export const userRoleEnum = pgEnum("role", ["ADMIN", "MODERATOR", "VENDOR", "BUYER"]);
+import { pgTable, timestamp, integer, text, index, uuid, boolean, varchar } from "drizzle-orm/pg-core";
+import { userRoleEnum } from "../shared/enums";
 
 export const userSchema = pgTable(
   "users",
@@ -42,10 +40,3 @@ export const userSchema = pgTable(
 );
 export type TUSER = typeof userSchema.$inferSelect;
 export type TROLE = typeof userRoleEnum.schema;
-// schema/users.ts
-export const userRelations = relations(userSchema, ({ one }) => ({
-  onboarding: one(onboardingSchema, {
-    fields: [userSchema.uid], // User's PK
-    references: [onboardingSchema.userId] // Onboarding's FK
-  })
-}));

@@ -1,0 +1,16 @@
+import { pgEnum } from "drizzle-orm/pg-core";
+
+//** Auth enum */
+export const userRoleEnum = pgEnum("role", ["ADMIN", "MODERATOR", "VENDOR", "BUYER"]);
+// ** Onboarding enum */
+
+export const onboardingCurrentStageEnum = pgEnum("currentStage", [
+  "PORTAL_LOGIN",
+  "SELECT_PARTNERSHIP",
+  "APPLICATION_SUBMISSION",
+  "PRODUCT_PORTFOLIO",
+  "DOCUMENT_SUBMISSION",
+  "VENDOR_AGREEMENT",
+  "APPLICATION_STATUS",
+  "PARTNERSHIP_ACTIVATION"
+]);

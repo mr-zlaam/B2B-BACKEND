@@ -1,6 +1,6 @@
 import type { Response } from "express";
 import type { IPAYLOAD } from "./tokenGenerator.util";
-import type { TUSER } from "../../db/schemas/user.schema";
+import type { TUSER } from "../../db/schemas";
 import tokenGeneratorUtil from "./tokenGenerator.util";
 import appConstant from "../../constant/app.constant";
 export const payloadGenerator = ({ ...rest }: IPAYLOAD): IPAYLOAD => {

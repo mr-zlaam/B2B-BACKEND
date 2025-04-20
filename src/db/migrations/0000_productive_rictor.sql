@@ -1,25 +1,5 @@
 CREATE TYPE "public"."currentStage" AS ENUM('PORTAL_LOGIN', 'SELECT_PARTNERSHIP', 'APPLICATION_SUBMISSION', 'PRODUCT_PORTFOLIO', 'DOCUMENT_SUBMISSION', 'VENDOR_AGREEMENT', 'APPLICATION_STATUS', 'PARTNERSHIP_ACTIVATION');--> statement-breakpoint
 CREATE TYPE "public"."role" AS ENUM('ADMIN', 'MODERATOR', 'VENDOR', 'BUYER');--> statement-breakpoint
-CREATE TABLE "onboarding" (
-	"id" serial PRIMARY KEY NOT NULL,
-	"currentStage" "currentStage" DEFAULT 'PORTAL_LOGIN' NOT NULL,
-	"currentStageIndex" serial NOT NULL,
-	"isCompleted" boolean DEFAULT false NOT NULL,
-	"completedAt" timestamp,
-	"metaData" text DEFAULT '{}',
-	"createdAt" timestamp (3) DEFAULT now() NOT NULL,
-	"updatedAt" timestamp (3) DEFAULT now() NOT NULL,
-	"userId" uuid NOT NULL,
-	CONSTRAINT "onboarding_userId_unique" UNIQUE("userId")
-);
---> statement-breakpoint
-CREATE TABLE "rate_limiter_flexible" (
-	"key" text PRIMARY KEY NOT NULL,
-	"points" integer NOT NULL,
-	"expire" timestamp,
-	"previousDelay" integer DEFAULT 0 NOT NULL
-);
---> statement-breakpoint
 CREATE TABLE "users" (
 	"uid" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"username" varchar(50) NOT NULL,
@@ -43,14 +23,34 @@ CREATE TABLE "users" (
 	CONSTRAINT "users_OTP_TOKEN_unique" UNIQUE("OTP_TOKEN")
 );
 --> statement-breakpoint
+CREATE TABLE "onboarding" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"currentStage" "currentStage" DEFAULT 'PORTAL_LOGIN' NOT NULL,
+	"currentStageIndex" serial NOT NULL,
+	"isCompleted" boolean DEFAULT false NOT NULL,
+	"completedAt" timestamp,
+	"metaData" text DEFAULT '{}',
+	"createdAt" timestamp (3) DEFAULT now() NOT NULL,
+	"updatedAt" timestamp (3) DEFAULT now() NOT NULL,
+	"userId" uuid NOT NULL,
+	CONSTRAINT "onboarding_userId_unique" UNIQUE("userId")
+);
+--> statement-breakpoint
+CREATE TABLE "rate_limiter_flexible" (
+	"key" text PRIMARY KEY NOT NULL,
+	"points" integer NOT NULL,
+	"expire" timestamp,
+	"previousDelay" integer DEFAULT 0 NOT NULL
+);
+--> statement-breakpoint
 ALTER TABLE "onboarding" ADD CONSTRAINT "onboarding_userId_users_uid_fk" FOREIGN KEY ("userId") REFERENCES "public"."users"("uid") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+CREATE INDEX "user_role_idx" ON "users" USING btree ("role");--> statement-breakpoint
+CREATE INDEX "user_createdAt_idx" ON "users" USING btree ("createdAt");--> statement-breakpoint
+CREATE INDEX "fullName_idx" ON "users" USING btree ("fullName");--> statement-breakpoint
+CREATE INDEX "isVerified_idx" ON "users" USING btree ("isVerified");--> statement-breakpoint
 CREATE INDEX "onbarding_user_id_fk" ON "onboarding" USING btree ("userId");--> statement-breakpoint
 CREATE INDEX "onboarding_createdAt_idx" ON "onboarding" USING btree ("createdAt");--> statement-breakpoint
 CREATE INDEX "onboarding_id_idx" ON "onboarding" USING btree ("id");--> statement-breakpoint
 CREATE INDEX "current_stage_idx" ON "onboarding" USING btree ("currentStageIndex");--> statement-breakpoint
 CREATE INDEX "isCompleted_idx" ON "onboarding" USING btree ("isCompleted");--> statement-breakpoint
-CREATE INDEX "key_idx" ON "rate_limiter_flexible" USING btree ("key");--> statement-breakpoint
-CREATE INDEX "user_role_idx" ON "users" USING btree ("role");--> statement-breakpoint
-CREATE INDEX "user_createdAt_idx" ON "users" USING btree ("createdAt");--> statement-breakpoint
-CREATE INDEX "fullName_idx" ON "users" USING btree ("fullName");--> statement-breakpoint
-CREATE INDEX "isVerified_idx" ON "users" USING btree ("isVerified");
+CREATE INDEX "key_idx" ON "rate_limiter_flexible" USING btree ("key");
