@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { AuthController } from "../../controller/userController/auth.controller.js";
-import { validator } from "../../middleware/globalMiddleware/validation.middleware.js";
-import { loginUserSchema, registerUserSchema, resendOTPSchema } from "../../validation/userValidation/auth.validation.js";
-import { database } from "../../db/db.js";
-import rateLimiterMiddleware from "../../middleware/globalMiddleware/ratelimiter.middleware.js";
+import { AuthController } from "../../controller/userController/auth.controller";
+import { validator } from "../../middleware/globalMiddleware/validation.middleware";
+import { loginUserSchema, registerUserSchema, resendOTPSchema } from "../../validation/userValidation/auth.validation";
+import { database } from "../../db/db";
+import rateLimiterMiddleware from "../../middleware/globalMiddleware/ratelimiter.middleware";
 export const authRouter: Router = Router();
 const authController = new AuthController(database.db);
 // ** Register User

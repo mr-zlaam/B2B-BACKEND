@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import applicationInsightCon from "../../controller/applicationInsightController/applicationInsights.controller.js";
+import applicationInsightCon from "../../controller/applicationInsightController/applicationInsights.controller";
 export const applicationInsightRouter: Router = Router();
 
 applicationInsightRouter.route("/").get(

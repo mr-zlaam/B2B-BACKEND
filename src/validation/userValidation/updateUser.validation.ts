@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { phoneSchema } from "./auth.validation.js";
-import { validateAndFormatPhone } from "../../util/appUtil/authUtil/phonevalidator.util.js";
+import { phoneSchema } from "./auth.validation";
+import { validateAndFormatPhone } from "../../util/appUtil/authUtil/phonevalidator.util";
 // ** @description: This file contains the validation schema for updating user information username,fullName, phone,companyURI(optional), companyName(optional).
 export const updateUserSchema = z.object({
   username: z

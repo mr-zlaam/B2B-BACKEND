@@ -1,14 +1,14 @@
 import type { NextFunction, Request, Response } from "express";
 import { eq, lte } from "drizzle-orm";
 import type { NodePgDatabase } from "drizzle-orm/node-postgres";
-import { database, type DatabaseClient } from "../../db/db.js";
-import { rateLimiterFlexible } from "../../db/schemas/ratelimiter.schema.js";
-import { httpResponse } from "../../util/globalUtil/apiResponse.util.js";
-import getMinutes from "../../util/quickUtil/getMinute.util.js";
-import envConfig from "../../config/env.config.js";
+import { database, type DatabaseClient } from "../../db/db";
+import { rateLimiterFlexible } from "../../db/schemas/ratelimiter.schema";
+import { httpResponse } from "../../util/globalUtil/apiResponse.util";
+import getMinutes from "../../util/quickUtil/getMinute.util";
+import envConfig from "../../config/env.config";
 import reshttp from "reshttp";
-import logger from "../../util/globalUtil/logger.util.js";
-import { doubleNumber } from "../../util/globalUtil/doubleNumber.uitl.js";
+import logger from "../../util/globalUtil/logger.util";
+import { doubleNumber } from "../../util/globalUtil/doubleNumber.uitl";
 const db: DatabaseClient = database.db;
 
 type ErrorLimiter = {

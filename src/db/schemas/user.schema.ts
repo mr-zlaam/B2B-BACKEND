@@ -1,4 +1,6 @@
+import { relations } from "drizzle-orm";
 import { pgTable, timestamp, integer, text, index, uuid, boolean, varchar, pgEnum } from "drizzle-orm/pg-core";
+import { onboardingSchema } from "./onboarding.schema";
 export const userRoleEnum = pgEnum("role", ["ADMIN", "MODERATOR", "VENDOR", "BUYER"]);
 
 export const userSchema = pgTable(
@@ -32,12 +34,18 @@ export const userSchema = pgTable(
       .defaultNow()
   },
   (table) => [
-    index("role_idx").on(table.role),
-    index("createdAt_idx").on(table.createdAt),
-    index("updatedAt_idx").on(table.updatedAt),
+    index("user_role_idx").on(table.role),
+    index("user_createdAt_idx").on(table.createdAt),
     index("fullName_idx").on(table.fullName),
     index("isVerified_idx").on(table.isVerified)
   ]
 );
 export type TUSER = typeof userSchema.$inferSelect;
 export type TROLE = typeof userRoleEnum.schema;
+// schema/users.ts
+export const userRelations = relations(userSchema, ({ one }) => ({
+  onboarding: one(onboardingSchema, {
+    fields: [userSchema.uid], // User's PK
+    references: [onboardingSchema.userId] // Onboarding's FK
+  })
+}));

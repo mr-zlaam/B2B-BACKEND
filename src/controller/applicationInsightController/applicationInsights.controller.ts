@@ -1,7 +1,7 @@
 import reshttp from "reshttp";
 import type { Request, Response } from "express";
-import { httpResponse } from "../../util/globalUtil/apiResponse.util.js";
-import SystemInsights from "../../util/globalUtil/systemInsights.util.js";
+import { httpResponse } from "../../util/globalUtil/apiResponse.util";
+import SystemInsights from "../../util/globalUtil/systemInsights.util";
 class PerformanceController {
   static getPerformance = (req: Request, res: Response) => {
     try {

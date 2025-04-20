@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import type { Response } from "express";
-import { jsonResponse } from "./apiResponse.util.js";
+import { jsonResponse } from "./apiResponse.util";
 
 export const passwordHasher = async (password: string, res: Response) => {
   try {

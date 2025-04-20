@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import envConfig from "../../config/env.config.js";
+import envConfig from "../../config/env.config";
 const ENV = envConfig.NODE_ENV;
 const jsonResponse = (
   status: number,

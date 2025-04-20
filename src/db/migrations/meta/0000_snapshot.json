@@ -1,9 +1,180 @@
 {
-  "id": "3301042f-c483-4fab-9b28-6813d8f28c6e",
+  "id": "1cfe3efd-5857-4bdc-a2ec-bef16df823f9",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "public.onboarding": {
+      "name": "onboarding",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "currentStage": {
+          "name": "currentStage",
+          "type": "currentStage",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'PORTAL_LOGIN'"
+        },
+        "currentStageIndex": {
+          "name": "currentStageIndex",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "isCompleted": {
+          "name": "isCompleted",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "completedAt": {
+          "name": "completedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "metaData": {
+          "name": "metaData",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'{}'"
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp (3)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp (3)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "userId": {
+          "name": "userId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "onbarding_user_id_fk": {
+          "name": "onbarding_user_id_fk",
+          "columns": [
+            {
+              "expression": "userId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "onboarding_createdAt_idx": {
+          "name": "onboarding_createdAt_idx",
+          "columns": [
+            {
+              "expression": "createdAt",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "onboarding_id_idx": {
+          "name": "onboarding_id_idx",
+          "columns": [
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "current_stage_idx": {
+          "name": "current_stage_idx",
+          "columns": [
+            {
+              "expression": "currentStageIndex",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "isCompleted_idx": {
+          "name": "isCompleted_idx",
+          "columns": [
+            {
+              "expression": "isCompleted",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "onboarding_userId_users_uid_fk": {
+          "name": "onboarding_userId_users_uid_fk",
+          "tableFrom": "onboarding",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "uid"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "onboarding_userId_unique": {
+          "name": "onboarding_userId_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "userId"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.rate_limiter_flexible": {
       "name": "rate_limiter_flexible",
       "schema": "",
@@ -160,8 +331,8 @@
         }
       },
       "indexes": {
-        "role_idx": {
-          "name": "role_idx",
+        "user_role_idx": {
+          "name": "user_role_idx",
           "columns": [
             {
               "expression": "role",
@@ -175,26 +346,11 @@
           "method": "btree",
           "with": {}
         },
-        "createdAt_idx": {
-          "name": "createdAt_idx",
+        "user_createdAt_idx": {
+          "name": "user_createdAt_idx",
           "columns": [
             {
               "expression": "createdAt",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "updatedAt_idx": {
-          "name": "updatedAt_idx",
-          "columns": [
-            {
-              "expression": "updatedAt",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -242,27 +398,37 @@
         "users_uid_unique": {
           "name": "users_uid_unique",
           "nullsNotDistinct": false,
-          "columns": ["uid"]
+          "columns": [
+            "uid"
+          ]
         },
         "users_username_unique": {
           "name": "users_username_unique",
           "nullsNotDistinct": false,
-          "columns": ["username"]
+          "columns": [
+            "username"
+          ]
         },
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": ["email"]
+          "columns": [
+            "email"
+          ]
         },
         "users_phone_unique": {
           "name": "users_phone_unique",
           "nullsNotDistinct": false,
-          "columns": ["phone"]
+          "columns": [
+            "phone"
+          ]
         },
         "users_OTP_TOKEN_unique": {
           "name": "users_OTP_TOKEN_unique",
           "nullsNotDistinct": false,
-          "columns": ["OTP_TOKEN"]
+          "columns": [
+            "OTP_TOKEN"
+          ]
         }
       },
       "policies": {},
@@ -271,10 +437,29 @@
     }
   },
   "enums": {
+    "public.currentStage": {
+      "name": "currentStage",
+      "schema": "public",
+      "values": [
+        "PORTAL_LOGIN",
+        "SELECT_PARTNERSHIP",
+        "APPLICATION_SUBMISSION",
+        "PRODUCT_PORTFOLIO",
+        "DOCUMENT_SUBMISSION",
+        "VENDOR_AGREEMENT",
+        "APPLICATION_STATUS",
+        "PARTNERSHIP_ACTIVATION"
+      ]
+    },
     "public.role": {
       "name": "role",
       "schema": "public",
-      "values": ["ADMIN", "MODERATOR", "VENDOR", "BUYER"]
+      "values": [
+        "ADMIN",
+        "MODERATOR",
+        "VENDOR",
+        "BUYER"
+      ]
     }
   },
   "schemas": {},

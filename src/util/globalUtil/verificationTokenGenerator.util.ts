@@ -1,7 +1,7 @@
 import type { Response } from "express";
 import type ms from "ms";
-import { generateOtp } from "../quickUtil/slugStringGenerator.util.js";
-import tokenGeneratorUtil from "./tokenGenerator.util.js";
+import { generateOtp } from "../quickUtil/slugStringGenerator.util";
+import tokenGeneratorUtil from "./tokenGenerator.util";
 export function generateVerificationOtpToken(res: Response, expiryTime?: ms.StringValue) {
   const { otpExpiry, otp } = generateOtp(6, 30, "m");
   const { generateOTPToken } = tokenGeneratorUtil;

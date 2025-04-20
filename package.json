@@ -1,8 +1,8 @@
 {
   "name": "b2b-backend",
   "module": "server.js",
-  "type": "module",
   "version": "1.0.0",
+  "type": "commonjs",
   "description": "",
   "main": "index.js",
   "scripts": {

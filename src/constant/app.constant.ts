@@ -1,6 +1,6 @@
 import type ms from "ms";
-import envConfig from "../config/env.config.js";
-import type { ICOOKIEOPTIONS } from "../type/types.js";
+import envConfig from "../config/env.config";
+import type { ICOOKIEOPTIONS } from "../type/types";
 import type { CorsOptions } from "cors";
 export default {
   COMPANY_NAME: "B2B",

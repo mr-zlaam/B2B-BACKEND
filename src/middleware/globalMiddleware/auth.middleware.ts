@@ -1,11 +1,11 @@
 import reshttp from "reshttp";
-import { asyncHandler } from "../../util/globalUtil/asyncHandler.util.js";
-import { throwError } from "../../util/globalUtil/throwError.util.js";
-import { verifyToken, type IPAYLOAD } from "../../util/globalUtil/tokenGenerator.util.js";
-import logger from "../../util/globalUtil/logger.util.js";
+import { asyncHandler } from "../../util/globalUtil/asyncHandler.util";
+import { throwError } from "../../util/globalUtil/throwError.util";
+import { verifyToken, type IPAYLOAD } from "../../util/globalUtil/tokenGenerator.util";
+import logger from "../../util/globalUtil/logger.util";
 import type { Request } from "express";
-import { userRepo } from "../../repository/userRepository/user.repo.js";
-import type { DatabaseClient } from "../../db/db.js";
+import { userRepo } from "../../repository/userRepository/user.repo";
+import type { DatabaseClient } from "../../db/db";
 
 export type _Request = Request & {
   userFromToken?: IPAYLOAD;

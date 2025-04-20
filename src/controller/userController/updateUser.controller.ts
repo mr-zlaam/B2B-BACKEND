@@ -1,18 +1,18 @@
 import reshttp from "reshttp";
-import type { DatabaseClient } from "../../db/db.js";
-import type { TUSER } from "../../db/schemas/user.schema.js";
-import type { _Request } from "../../middleware/globalMiddleware/auth.middleware.js";
-import { userUpdateService } from "../../service/appService/authService/updateUser.service.js";
-import { asyncHandler } from "../../util/globalUtil/asyncHandler.util.js";
-import { throwError } from "../../util/globalUtil/throwError.util.js";
-import logger from "../../util/globalUtil/logger.util.js";
-import { httpResponse } from "../../util/globalUtil/apiResponse.util.js";
-import { setTokensAndCookies } from "../../util/globalUtil/setCookies.util.js";
+import type { DatabaseClient } from "../../db/db";
+import type { TUSER } from "../../db/schemas/user.schema";
+import type { _Request } from "../../middleware/globalMiddleware/auth.middleware";
+import { userUpdateService } from "../../service/appService/authService/updateUser.service";
+import { asyncHandler } from "../../util/globalUtil/asyncHandler.util";
+import { throwError } from "../../util/globalUtil/throwError.util";
+import logger from "../../util/globalUtil/logger.util";
+import { httpResponse } from "../../util/globalUtil/apiResponse.util";
+import { setTokensAndCookies } from "../../util/globalUtil/setCookies.util";
 import type { Response } from "express";
-import { gloabalMailMessage } from "../../service/globalService/globalEmail.service.js";
-import emailResponsesConstant from "../../constant/emailResponses.constant.js";
-import { userRepo } from "../../repository/userRepository/user.repo.js";
-import envConfig from "../../config/env.config.js";
+import { gloabalMailMessage } from "../../service/globalService/globalEmail.service";
+import emailResponsesConstant from "../../constant/emailResponses.constant";
+import { userRepo } from "../../repository/userRepository/user.repo";
+import envConfig from "../../config/env.config";
 /* 
 @types of iupdae user
   */

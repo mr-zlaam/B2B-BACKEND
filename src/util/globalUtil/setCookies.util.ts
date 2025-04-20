@@ -1,8 +1,8 @@
 import type { Response } from "express";
-import type { IPAYLOAD } from "./tokenGenerator.util.js";
-import type { TUSER } from "../../db/schemas/user.schema.js";
-import tokenGeneratorUtil from "./tokenGenerator.util.js";
-import appConstant from "../../constant/app.constant.js";
+import type { IPAYLOAD } from "./tokenGenerator.util";
+import type { TUSER } from "../../db/schemas/user.schema";
+import tokenGeneratorUtil from "./tokenGenerator.util";
+import appConstant from "../../constant/app.constant";
 export const payloadGenerator = ({ ...rest }: IPAYLOAD): IPAYLOAD => {
   return { ...rest };
 };

@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { applicationInsightRouter } from "./applicationInsightRouter/applicationInsight.router.js";
-import { countryDetectorRouter } from "./countryDetectorRouter/countryDetector.router.js";
-import { authRouter } from "./userRouter/auth.router.js";
-import { updateUserRouter } from "./userRouter/updateUser.router.js";
+import { applicationInsightRouter } from "./applicationInsightRouter/applicationInsight.router";
+import { countryDetectorRouter } from "./countryDetectorRouter/countryDetector.router";
+import { authRouter } from "./userRouter/auth.router";
+import { updateUserRouter } from "./userRouter/updateUser.router";
 
 export const defaultRouter: Router = Router();
 

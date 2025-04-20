@@ -1,10 +1,10 @@
 import type { Response } from "express";
 import type ms from "ms";
 import jwt from "jsonwebtoken";
-import envConfig from "../../config/env.config.js";
-import appConstant from "../../constant/app.constant.js";
-import type { TROLE } from "../../db/schemas/user.schema.js";
-import logger from "./logger.util.js";
+import envConfig from "../../config/env.config";
+import appConstant from "../../constant/app.constant";
+import type { TROLE } from "../../db/schemas/user.schema";
+import logger from "./logger.util";
 export interface IPAYLOAD {
   uid: string;
   OTP_TOKEN_VERSION: number;

@@ -1,14 +1,14 @@
 import reshttp from "reshttp";
-import type { DatabaseClient } from "../../../db/db.js";
-import { type TUSER, userSchema } from "../../../db/schemas/user.schema.js";
-import logger from "../../../util/globalUtil/logger.util.js";
-import { throwError } from "../../../util/globalUtil/throwError.util.js";
+import type { DatabaseClient } from "../../../db/db";
+import { type TUSER, userSchema } from "../../../db/schemas/user.schema";
+import logger from "../../../util/globalUtil/logger.util";
+import { throwError } from "../../../util/globalUtil/throwError.util";
 import { and, eq, not, or } from "drizzle-orm";
-import { asyncHandler } from "../../../util/globalUtil/asyncHandler.util.js";
-import type { _Request } from "../../globalMiddleware/auth.middleware.js";
-import { userRepo } from "../../../repository/userRepository/user.repo.js";
-import { verifyPassword } from "../../../util/globalUtil/passwordHasher.util.js";
-import { generateVerificationOtpToken } from "../../../util/globalUtil/verificationTokenGenerator.util.js";
+import { asyncHandler } from "../../../util/globalUtil/asyncHandler.util";
+import type { _Request } from "../../globalMiddleware/auth.middleware";
+import { userRepo } from "../../../repository/userRepository/user.repo";
+import { verifyPassword } from "../../../util/globalUtil/passwordHasher.util";
+import { generateVerificationOtpToken } from "../../../util/globalUtil/verificationTokenGenerator.util";
 
 export class UserUpdateMiddleware {
   private readonly _db: DatabaseClient;

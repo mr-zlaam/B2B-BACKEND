@@ -1,24 +1,24 @@
 import reshttp from "reshttp";
 
-import { userSchema, type TUSER } from "../../db/schemas/user.schema.js";
+import { userSchema, type TUSER } from "../../db/schemas/user.schema";
 
-import { httpResponse } from "../../util/globalUtil/apiResponse.util.js";
+import { httpResponse } from "../../util/globalUtil/apiResponse.util";
 
-import { asyncHandler } from "../../util/globalUtil/asyncHandler.util.js";
+import { asyncHandler } from "../../util/globalUtil/asyncHandler.util";
 
-import type { DatabaseClient } from "../../db/db.js";
+import type { DatabaseClient } from "../../db/db";
 
-import { throwError } from "../../util/globalUtil/throwError.util.js";
+import { throwError } from "../../util/globalUtil/throwError.util";
 
-import { usrAuthService } from "../../service/appService/authService/userAuth.service.js";
+import { usrAuthService } from "../../service/appService/authService/userAuth.service";
 
-import { type IPAYLOAD, verifyToken } from "../../util/globalUtil/tokenGenerator.util.js";
+import { type IPAYLOAD, verifyToken } from "../../util/globalUtil/tokenGenerator.util";
 
-import logger from "../../util/globalUtil/logger.util.js";
+import logger from "../../util/globalUtil/logger.util";
 
 import { eq } from "drizzle-orm";
 
-import { setTokensAndCookies } from "../../util/globalUtil/setCookies.util.js";
+import { setTokensAndCookies } from "../../util/globalUtil/setCookies.util";
 
 export class AuthController {
   private readonly _db: DatabaseClient;

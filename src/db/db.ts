@@ -1,8 +1,8 @@
 import { drizzle, type NodePgDatabase } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import pg from "pg";
-import envConfig from "../config/env.config.js";
-import logger from "../util/globalUtil/logger.util.js";
+import envConfig from "../config/env.config";
+import logger from "../util/globalUtil/logger.util";
 
 export type DatabaseClient = NodePgDatabase<Record<string, never>> & {
   $client: pg.Pool;

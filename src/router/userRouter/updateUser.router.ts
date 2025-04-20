@@ -1,17 +1,17 @@
 import { Router } from "express";
-import { UpdateUserController } from "../../controller/userController/updateUser.controller.js";
-import { database } from "../../db/db.js";
-import { validator } from "../../middleware/globalMiddleware/validation.middleware.js";
+import { UpdateUserController } from "../../controller/userController/updateUser.controller";
+import { database } from "../../db/db";
+import { validator } from "../../middleware/globalMiddleware/validation.middleware";
 import {
   forgetPasswordSchema,
   resetPasswordSchema,
   updateUserEmailSchema,
   updateUserPasswordSchema,
   updateUserSchema
-} from "../../validation/userValidation/updateUser.validation.js";
-import { Authmiddleware } from "../../middleware/globalMiddleware/auth.middleware.js";
-import rateLimiterMiddleware from "../../middleware/globalMiddleware/ratelimiter.middleware.js";
-import { UserUpdateMiddleware } from "../../middleware/appMiddleware/userMiddleware/updateUser.middleware.js";
+} from "../../validation/userValidation/updateUser.validation";
+import { Authmiddleware } from "../../middleware/globalMiddleware/auth.middleware";
+import rateLimiterMiddleware from "../../middleware/globalMiddleware/ratelimiter.middleware";
+import { UserUpdateMiddleware } from "../../middleware/appMiddleware/userMiddleware/updateUser.middleware";
 
 // ** classess
 const userUpdateController = new UpdateUserController(database.db);

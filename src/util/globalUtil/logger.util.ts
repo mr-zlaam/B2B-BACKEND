@@ -2,7 +2,7 @@ import moment from "moment";
 import winston from "winston";
 import "winston-daily-rotate-file";
 import { red, yellow, green, magenta } from "colorette";
-import envConfig from "../../config/env.config.js";
+import envConfig from "../../config/env.config";
 export const colorizeLevel = (level: string) => {
   if (level.includes("ERROR")) return red(level);
   if (level.includes("INFO")) return green(level);

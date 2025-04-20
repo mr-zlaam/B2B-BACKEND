@@ -1,8 +1,8 @@
 import { eq, sql } from "drizzle-orm";
 import type { Response } from "express";
-import type { DatabaseClient } from "../../../db/db.js";
-import { userSchema, type TUSER } from "../../../db/schemas/user.schema.js";
-import { passwordHasher } from "../../../util/globalUtil/passwordHasher.util.js";
+import type { DatabaseClient } from "../../../db/db";
+import { userSchema, type TUSER } from "../../../db/schemas/user.schema";
+import { passwordHasher } from "../../../util/globalUtil/passwordHasher.util";
 
 export const userUpdateService = (db: DatabaseClient) => {
   // ** Update user details (username,fullName,phone,companyName(optional), companyURI(optional)) using drizzle orm ** //

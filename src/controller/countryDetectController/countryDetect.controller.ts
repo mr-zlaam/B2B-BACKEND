@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
 import geopip from "geoip-lite";
 import reshttp from "reshttp";
-import { httpResponse } from "../../util/globalUtil/apiResponse.util.js";
-import { throwError } from "../../util/globalUtil/throwError.util.js";
+import { httpResponse } from "../../util/globalUtil/apiResponse.util";
+import { throwError } from "../../util/globalUtil/throwError.util";
 export default {
   detectCountry: (req: Request, res: Response) => {
     const ip = req.ip as string;

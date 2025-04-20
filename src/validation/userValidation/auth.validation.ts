@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { validateAndFormatPhone } from "../../util/appUtil/authUtil/phonevalidator.util.js";
+import { validateAndFormatPhone } from "../../util/appUtil/authUtil/phonevalidator.util";
 
 export const phoneSchema = z.string({ message: "phone must be string" }).refine(
   (value) => {

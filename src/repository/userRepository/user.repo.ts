@@ -1,9 +1,9 @@
 import { eq } from "drizzle-orm";
-import type { DatabaseClient } from "../../db/db.js";
-import { type TUSER, userSchema } from "../../db/schemas/user.schema.js";
-import { throwError } from "../../util/globalUtil/throwError.util.js";
+import type { DatabaseClient } from "../../db/db";
+import { type TUSER, userSchema } from "../../db/schemas/user.schema";
+import { throwError } from "../../util/globalUtil/throwError.util";
 import reshttp from "reshttp";
-import logger from "../../util/globalUtil/logger.util.js";
+import logger from "../../util/globalUtil/logger.util";
 
 export class UserRepository {
   private readonly _db: DatabaseClient;

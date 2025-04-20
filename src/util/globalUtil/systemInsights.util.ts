@@ -1,6 +1,6 @@
 import os from "node:os";
 import process from "node:process";
-import envConfig from "../../config/env.config.js";
+import envConfig from "../../config/env.config";
 class SystemInsights {
   static getSystemHealth() {
     return {

@@ -1,13 +1,13 @@
 import nodemailer from "nodemailer";
 import fs from "node:fs";
 import path from "node:path";
-import envConfig from "../../config/env.config.js";
-import appConstant from "../../constant/app.constant.js";
-import logger from "../../util/globalUtil/logger.util.js";
+import envConfig from "../../config/env.config";
+import appConstant from "../../constant/app.constant";
+import logger from "../../util/globalUtil/logger.util";
 import reshttp from "reshttp";
-import { replaceAllPlaceholders } from "../../util/quickUtil/replaceAllPlaceholders.util.js";
-import { generateRandomStrings } from "../../util/quickUtil/slugStringGenerator.util.js";
-import { throwError } from "../../util/globalUtil/throwError.util.js";
+import { replaceAllPlaceholders } from "../../util/quickUtil/replaceAllPlaceholders.util";
+import { generateRandomStrings } from "../../util/quickUtil/slugStringGenerator.util";
+import { throwError } from "../../util/globalUtil/throwError.util";
 
 const transporter = nodemailer.createTransport({
   host: "smtp.ionos.com",

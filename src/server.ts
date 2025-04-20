@@ -1,9 +1,9 @@
-import { app } from "./app.js";
-import envConfig from "./config/env.config.js";
-import { database } from "./db/db.js";
-import logger from "./util/globalUtil/logger.util.js";
+import { app } from "./app";
+import envConfig from "./config/env.config";
+import { database } from "./db/db";
+import logger from "./util/globalUtil/logger.util";
 
-async function StartServer() {
+void (async function StartServer() {
   await database
     .connect()
     .then(() => {
@@ -14,6 +14,4 @@ async function StartServer() {
     .catch((err: unknown) => {
       logger.error("ERRR:: Unable to connection with database", { err });
     });
-}
-
-await StartServer();
+})();

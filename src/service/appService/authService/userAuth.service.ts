@@ -1,19 +1,19 @@
 import { eq, or } from "drizzle-orm";
 import type { Response } from "express";
-import { type DatabaseClient } from "../../../db/db.js";
-import { type TUSER, userSchema } from "../../../db/schemas/user.schema.js";
-import envConfig from "../../../config/env.config.js";
-import emailResponsesConstant from "../../../constant/emailResponses.constant.js";
-import { gloabalMailMessage } from "../../../service/globalService/globalEmail.service.js";
+import { type DatabaseClient } from "../../../db/db";
+import { type TUSER, userSchema } from "../../../db/schemas/user.schema";
+import envConfig from "../../../config/env.config";
+import emailResponsesConstant from "../../../constant/emailResponses.constant";
+import { gloabalMailMessage } from "../../../service/globalService/globalEmail.service";
 import reshttp from "reshttp";
-import { verifyToken } from "../../../util/globalUtil/tokenGenerator.util.js";
-import logger from "../../../util/globalUtil/logger.util.js";
-import { throwError } from "../../../util/globalUtil/throwError.util.js";
-import { passwordHasher, verifyPassword } from "../../../util/globalUtil/passwordHasher.util.js";
-import { isAdmin } from "../../../util/appUtil/authUtil/checkIfUserIsAdmin.util.js";
-import { setTokensAndCookies } from "../../../util/globalUtil/setCookies.util.js";
-import { userRepo } from "../../../repository/userRepository/user.repo.js";
-import { generateVerificationOtpToken } from "../../../util/globalUtil/verificationTokenGenerator.util.js";
+import { verifyToken } from "../../../util/globalUtil/tokenGenerator.util";
+import logger from "../../../util/globalUtil/logger.util";
+import { throwError } from "../../../util/globalUtil/throwError.util";
+import { passwordHasher, verifyPassword } from "../../../util/globalUtil/passwordHasher.util";
+import { isAdmin } from "../../../util/appUtil/authUtil/checkIfUserIsAdmin.util";
+import { setTokensAndCookies } from "../../../util/globalUtil/setCookies.util";
+import { userRepo } from "../../../repository/userRepository/user.repo";
+import { generateVerificationOtpToken } from "../../../util/globalUtil/verificationTokenGenerator.util";
 export const usrAuthService = (db: DatabaseClient) => {
   const checkExistingUser = async ({ email, username, phone }: TUSER) => {
     const existingUser = await db
