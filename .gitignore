@@ -183,3 +183,4 @@ logs/*
 logs
 config.env.ts
 types/
+logic.md
