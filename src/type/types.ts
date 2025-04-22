@@ -4,3 +4,15 @@ export interface ICOOKIEOPTIONS {
   sameSite: "none";
   expires: Date;
 }
+// ** Enums
+
+export type TCURRENTROLE = "ADMIN" | "MODERATOR" | "VENDOR" | "BUYER";
+export type TCURRENTSTAGE =
+  | "PORTAL_LOGIN"
+  | "SELECT_PARTNERSHIP"
+  | "APPLICATION_SUBMISSION"
+  | "PRODUCT_PORTFOLIO"
+  | "DOCUMENT_SUBMISSION"
+  | "VENDOR_AGREEMENT"
+  | "APPLICATION_STATUS"
+  | "PARTNERSHIP_ACTIVATION";

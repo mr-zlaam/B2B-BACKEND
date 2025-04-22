@@ -3,8 +3,9 @@ import { migrate } from "drizzle-orm/node-postgres/migrator";
 import pg from "pg";
 import envConfig from "../config/env.config";
 import logger from "../util/globalUtil/logger.util";
+import { schema, type TSCHEMA } from "./schemas/schema";
 
-export type DatabaseClient = NodePgDatabase<Record<string, never>> & {
+export type DatabaseClient = NodePgDatabase<TSCHEMA> & {
   $client: pg.Pool;
 };
 
@@ -17,10 +18,11 @@ export class Database {
       connectionString: envConfig.DATABASE_URI,
       max: 20,
       idleTimeoutMillis: 30000,
+
       connectionTimeoutMillis: 5000,
       ssl: envConfig.NODE_ENV === "production" ? { rejectUnauthorized: envConfig.NODE_ENV === "production" } : false
     });
-    this._db = drizzle(this.pool, { logger: false });
+    this._db = drizzle(this.pool, { logger: false, schema });
   }
 
   public get db(): DatabaseClient {

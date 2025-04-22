@@ -1,10 +1,8 @@
 import { eq, or } from "drizzle-orm";
 import type { Response } from "express";
 import { type DatabaseClient } from "../../../db/db";
-import { type TUSER, userSchema } from "../../../db/schemas";
+import { onboardingSchema, type TUSER, userSchema } from "../../../db/schemas";
 import envConfig from "../../../config/env.config";
-import emailResponsesConstant from "../../../constant/emailResponses.constant";
-import { gloabalMailMessage } from "../../../service/globalService/globalEmail.service";
 import reshttp from "reshttp";
 import { verifyToken } from "../../../util/globalUtil/tokenGenerator.util";
 import logger from "../../../util/globalUtil/logger.util";
@@ -14,6 +12,8 @@ import { isAdmin } from "../../../util/appUtil/authUtil/checkIfUserIsAdmin.util"
 import { setTokensAndCookies } from "../../../util/globalUtil/setCookies.util";
 import { userRepo } from "../../../repository/userRepository/user.repo";
 import { generateVerificationOtpToken } from "../../../util/globalUtil/verificationTokenGenerator.util";
+import { ReturnLevelBasedOnSerialNumber } from "../../../util/globalUtil/partnershipLevelCalculator.util";
+import { sendVerificationEmail } from "../../../util/quickUtil/sendVerificationEmail.util";
 export const usrAuthService = (db: DatabaseClient) => {
   const checkExistingUser = async ({ email, username, phone }: TUSER) => {
     const existingUser = await db
@@ -22,13 +22,6 @@ export const usrAuthService = (db: DatabaseClient) => {
       .where(or(eq(userSchema.email, email), eq(userSchema.username, username), eq(userSchema.phone, phone)))
       .limit(1);
     return existingUser.length > 0 ? existingUser : null;
-  };
-
-  const sendVerificationEmail = async (email: string, token: string) => {
-    const verificationUrl = `${envConfig.FRONTEND_APP_URI}/verify?token=${token}`;
-    logger.info(verificationUrl);
-    const emailContent = emailResponsesConstant.OTP_SENDER_MESSAGE(verificationUrl, "30");
-    return await gloabalMailMessage(email, emailContent, "About your account verification");
   };
 
   const handleUnverifiedUser = () => {
@@ -78,6 +71,13 @@ export const usrAuthService = (db: DatabaseClient) => {
       .returning();
 
     const { accessToken, refreshToken } = setTokensAndCookies(updatedUser, res, true);
+    const [currentONboardingStatus] = await db.select().from(onboardingSchema).where(eq(onboardingSchema.userId, updatedUser.uid));
+    if (!currentONboardingStatus) {
+      await db
+        .insert(onboardingSchema)
+        .values({ userId: updatedUser.uid, currentStage: ReturnLevelBasedOnSerialNumber(1), currentStageIndex: 1 })
+        .onConflictDoNothing();
+    }
     return { accessToken, refreshToken };
   };
   const resendOTPToken = async (email: string, res: Response) => {

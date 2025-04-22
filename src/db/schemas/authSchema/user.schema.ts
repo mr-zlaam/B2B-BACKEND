@@ -39,4 +39,4 @@ export const userSchema = pgTable(
   ]
 );
 export type TUSER = typeof userSchema.$inferSelect;
-export type TROLE = typeof userRoleEnum.schema;
+export type TROLE = typeof userRoleEnum;

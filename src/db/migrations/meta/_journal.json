@@ -8,6 +8,27 @@
       "when": 1745112839628,
       "tag": "0000_productive_rictor",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1745358247577,
+      "tag": "0001_needy_songbird",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1745359623040,
+      "tag": "0002_wide_deathstrike",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1745359986532,
+      "tag": "0003_thin_polaris",
+      "breakpoints": true
     }
   ]
 }

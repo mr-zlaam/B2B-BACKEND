@@ -3,12 +3,12 @@ import type ms from "ms";
 import jwt from "jsonwebtoken";
 import envConfig from "../../config/env.config";
 import appConstant from "../../constant/app.constant";
-import type { TROLE } from "../../db/schemas";
 import logger from "./logger.util";
+import type { TCURRENTROLE } from "../../type/types";
 export interface IPAYLOAD {
   uid: string;
   OTP_TOKEN_VERSION: number;
-  role: TROLE;
+  role: TCURRENTROLE;
   isVerified: boolean;
 }
 
