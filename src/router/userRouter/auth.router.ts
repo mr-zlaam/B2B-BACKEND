@@ -4,12 +4,14 @@ import { validator } from "../../middleware/globalMiddleware/validation.middlewa
 import { loginUserSchema, registerUserSchema, resendOTPSchema } from "../../validation/userValidation/auth.validation";
 import { database } from "../../db/db";
 import rateLimiterMiddleware from "../../middleware/globalMiddleware/ratelimiter.middleware";
+import { Authmiddleware } from "../../middleware/globalMiddleware/auth.middleware";
 export const authRouter: Router = Router();
 const authController = new AuthController(database.db);
+const authMiddleware = new Authmiddleware(database.db);
 // ** Register User
 authRouter.route("/registerUser").post(validator(registerUserSchema), authController.registerUser);
 // ** Verify User
-authRouter.route("/verifyUser").post(authController.verifyUser);
+authRouter.route("/verifyUser").patch(authController.verifyUser);
 // ** Resend OTP
 authRouter.route("/resendOTP").post(
   validator(resendOTPSchema),
@@ -28,5 +30,13 @@ authRouter.route("/loginUser").post(
   },
   authController.loginUser
 );
-
+// ** Refresh access Toke
 authRouter.route("/refreshAccessToken").post(authController.refreshAccessToken);
+
+// ** Register Moderator
+authRouter.route("/registerAsModerator").post(validator(registerUserSchema), authController.registerAsModerator);
+
+// ** Verify Moderator
+authRouter
+  .route("/verifyModerator/:username")
+  .patch(/*Verification is done in controller*/ authMiddleware.checkToken, authMiddleware.checkIfUserIsAdmin, authController.verifyModerator);

@@ -102,10 +102,6 @@ export const usrAuthService = (db: DatabaseClient) => {
 
   const loginUser = async (email: string, password: string, res: Response) => {
     const user = await userRepo(db).getUserByEmail(email);
-    if (user === null || user === undefined) {
-      logger.info("User not found while verifying user because he/she sent invalid email which doesn't exist in database");
-      throwError(reshttp.notFoundCode, "Invalid Credentials");
-    }
     const isPasswordMatch = await verifyPassword(password, user.password, res);
     if (!isPasswordMatch) {
       logger.info("Incorrect password");
@@ -113,13 +109,37 @@ export const usrAuthService = (db: DatabaseClient) => {
     }
     if (!user.isVerified) {
       logger.info("User is not verified so he/she can't login");
-      throwError(reshttp.badRequestCode, reshttp.badGatewayMessage);
+      throwError(reshttp.forbiddenCode, reshttp.forbiddenMessage);
     }
 
     const { accessToken, refreshToken } = setTokensAndCookies(user, res, true, true);
     return { accessToken, refreshToken };
   };
+  // ** Moderator can be created using specific route but it can't verify itslelf until admin do it explicitly
+  const handleNewModeratorUser = async (user: TUSER, res: Response) => {
+    const hashedPassword = (await passwordHasher(user.password, res)) as string;
+    await db.insert(userSchema).values({
+      ...user,
+      password: hashedPassword,
+      role: "MODERATOR",
+      isVerified: false
+    });
+  };
+
+  const verifyModerator = async (username: string) => {
+    await db.update(userSchema).set({ isVerified: true }).where(eq(userSchema.username, username));
+  };
   // Return functions from HOF
 
-  return { checkExistingUser, handleNewUser, handleUnverifiedUser, handleVerifiedUser, verifyUser, resendOTPToken, loginUser };
+  return {
+    handleNewModeratorUser,
+    checkExistingUser,
+    handleNewUser,
+    handleUnverifiedUser,
+    handleVerifiedUser,
+    verifyUser,
+    resendOTPToken,
+    loginUser,
+    verifyModerator
+  };
 };

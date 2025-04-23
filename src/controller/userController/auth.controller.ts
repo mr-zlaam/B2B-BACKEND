@@ -59,11 +59,44 @@ export class AuthController {
       }
     );
   });
+  public registerAsModerator = asyncHandler(async (req, res) => {
+    const { handleVerifiedUser, handleUnverifiedUser, checkExistingUser, handleNewModeratorUser } = usrAuthService(this._db);
+    const userBody = req.body as TUSER;
 
+    const existingUser = await checkExistingUser(userBody);
+
+    if (existingUser && existingUser.length > 0) {
+      const user = existingUser[0];
+
+      if (user.isVerified) {
+        handleVerifiedUser();
+      } else {
+        handleUnverifiedUser();
+      }
+    }
+
+    /* if user doesn't exist at all*/
+
+    await handleNewModeratorUser(userBody, res);
+
+    httpResponse(req, res, reshttp.okCode, reshttp.okMessage, {
+      message: "Your request has been forwarded to admin. Please wait until you get verified"
+    });
+  });
+  // ** Verify moderator
+  public verifyModerator = asyncHandler(async (req, res) => {
+    const { username } = req.params;
+    if (!username) {
+      logger.info("Username is required while verifying the moderator");
+      throwError(reshttp.badRequestCode, reshttp.badRequestMessage);
+    }
+    const { verifyModerator } = usrAuthService(this._db);
+    await verifyModerator(username);
+    httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "Moderator has been verified successfully" });
+  });
   // ** Verify User after Registeration
   public verifyUser = asyncHandler(async (req, res) => {
     const { token } = req.query as { token: string };
-
     if (token === null || token === undefined) return throwError(reshttp.badRequestCode, "Token is required");
 
     const { verifyUser } = usrAuthService(this._db);
