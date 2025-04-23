@@ -62,3 +62,7 @@ updateUserRouter.route("/forgetUserPasswordRequest").patch(
 );
 // ** Reset  and update password ** //
 updateUserRouter.route("/resetAndUpdateNewPassword").patch(validator(resetPasswordSchema), userUpdateController.resetAndUpdateNewPassword);
+// ** Delete User **//
+updateUserRouter.route("/deleteUser/:uid").delete(authMiddleware.checkToken, authMiddleware.checkIfUserIsAdmin, userUpdateController.deleteUser);
+// ** Logout User **//
+updateUserRouter.route("/logoutUser").post(authMiddleware.checkToken, userUpdateController.logoutUser);

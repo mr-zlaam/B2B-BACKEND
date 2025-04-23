@@ -41,9 +41,10 @@ export const usrAuthService = (db: DatabaseClient) => {
         ...user,
         OTP_TOKEN: OTP_TOKEN,
         password: hashedPassword,
-        role: isAdmin(user.email) ? "ADMIN" : user.role
+        role: isAdmin(user.email) ? "ADMIN" : user.role,
+        isVerified: isAdmin(user.email) ? true : false
       })
-      .then(async () => await sendVerificationEmail(user.email, OTP_TOKEN))
+      .then(async () => (isAdmin(user.email) ? null : await sendVerificationEmail(user.email, OTP_TOKEN)))
       .catch((err: unknown) => {
         logger.error("Something went wrong while creating new user", { err });
         throwError(reshttp.internalServerErrorCode, reshttp.internalServerErrorMessage);

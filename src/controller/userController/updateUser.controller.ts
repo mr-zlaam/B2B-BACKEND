@@ -21,6 +21,10 @@ interface IUpdateUserController {
   updateUserPasswordService: (token: string, newPassword: string, res: Response) => Promise<void>;
   // eslint-disable-next-line no-unused-vars
   forgotPasswordRequestFromUserService: (email: string) => Promise<void>;
+  // eslint-disable-next-line no-unused-vars
+  logoutUserService: (res: Response) => void;
+  // eslint-disable-next-line no-unused-vars
+  deleteUserService: (uid: string) => Promise<void>;
 }
 export class UpdateUserController {
   private readonly _db: DatabaseClient;
@@ -79,5 +83,16 @@ export class UpdateUserController {
     const { token } = req.query as { token: string };
     await this._userUpdateService.updateUserPasswordService(token, newPassword, res);
     httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "User password has been updated successfully!!" });
+  });
+  // ** Logout User **//
+  public logoutUser = (req: _Request, res: Response) => {
+    this._userUpdateService.logoutUserService(res);
+    httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "User has been logged out successfully!!" });
+  };
+  // // ** Delete User **//
+  public deleteUser = asyncHandler(async (req: _Request, res) => {
+    const { uid } = req.params;
+    await this._userUpdateService.deleteUserService(uid);
+    httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "User has been deleted successfully!!" });
   });
 }

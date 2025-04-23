@@ -47,8 +47,31 @@ export const userUpdateService = (db: DatabaseClient) => {
     const verificationUrl = `${envConfig.FRONTEND_APP_URI}/resetAndUpdateNewPassword?token=${user.OTP_TOKEN}`;
     await gloabalMailMessage(email, emailResponsesConstant.SEND_OTP_FOR_RESET_PASSWORD_REQUEST(verificationUrl, "1h"), "Password Reset Request");
   };
+  const logoutUserService = (res: Response) => {
+    res.clearCookie("accessToken");
+    res.clearCookie("refreshToken");
+  };
+  const deleteUserService = async (uid: string) => {
+    if (!uid) {
+      logger.info("No uid have been provided by user or token");
+      throwError(reshttp.badRequestCode, reshttp.badRequestMessage);
+    }
+    const user = await userRepo(db).getUserByuid(uid);
+    if (user.role === "ADMIN") {
+      logger.info("Admin cannot be deleted");
+      throwError(reshttp.badRequestCode, reshttp.badRequestMessage);
+    }
+    await db.delete(userSchema).where(eq(userSchema.uid, uid)).returning();
+  };
 
   // ** utility functions returns here
 
-  return { updateBasicUserInformationService, updateUserEmailService, updateUserPasswordService, forgotPasswordRequestFromUserService };
+  return {
+    updateBasicUserInformationService,
+    updateUserEmailService,
+    updateUserPasswordService,
+    forgotPasswordRequestFromUserService,
+    logoutUserService,
+    deleteUserService
+  };
 };

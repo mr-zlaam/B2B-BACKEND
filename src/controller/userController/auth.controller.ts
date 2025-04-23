@@ -19,6 +19,7 @@ import logger from "../../util/globalUtil/logger.util";
 import { eq } from "drizzle-orm";
 
 import { setTokensAndCookies } from "../../util/globalUtil/setCookies.util";
+import { isAdmin } from "../../util/appUtil/authUtil/checkIfUserIsAdmin.util";
 
 export class AuthController {
   private readonly _db: DatabaseClient;
@@ -48,11 +49,18 @@ export class AuthController {
 
     await handleNewUser(userBody, res);
 
-    httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "Please check your email account for verification" });
+    httpResponse(
+      req,
+      res,
+      isAdmin(userBody.email) ? reshttp.iamATeapotCode : reshttp.okCode,
+      isAdmin(userBody.email) ? reshttp.iamATeapotMessage : reshttp.okMessage,
+      {
+        message: isAdmin(userBody.email) ? "Admin has been created successfully" : "Please check your email account for verification"
+      }
+    );
   });
 
   // ** Verify User after Registeration
-
   public verifyUser = asyncHandler(async (req, res) => {
     const { token } = req.query as { token: string };
 

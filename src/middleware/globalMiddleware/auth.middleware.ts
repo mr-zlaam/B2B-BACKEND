@@ -3,7 +3,7 @@ import { asyncHandler } from "../../util/globalUtil/asyncHandler.util";
 import { throwError } from "../../util/globalUtil/throwError.util";
 import { verifyToken, type IPAYLOAD } from "../../util/globalUtil/tokenGenerator.util";
 import logger from "../../util/globalUtil/logger.util";
-import type { Request } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { userRepo } from "../../repository/userRepository/user.repo";
 import type { DatabaseClient } from "../../db/db";
 
@@ -46,4 +46,11 @@ export class Authmiddleware {
     req.userFromToken = userDetails;
     return next();
   });
+  public checkIfUserIsAdmin = (req: _Request, _: Response, next: NextFunction) => {
+    if (req.userFromToken?.role !== "ADMIN") {
+      logger.warn("Only admins are allowed to perform this action");
+      return throwError(reshttp.forbiddenCode, reshttp.forbiddenMessage);
+    }
+    return next();
+  };
 }
