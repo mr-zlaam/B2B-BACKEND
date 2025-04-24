@@ -5,6 +5,7 @@ import { loginUserSchema, registerUserSchema, resendOTPSchema } from "../../vali
 import { database } from "../../db/db";
 import rateLimiterMiddleware from "../../middleware/globalMiddleware/ratelimiter.middleware";
 import { Authmiddleware } from "../../middleware/globalMiddleware/auth.middleware";
+import { OnBoardingController } from "../../controller/onBoardingController/onboarding.controller";
 export const authRouter: Router = Router();
 const authController = new AuthController(database.db);
 const authMiddleware = new Authmiddleware(database.db);
@@ -40,3 +41,6 @@ authRouter.route("/registerAsModerator").post(validator(registerUserSchema), aut
 authRouter
   .route("/verifyModerator/:username")
   .patch(/*Verification is done in controller*/ authMiddleware.checkToken, authMiddleware.checkIfUserIsAdmin, authController.verifyModerator);
+
+const onBoardingController = new OnBoardingController(database.db);
+authRouter.route("/getAllUserWithOnboarding").get(onBoardingController.getAllUserWithOnboarding);

@@ -22,7 +22,7 @@ export class Database {
       connectionTimeoutMillis: 5000,
       ssl: envConfig.NODE_ENV === "production" ? { rejectUnauthorized: envConfig.NODE_ENV === "production" } : false
     });
-    this._db = drizzle(this.pool, { logger: false, schema });
+    this._db = drizzle(this.pool, { logger: false, schema: { ...schema } });
   }
 
   public get db(): DatabaseClient {
