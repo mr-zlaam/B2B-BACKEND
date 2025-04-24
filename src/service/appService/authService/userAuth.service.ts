@@ -1,7 +1,7 @@
 import { eq, or } from "drizzle-orm";
 import type { Response } from "express";
 import { type DatabaseClient } from "../../../db/db";
-import { onboardingSchema, type TUSER, userSchema } from "../../../db/schemas";
+import { type TUSER, userSchema } from "../../../db/schemas";
 import envConfig from "../../../config/env.config";
 import reshttp from "reshttp";
 import { verifyToken } from "../../../util/globalUtil/tokenGenerator.util";
@@ -12,8 +12,8 @@ import { isAdmin } from "../../../util/appUtil/authUtil/checkIfUserIsAdmin.util"
 import { setTokensAndCookies } from "../../../util/globalUtil/setCookies.util";
 import { userRepo } from "../../../repository/userRepository/user.repo";
 import { generateVerificationOtpToken } from "../../../util/globalUtil/verificationTokenGenerator.util";
-import { ReturnLevelBasedOnSerialNumber } from "../../../util/globalUtil/partnershipLevelCalculator.util";
 import { sendVerificationEmail } from "../../../util/quickUtil/sendVerificationEmail.util";
+import { promoteUserToNextLevelInOnboarding } from "../../../util/appUtil/authUtil/promoteUserToNextLevelInOnboarding.util";
 export const usrAuthService = (db: DatabaseClient) => {
   const checkExistingUser = async ({ email, username, phone }: TUSER) => {
     const existingUser = await db
@@ -72,13 +72,7 @@ export const usrAuthService = (db: DatabaseClient) => {
       .returning();
 
     const { accessToken, refreshToken } = setTokensAndCookies(updatedUser, res, true);
-    const [currentONboardingStatus] = await db.select().from(onboardingSchema).where(eq(onboardingSchema.userId, updatedUser.uid));
-    if (!currentONboardingStatus) {
-      await db
-        .insert(onboardingSchema)
-        .values({ userId: updatedUser.uid, currentStage: ReturnLevelBasedOnSerialNumber(1), currentStageIndex: 1 })
-        .onConflictDoNothing();
-    }
+    await promoteUserToNextLevelInOnboarding(db, updatedUser);
     return { accessToken, refreshToken };
   };
   const resendOTPToken = async (email: string, res: Response) => {

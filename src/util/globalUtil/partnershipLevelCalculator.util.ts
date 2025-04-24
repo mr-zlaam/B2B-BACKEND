@@ -1,19 +1,19 @@
 import type { TCURRENTSTAGE } from "../../type/types";
 
-export function ReturnLevelBasedOnSerialNumber(serialNumber: number): TCURRENTSTAGE {
-  if (serialNumber === 1) {
+export function ReturnLevelBasedOnSerialNumber(onboardingIndex: number): TCURRENTSTAGE {
+  if (onboardingIndex === 1) {
     return "SELECT_PARTNERSHIP";
-  } else if (serialNumber === 2) {
+  } else if (onboardingIndex === 2) {
     return "APPLICATION_SUBMISSION";
-  } else if (serialNumber === 3) {
+  } else if (onboardingIndex === 3) {
     return "PRODUCT_PORTFOLIO";
-  } else if (serialNumber === 4) {
+  } else if (onboardingIndex === 4) {
     return "DOCUMENT_SUBMISSION";
-  } else if (serialNumber === 5) {
+  } else if (onboardingIndex === 5) {
     return "VENDOR_AGREEMENT";
-  } else if (serialNumber === 6) {
+  } else if (onboardingIndex === 6) {
     return "APPLICATION_STATUS";
-  } else if (serialNumber === 7) {
+  } else if (onboardingIndex === 7) {
     return "PARTNERSHIP_ACTIVATION";
   } else {
     return "PORTAL_LOGIN";
