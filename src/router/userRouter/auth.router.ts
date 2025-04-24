@@ -42,7 +42,9 @@ authRouter.route("/registerAsModerator").post(validator(registerUserSchema), aut
 authRouter
   .route("/verifyModerator/:username")
   .patch(/*Verification is done in controller*/ authMiddleware.checkToken, authMiddleware.checkIfUserIsAdmin, authController.verifyModerator);
-
+// ** Get All User
 authRouter.route("/getAllUser").get(authMiddleware.checkToken, authMiddleware.checkIfUserIsAdmin, getUserController.getAllUser);
-
+// ** Get Current User: user specific only logged in user can access this
+authRouter.route("/getCurrentUser").get(authMiddleware.checkToken, getUserController.getCurrentUser);
+// ** Get Single User admin specific
 authRouter.route("/getSingleUser/:username").get(authMiddleware.checkToken, authMiddleware.checkIfUserIsAdmin, getUserController.getSingleUser);

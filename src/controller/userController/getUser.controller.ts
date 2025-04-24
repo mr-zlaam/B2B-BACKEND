@@ -7,6 +7,8 @@ import { userSchema } from "../../db/schemas";
 import type { IPAGINATION, TCURRENTROLE } from "../../type/types";
 import { throwError } from "../../util/globalUtil/throwError.util";
 import appConstant from "../../constant/app.constant";
+import type { _Request } from "../../middleware/globalMiddleware/auth.middleware";
+import logger from "../../util/globalUtil/logger.util";
 
 export class GetUserController {
   private _db: DatabaseClient;
@@ -95,6 +97,21 @@ export class GetUserController {
       with: { onboarding: true }
     });
     if (!user) return throwError(reshttp.notFoundCode, "User not found");
+    httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { data: user });
+  });
+
+  // ** Get current logged In user with all children table details
+  public getCurrentUser = asyncHandler(async (req: _Request, res) => {
+    const uid = req.userFromToken?.uid;
+    if (!uid) {
+      logger.warn("uid is not found in the request. Check for unauthorized access");
+      return throwError(reshttp.badRequestCode, reshttp.badRequestMessage);
+    }
+    const user = await this._db.query.users.findFirst({
+      where: eq(userSchema.uid, uid),
+      columns: appConstant.SELECTED_COLUMNS.FROM.USER,
+      with: { onboarding: true }
+    });
     httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { data: user });
   });
 }
