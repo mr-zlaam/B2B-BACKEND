@@ -21,6 +21,24 @@ export default {
       expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days in milliseconds
     } as ICOOKIEOPTIONS
   },
+  SELECTED_COLUMNS: {
+    FROM: {
+      USER: {
+        uid: true,
+        username: true,
+        email: true,
+        fullName: true,
+        role: true,
+        companyName: true,
+        companyURI: true,
+        country: true,
+        phone: true,
+        createdAt: true,
+        updatedAt: true,
+        isVerified: true
+      }
+    }
+  },
   CORS_OPTIONS: {
     methods: ["GET", "OPTIONS", "POST", "PUT", "DELETE", "PATCH", "HEAD"],
     credentials: true,

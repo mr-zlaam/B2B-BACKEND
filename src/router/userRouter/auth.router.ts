@@ -5,10 +5,11 @@ import { loginUserSchema, registerUserSchema, resendOTPSchema } from "../../vali
 import { database } from "../../db/db";
 import rateLimiterMiddleware from "../../middleware/globalMiddleware/ratelimiter.middleware";
 import { Authmiddleware } from "../../middleware/globalMiddleware/auth.middleware";
-import { OnBoardingController } from "../../controller/onBoardingController/onboarding.controller";
+import { GetUserController } from "../../controller/userController/getUser.controller";
 export const authRouter: Router = Router();
 const authController = new AuthController(database.db);
 const authMiddleware = new Authmiddleware(database.db);
+const getUserController = new GetUserController(database.db);
 // ** Register User
 authRouter.route("/registerUser").post(validator(registerUserSchema), authController.registerUser);
 // ** Verify User
@@ -42,5 +43,6 @@ authRouter
   .route("/verifyModerator/:username")
   .patch(/*Verification is done in controller*/ authMiddleware.checkToken, authMiddleware.checkIfUserIsAdmin, authController.verifyModerator);
 
-const onBoardingController = new OnBoardingController(database.db);
-authRouter.route("/getAllUserWithOnboarding").get(onBoardingController.getAllUserWithOnboarding);
+authRouter.route("/getAllUser").get(authMiddleware.checkToken, authMiddleware.checkIfUserIsAdmin, getUserController.getAllUser);
+
+authRouter.route("/getSingleUser/:username").get(authMiddleware.checkToken, authMiddleware.checkIfUserIsAdmin, getUserController.getSingleUser);

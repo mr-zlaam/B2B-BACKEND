@@ -16,3 +16,12 @@ export type TCURRENTSTAGE =
   | "VENDOR_AGREEMENT"
   | "APPLICATION_STATUS"
   | "PARTNERSHIP_ACTIVATION";
+// ** Pagination types
+export interface IPAGINATION {
+  currentPage: number;
+  pageSize: number;
+  totalPage: number;
+  totalRecord: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
