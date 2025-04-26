@@ -1,5 +1,5 @@
 {
-  "id": "13d8e4f4-64bd-4055-824e-fc417422b34b",
+  "id": "898e804a-5049-4dce-afea-7f57b2396db6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -173,27 +173,37 @@
         "users_uid_unique": {
           "name": "users_uid_unique",
           "nullsNotDistinct": false,
-          "columns": ["uid"]
+          "columns": [
+            "uid"
+          ]
         },
         "users_username_unique": {
           "name": "users_username_unique",
           "nullsNotDistinct": false,
-          "columns": ["username"]
+          "columns": [
+            "username"
+          ]
         },
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": ["email"]
+          "columns": [
+            "email"
+          ]
         },
         "users_phone_unique": {
           "name": "users_phone_unique",
           "nullsNotDistinct": false,
-          "columns": ["phone"]
+          "columns": [
+            "phone"
+          ]
         },
         "users_OTP_TOKEN_unique": {
           "name": "users_OTP_TOKEN_unique",
           "nullsNotDistinct": false,
-          "columns": ["OTP_TOKEN"]
+          "columns": [
+            "OTP_TOKEN"
+          ]
         }
       },
       "policies": {},
@@ -210,39 +220,20 @@
           "primaryKey": true,
           "notNull": true
         },
-        "currentStage": {
-          "name": "currentStage",
-          "type": "currentStage",
+        "currentOnboardingStage": {
+          "name": "currentOnboardingStage",
+          "type": "currentOnboardingStage",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
-          "default": "'PORTAL_LOGIN'"
+          "default": "'SELECT_PARTNERSHIP'"
         },
-        "currentStageIndex": {
-          "name": "currentStageIndex",
-          "type": "serial",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "isCompleted": {
-          "name": "isCompleted",
-          "type": "boolean",
+        "currentOnboardingStageIndex": {
+          "name": "currentOnboardingStageIndex",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
-          "default": false
-        },
-        "completedAt": {
-          "name": "completedAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "metaData": {
-          "name": "metaData",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "'{}'"
+          "default": 1
         },
         "createdAt": {
           "name": "createdAt",
@@ -315,22 +306,7 @@
           "name": "current_stage_idx",
           "columns": [
             {
-              "expression": "currentStageIndex",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "isCompleted_idx": {
-          "name": "isCompleted_idx",
-          "columns": [
-            {
-              "expression": "isCompleted",
+              "expression": "currentOnboardingStageIndex",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -347,8 +323,12 @@
           "name": "onboarding_userId_users_uid_fk",
           "tableFrom": "onboarding",
           "tableTo": "users",
-          "columnsFrom": ["userId"],
-          "columnsTo": ["uid"],
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "uid"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -358,7 +338,9 @@
         "onboarding_userId_unique": {
           "name": "onboarding_userId_unique",
           "nullsNotDistinct": false,
-          "columns": ["userId"]
+          "columns": [
+            "userId"
+          ]
         }
       },
       "policies": {},
@@ -421,8 +403,8 @@
     }
   },
   "enums": {
-    "public.currentStage": {
-      "name": "currentStage",
+    "public.currentOnboardingStage": {
+      "name": "currentOnboardingStage",
       "schema": "public",
       "values": [
         "PORTAL_LOGIN",
@@ -438,7 +420,12 @@
     "public.role": {
       "name": "role",
       "schema": "public",
-      "values": ["ADMIN", "MODERATOR", "VENDOR", "BUYER"]
+      "values": [
+        "ADMIN",
+        "MODERATOR",
+        "VENDOR",
+        "BUYER"
+      ]
     }
   },
   "schemas": {},

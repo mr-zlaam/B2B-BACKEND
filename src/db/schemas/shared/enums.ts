@@ -6,7 +6,7 @@ export const userRoleEnum = pgEnum("role", ["ADMIN", "MODERATOR", "VENDOR", "BUY
 export type TCURRENTROLE = typeof onboardingCurrentStageEnum.enumValues;
 // ** Onboarding enum */
 
-export const onboardingCurrentStageEnum = pgEnum("currentStage", [
+export const onboardingCurrentStageEnum = pgEnum("currentOnboardingStage", [
   "PORTAL_LOGIN",
   "SELECT_PARTNERSHIP",
   "APPLICATION_SUBMISSION",

@@ -8,14 +8,14 @@ export const promoteUserToNextLevelInOnboarding = async (db: DatabaseClient, use
   if (!currentONboardingStatus) {
     await db
       .insert(onboardingSchema)
-      .values({ userId: user.uid, currentStage: ReturnLevelBasedOnSerialNumber(1), currentStageIndex: 1 })
+      .values({ userId: user.uid, currentOnboardingStage: ReturnLevelBasedOnSerialNumber(1), currentOnboardingStageIndex: 1 })
       .onConflictDoNothing();
   } else {
     await db
       .update(onboardingSchema)
       .set({
-        currentStage: ReturnLevelBasedOnSerialNumber(currentONboardingStatus.currentStageIndex + 1),
-        currentStageIndex: currentONboardingStatus.currentStageIndex + 1
+        currentOnboardingStage: ReturnLevelBasedOnSerialNumber(currentONboardingStatus.currentOnboardingStageIndex + 1),
+        currentOnboardingStageIndex: currentONboardingStatus.currentOnboardingStageIndex + 1
       })
       .where(eq(onboardingSchema.userId, user.uid));
   }

@@ -6,8 +6,8 @@ export const onboardingSchema = pgTable(
   "onboarding",
   {
     id: serial("id").primaryKey().notNull(),
-    currentStage: onboardingCurrentStageEnum().notNull().default("SELECT_PARTNERSHIP"),
-    currentStageIndex: integer("currentStageIndex").default(1).notNull(),
+    currentOnboardingStage: onboardingCurrentStageEnum().notNull().default("SELECT_PARTNERSHIP"),
+    currentOnboardingStageIndex: integer("currentOnboardingStageIndex").default(1).notNull(),
     createdAt: timestamp("createdAt", {
       mode: "date",
       precision: 3
@@ -30,7 +30,7 @@ export const onboardingSchema = pgTable(
     index("onbarding_user_id_fk").on(table.userId),
     index("onboarding_createdAt_idx").on(table.createdAt),
     index("onboarding_id_idx").on(table.id),
-    index("current_stage_idx").on(table.currentStageIndex)
+    index("current_stage_idx").on(table.currentOnboardingStageIndex)
   ]
 );
 // ** types
