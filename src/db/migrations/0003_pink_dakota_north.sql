@@ -1,0 +1,1 @@
+ALTER TABLE "selectPartnership" ADD COLUMN "partnershipLevelIndex" integer DEFAULT 1 NOT NULL;

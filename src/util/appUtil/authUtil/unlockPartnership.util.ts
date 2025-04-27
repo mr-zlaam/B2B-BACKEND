@@ -1,12 +1,11 @@
 import { eq } from "drizzle-orm";
 import { onboardingSchema, selectPartnershipSchema, type TUSER } from "../../../db/schemas";
 import type { DatabaseClient } from "../../../db/db";
-import type { TBUYERPARTNERSHIP, TVENDORPARTNERSHIP } from "../../../type/types";
-
+import { ReturnPartnershipLevelBasedOnSerialNumber } from "../../globalUtil/partnershipAndOnboardingLevelCalculator.util";
 export const unlockPartnership = async (
   db: DatabaseClient,
   user: TUSER,
-  partnershipName: TVENDORPARTNERSHIP | TBUYERPARTNERSHIP,
+  partnershipLevelIndex: number,
   completed: boolean = false,
   retentionPeriod: number = 0,
   kpiPoints: number = 0,
@@ -22,12 +21,12 @@ export const unlockPartnership = async (
       .insert(selectPartnershipSchema)
       .values({
         userId: user.uid,
-        partnershipName: partnershipName,
-        unlockedAt: new Date(),
-        completed: completed,
-        retentionPeriod: retentionPeriod,
-        kpiPoints: kpiPoints,
-        unlockedByPayment: unlockedByPayment
+        partnershipName: ReturnPartnershipLevelBasedOnSerialNumber(partnershipLevelIndex, user.role),
+        partnershipLevelIndex,
+        completed,
+        retentionPeriod,
+        kpiPoints,
+        unlockedByPayment
       })
       .onConflictDoNothing();
   } else {

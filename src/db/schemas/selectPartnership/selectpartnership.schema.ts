@@ -11,6 +11,7 @@ export const selectPartnershipSchema = pgTable(
     // Important: we allow either vendor or buyer levels
     partnershipName: varchar("partnershipName", { length: 100 }).notNull(),
     applicationId: uuid("applicationId").defaultRandom().unique(),
+    partnershipLevelIndex: integer("partnershipLevelIndex").notNull().default(1),
     unlockedByPayment: boolean("unlockedByPayment").notNull().default(false),
     unlockedAt: timestamp("unlockedAt", {
       mode: "date",

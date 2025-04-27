@@ -73,8 +73,8 @@ export const usrAuthService = (db: DatabaseClient) => {
       .returning();
 
     const { accessToken, refreshToken } = setTokensAndCookies(updatedUser, res, true);
-    await promoteUserToNextLevelInOnboarding(db, updatedUser);
-    await unlockPartnership(db, updatedUser, updatedUser.role === "VENDOR" ? "DKC_E_COMMERCE" : "DKC_DROP_SHIPPING");
+    // ** we are creating them for first time so we will pass raw number
+    await Promise.all([await promoteUserToNextLevelInOnboarding(db, updatedUser, 1), await unlockPartnership(db, updatedUser, 1)]);
     return { accessToken, refreshToken };
   };
   const resendOTPToken = async (email: string, res: Response) => {

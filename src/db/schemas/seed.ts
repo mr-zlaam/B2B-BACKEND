@@ -18,7 +18,7 @@ export class Seeder {
     //** create admin
     const [, user2, user3] = await this._db.insert(userSchema).values(userData).onConflictDoNothing().returning();
     if (user2 && user3) {
-      await Promise.all([promoteUserToNextLevelInOnboarding(this._db, user2), promoteUserToNextLevelInOnboarding(this._db, user3)]);
+      await Promise.all([promoteUserToNextLevelInOnboarding(this._db, user2, 1), promoteUserToNextLevelInOnboarding(this._db, user3, 1)]);
     }
     return;
   };
