@@ -1,2 +1,0 @@
-ALTER TABLE "selectPartnership" RENAME COLUMN "retentionPeriod" TO "retentionPeriodAchievedByUser";--> statement-breakpoint
-ALTER TABLE "selectPartnership" ADD COLUMN "totalRetentionPeriod" integer DEFAULT 0 NOT NULL;

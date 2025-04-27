@@ -21,8 +21,8 @@ export const selectPartnershipSchema = pgTable(
       .defaultNow(),
     completed: boolean("completed").notNull().default(false),
     retentionPeriodAchievedByUser: integer("retentionPeriodAchievedByUser").notNull().default(0),
-    requiredRetentionPeriod: integer("totalRetentionPeriod").notNull().default(0),
-    kpiPointsAchievedByUser: integer("kpiPoints").notNull().default(0),
+    requiredRetentionPeriod: integer("requiredRetentionPeriod").notNull().default(0),
+    kpiPointsAchievedByUser: integer("kpiPointsAchievedByUser").notNull().default(0),
     requiredKpiPoints: integer("requiredKpiPoints").notNull().default(0),
     createdAt: timestamp("createdAt", {
       mode: "date",

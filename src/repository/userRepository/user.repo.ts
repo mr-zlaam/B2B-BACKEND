@@ -49,7 +49,7 @@ export class UserRepository {
   public async getUserByuid(uid: string): Promise<TUSER> {
     const [user] = await this._db.select().from(userSchema).where(eq(userSchema.uid, uid)).limit(1);
     if (!user) {
-      logger.info("User not found in database  because he/she sent invalid uid which doesn't exist in database(getUserbyUid)");
+      logger.info("User not found in database  because he/she sent invalid uid which doesn't exist in database(getUserbyUid)", { uid });
       throwError(reshttp.notFoundCode, reshttp.notFoundMessage);
     }
     return user;

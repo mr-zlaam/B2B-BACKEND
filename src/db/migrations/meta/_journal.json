@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1745764453539,
-      "tag": "0000_jazzy_vapor",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1745767051820,
-      "tag": "0001_broken_dagger",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1745767810504,
-      "tag": "0002_mysterious_mesmero",
+      "when": 1745777673184,
+      "tag": "0000_wild_hannibal_king",
       "breakpoints": true
     }
   ]

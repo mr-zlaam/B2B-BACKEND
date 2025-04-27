@@ -3,6 +3,7 @@ import { applicationInsightRouter } from "./applicationInsightRouter/application
 import { countryDetectorRouter } from "./countryDetectorRouter/countryDetector.router";
 import { authRouter } from "./userRouter/auth.router";
 import { updateUserRouter } from "./userRouter/updateUser.router";
+import { selectPartnershipRouter } from "./selectPartnershipRouter/selectPartnership.router";
 
 export const defaultRouter: Router = Router();
 
@@ -11,3 +12,4 @@ defaultRouter.use("/detect-country", countryDetectorRouter);
 // *** User
 defaultRouter.use("/user", authRouter);
 defaultRouter.use("/user", updateUserRouter);
+defaultRouter.use("/selectPartnership", selectPartnershipRouter);

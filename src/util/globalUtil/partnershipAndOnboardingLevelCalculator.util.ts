@@ -1,27 +1,28 @@
 import type { TBUYERPARTNERSHIP, TCURRENTROLE, TCURRENTSTAGE, TVENDORPARTNERSHIP } from "../../type/types";
 
 export function ReturnOnboardingLevelBasedOnSerialNumber(onboardingIndex: number): TCURRENTSTAGE {
-  if (onboardingIndex === 1) {
-    return "SELECT_PARTNERSHIP";
-  } else if (onboardingIndex === 2) {
-    return "APPLICATION_SUBMISSION";
-  } else if (onboardingIndex === 3) {
-    return "PRODUCT_PORTFOLIO";
-  } else if (onboardingIndex === 4) {
-    return "DOCUMENT_SUBMISSION";
-  } else if (onboardingIndex === 5) {
-    return "VENDOR_AGREEMENT";
-  } else if (onboardingIndex === 6) {
-    return "APPLICATION_STATUS";
-  } else if (onboardingIndex === 7) {
-    return "PARTNERSHIP_ACTIVATION";
-  } else {
-    return "PORTAL_LOGIN";
+  switch (Math.max(onboardingIndex, 7)) {
+    case 1:
+      return "SELECT_PARTNERSHIP";
+    case 2:
+      return "APPLICATION_SUBMISSION";
+    case 3:
+      return "PRODUCT_PORTFOLIO";
+    case 4:
+      return "DOCUMENT_SUBMISSION";
+    case 5:
+      return "VENDOR_AGREEMENT";
+    case 6:
+      return "APPLICATION_STATUS";
+    case 7:
+      return "PARTNERSHIP_ACTIVATION";
+    default:
+      return "PORTAL_LOGIN";
   }
 }
 export function ReturnPartnershipLevelBasedOnSerialNumber(partnershipIndex: number, role: TCURRENTROLE): TBUYERPARTNERSHIP | TVENDORPARTNERSHIP {
   if (role === "VENDOR") {
-    switch (partnershipIndex) {
+    switch (Math.min(partnershipIndex, 7)) {
       case 1:
         return "DKC_E_COMMERCE";
       case 2:
@@ -40,7 +41,7 @@ export function ReturnPartnershipLevelBasedOnSerialNumber(partnershipIndex: numb
         return "DKC_E_COMMERCE";
     }
   } else {
-    switch (partnershipIndex) {
+    switch (Math.min(partnershipIndex, 7)) {
       case 1:
         return "DKC_DROP_SHIPPING";
       case 2:
@@ -58,5 +59,45 @@ export function ReturnPartnershipLevelBasedOnSerialNumber(partnershipIndex: numb
       default:
         return "DKC_DROP_SHIPPING";
     }
+  }
+}
+export function ReturnKpiPointsBasedOnIndex(index: number): number {
+  switch (Math.min(index, 7)) {
+    case 1:
+      return 7;
+    case 2:
+      return 7;
+    case 3:
+      return 8;
+    case 4:
+      return 8;
+    case 5:
+      return 8;
+    case 6:
+      return 8;
+    case 7:
+      return 8;
+    default:
+      return 7;
+  }
+}
+export function ReturnRetentionPeriodBasedOnIndex(index: number): number {
+  switch (Math.min(index, 7)) {
+    case 1:
+      return 18;
+    case 2:
+      return 6;
+    case 3:
+      return 6;
+    case 4:
+      return 6;
+    case 5:
+      return 12;
+    case 6:
+      return 24;
+    case 7:
+      return 6;
+    default:
+      return 7;
   }
 }

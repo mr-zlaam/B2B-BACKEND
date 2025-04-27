@@ -1,5 +1,5 @@
 {
-  "id": "b4b682fb-19ef-4eb7-8c7a-b1a29877a914",
+  "id": "e47c6ac2-269f-4e5f-9dc8-8ac0f4f4e57c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -404,15 +404,29 @@
           "notNull": true,
           "default": false
         },
-        "retentionPeriod": {
-          "name": "retentionPeriod",
+        "retentionPeriodAchievedByUser": {
+          "name": "retentionPeriodAchievedByUser",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "default": 0
         },
-        "kpiPoints": {
-          "name": "kpiPoints",
+        "requiredRetentionPeriod": {
+          "name": "requiredRetentionPeriod",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "kpiPointsAchievedByUser": {
+          "name": "kpiPointsAchievedByUser",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "requiredKpiPoints": {
+          "name": "requiredKpiPoints",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,

@@ -16,6 +16,7 @@ export class SelectPartnershipController {
   // ** Unlock Partnership by fullfilling the requirements
   public unlockPartnershipByRequirements = asyncHandler(async (req: _Request, res) => {
     const { kpiPointsAchievedByUser, retentionPeriodAchievedByUser } = req.body as TSELECTPARTERSHIP;
+    const { applicationId } = req.params;
     if (!kpiPointsAchievedByUser || !retentionPeriodAchievedByUser) {
       logger.info("Invalid kpi points or retention period");
       return throwError(reshttp.badRequestCode, "Invalid kpi points or retention period");
@@ -25,7 +26,12 @@ export class SelectPartnershipController {
       logger.info("userid is required!");
       return throwError(reshttp.notFoundCode, "User not found");
     }
-    await selectPartnershipService(this._db).unlockPartnershipLevelWithoutPayment(userId, retentionPeriodAchievedByUser, kpiPointsAchievedByUser);
+    await selectPartnershipService(this._db).unlockPartnershipLevelWithoutPayment(
+      userId,
+      applicationId,
+      retentionPeriodAchievedByUser,
+      kpiPointsAchievedByUser
+    );
     httpResponse(req, res, reshttp.okCode, reshttp.okMessage, {
       message: "Partnership level has been completed successfully and User have been promoted to next level"
     });

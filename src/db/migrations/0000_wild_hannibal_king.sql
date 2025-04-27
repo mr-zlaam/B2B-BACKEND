@@ -42,8 +42,10 @@ CREATE TABLE "selectPartnership" (
 	"unlockedByPayment" boolean DEFAULT false NOT NULL,
 	"unlockedAt" timestamp (3) DEFAULT now() NOT NULL,
 	"completed" boolean DEFAULT false NOT NULL,
-	"retentionPeriod" integer DEFAULT 0 NOT NULL,
-	"kpiPoints" integer DEFAULT 0 NOT NULL,
+	"retentionPeriodAchievedByUser" integer DEFAULT 0 NOT NULL,
+	"requiredRetentionPeriod" integer DEFAULT 0 NOT NULL,
+	"kpiPointsAchievedByUser" integer DEFAULT 0 NOT NULL,
+	"requiredKpiPoints" integer DEFAULT 0 NOT NULL,
 	"createdAt" timestamp (3) DEFAULT now() NOT NULL,
 	"updatedAt" timestamp (3) DEFAULT now() NOT NULL,
 	CONSTRAINT "selectPartnership_applicationId_unique" UNIQUE("applicationId")
