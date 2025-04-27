@@ -173,37 +173,27 @@
         "users_uid_unique": {
           "name": "users_uid_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "uid"
-          ]
+          "columns": ["uid"]
         },
         "users_username_unique": {
           "name": "users_username_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "username"
-          ]
+          "columns": ["username"]
         },
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         },
         "users_phone_unique": {
           "name": "users_phone_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "phone"
-          ]
+          "columns": ["phone"]
         },
         "users_OTP_TOKEN_unique": {
           "name": "users_OTP_TOKEN_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "OTP_TOKEN"
-          ]
+          "columns": ["OTP_TOKEN"]
         }
       },
       "policies": {},
@@ -323,12 +313,8 @@
           "name": "onboarding_userId_users_uid_fk",
           "tableFrom": "onboarding",
           "tableTo": "users",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "uid"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["uid"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -338,9 +324,7 @@
         "onboarding_userId_unique": {
           "name": "onboarding_userId_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "userId"
-          ]
+          "columns": ["userId"]
         }
       },
       "policies": {},
@@ -485,12 +469,8 @@
           "name": "selectPartnership_userId_users_uid_fk",
           "tableFrom": "selectPartnership",
           "tableTo": "users",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "uid"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["uid"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -500,9 +480,7 @@
         "selectPartnership_applicationId_unique": {
           "name": "selectPartnership_applicationId_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "applicationId"
-          ]
+          "columns": ["applicationId"]
         }
       },
       "policies": {},
@@ -582,12 +560,7 @@
     "public.role": {
       "name": "role",
       "schema": "public",
-      "values": [
-        "ADMIN",
-        "MODERATOR",
-        "VENDOR",
-        "BUYER"
-      ]
+      "values": ["ADMIN", "MODERATOR", "VENDOR", "BUYER"]
     }
   },
   "schemas": {},

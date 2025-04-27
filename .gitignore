@@ -184,3 +184,4 @@ logs
 config.env.ts
 types/
 logic.md
+src/db/migrations/meta/*
