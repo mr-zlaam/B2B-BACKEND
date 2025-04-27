@@ -54,3 +54,4 @@ export class Authmiddleware {
     return next();
   };
 }
+export const authMiddleware = (db: DatabaseClient) => new Authmiddleware(db);
