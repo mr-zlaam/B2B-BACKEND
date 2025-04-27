@@ -1,7 +1,7 @@
 import type { TBUYERPARTNERSHIP, TCURRENTROLE, TCURRENTSTAGE, TVENDORPARTNERSHIP } from "../../type/types";
 
 export function ReturnOnboardingLevelBasedOnSerialNumber(onboardingIndex: number): TCURRENTSTAGE {
-  switch (Math.max(onboardingIndex, 7)) {
+  switch (Math.min(onboardingIndex, 7)) {
     case 1:
       return "SELECT_PARTNERSHIP";
     case 2:
