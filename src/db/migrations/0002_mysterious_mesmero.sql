@@ -1,0 +1,1 @@
+ALTER TABLE "selectPartnership" ADD COLUMN "requiredKpiPoints" integer DEFAULT 0 NOT NULL;

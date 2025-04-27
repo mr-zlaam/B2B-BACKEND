@@ -6,9 +6,9 @@ export const unlockPartnership = async (
   db: DatabaseClient,
   user: TUSER,
   partnershipLevelIndex: number,
+  requiredRetentionPeriod: number = 0,
+  requiredKpiPoints: number = 0,
   completed: boolean = false,
-  retentionPeriod: number = 0,
-  kpiPoints: number = 0,
   unlockedByPayment: boolean = false
 ) => {
   const [currentSelectedPartnerShipLevel] = await db
@@ -24,8 +24,8 @@ export const unlockPartnership = async (
         partnershipName: ReturnPartnershipLevelBasedOnSerialNumber(partnershipLevelIndex, user.role),
         partnershipLevelIndex,
         completed,
-        retentionPeriod,
-        kpiPoints,
+        requiredRetentionPeriod,
+        requiredKpiPoints,
         unlockedByPayment
       })
       .onConflictDoNothing();

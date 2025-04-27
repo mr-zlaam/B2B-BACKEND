@@ -94,7 +94,7 @@ export class GetUserController {
     const user = await this._db.query.users.findFirst({
       where: eq(userSchema.username, username),
       columns: appConstant.SELECTED_COLUMNS.FROM.USER,
-      with: { onboarding: true }
+      with: { onboarding: true, selectPartnership: true }
     });
     if (!user) return throwError(reshttp.notFoundCode, "User not found");
     httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { data: user });
@@ -110,7 +110,7 @@ export class GetUserController {
     const user = await this._db.query.users.findFirst({
       where: eq(userSchema.uid, uid),
       columns: appConstant.SELECTED_COLUMNS.FROM.USER,
-      with: { onboarding: true }
+      with: { onboarding: true, selectPartnership: true }
     });
     httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { data: user });
   });

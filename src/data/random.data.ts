@@ -67,8 +67,8 @@ export const partnershipData = [
     unlockedByPayment: false,
     unlockedAt: new Date(),
     completed: false,
-    retentionPeriod: 0,
-    kpiPoints: 0,
+    requiredRetentionPeriod: 0,
+    requiredKpiPoints: 0,
     createdAt: new Date(),
     updatedAt: new Date()
   }

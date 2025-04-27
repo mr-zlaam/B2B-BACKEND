@@ -33,6 +33,22 @@ CREATE TABLE "onboarding" (
 	CONSTRAINT "onboarding_userId_unique" UNIQUE("userId")
 );
 --> statement-breakpoint
+CREATE TABLE "selectPartnership" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"userId" uuid NOT NULL,
+	"partnershipName" varchar(100) NOT NULL,
+	"applicationId" uuid DEFAULT gen_random_uuid(),
+	"partnershipLevelIndex" integer DEFAULT 1 NOT NULL,
+	"unlockedByPayment" boolean DEFAULT false NOT NULL,
+	"unlockedAt" timestamp (3) DEFAULT now() NOT NULL,
+	"completed" boolean DEFAULT false NOT NULL,
+	"retentionPeriod" integer DEFAULT 0 NOT NULL,
+	"kpiPoints" integer DEFAULT 0 NOT NULL,
+	"createdAt" timestamp (3) DEFAULT now() NOT NULL,
+	"updatedAt" timestamp (3) DEFAULT now() NOT NULL,
+	CONSTRAINT "selectPartnership_applicationId_unique" UNIQUE("applicationId")
+);
+--> statement-breakpoint
 CREATE TABLE "rate_limiter_flexible" (
 	"key" text PRIMARY KEY NOT NULL,
 	"points" integer NOT NULL,
@@ -41,6 +57,7 @@ CREATE TABLE "rate_limiter_flexible" (
 );
 --> statement-breakpoint
 ALTER TABLE "onboarding" ADD CONSTRAINT "onboarding_userId_users_uid_fk" FOREIGN KEY ("userId") REFERENCES "public"."users"("uid") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "selectPartnership" ADD CONSTRAINT "selectPartnership_userId_users_uid_fk" FOREIGN KEY ("userId") REFERENCES "public"."users"("uid") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 CREATE INDEX "user_role_idx" ON "users" USING btree ("role");--> statement-breakpoint
 CREATE INDEX "user_createdAt_idx" ON "users" USING btree ("createdAt");--> statement-breakpoint
 CREATE INDEX "fullName_idx" ON "users" USING btree ("fullName");--> statement-breakpoint
@@ -49,4 +66,7 @@ CREATE INDEX "onbarding_user_id_fk" ON "onboarding" USING btree ("userId");--> s
 CREATE INDEX "onboarding_createdAt_idx" ON "onboarding" USING btree ("createdAt");--> statement-breakpoint
 CREATE INDEX "onboarding_id_idx" ON "onboarding" USING btree ("id");--> statement-breakpoint
 CREATE INDEX "current_stage_idx" ON "onboarding" USING btree ("currentOnboardingStageIndex");--> statement-breakpoint
+CREATE INDEX "user_nested_levels_userId_idx" ON "selectPartnership" USING btree ("userId");--> statement-breakpoint
+CREATE INDEX "user_nested_levels_partnershipLevel_idx" ON "selectPartnership" USING btree ("partnershipName");--> statement-breakpoint
+CREATE INDEX "user_nested_levels_createdAt_idx" ON "selectPartnership" USING btree ("createdAt");--> statement-breakpoint
 CREATE INDEX "key_idx" ON "rate_limiter_flexible" USING btree ("key");

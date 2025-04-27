@@ -20,8 +20,10 @@ export const selectPartnershipSchema = pgTable(
       .notNull()
       .defaultNow(),
     completed: boolean("completed").notNull().default(false),
-    retentionPeriod: integer("retentionPeriod").notNull().default(0),
-    kpiPoints: integer("kpiPoints").notNull().default(0),
+    retentionPeriodAchievedByUser: integer("retentionPeriodAchievedByUser").notNull().default(0),
+    requiredRetentionPeriod: integer("totalRetentionPeriod").notNull().default(0),
+    kpiPointsAchievedByUser: integer("kpiPoints").notNull().default(0),
+    requiredKpiPoints: integer("requiredKpiPoints").notNull().default(0),
     createdAt: timestamp("createdAt", {
       mode: "date",
       precision: 3
