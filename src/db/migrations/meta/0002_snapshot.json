@@ -1,6 +1,6 @@
 {
-  "id": "898e804a-5049-4dce-afea-7f57b2396db6",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "bf8a09c0-c41a-4aa9-a5bd-924b11ace407",
+  "prevId": "5595691e-cc07-468d-af2e-713899797fe8",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -325,6 +325,155 @@
           "name": "onboarding_userId_unique",
           "nullsNotDistinct": false,
           "columns": ["userId"]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.selectPartnership": {
+      "name": "selectPartnership",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "partnershipName": {
+          "name": "partnershipName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "applicationId": {
+          "name": "applicationId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "gen_random_uuid()"
+        },
+        "unlockedByPayment": {
+          "name": "unlockedByPayment",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "unlockedAt": {
+          "name": "unlockedAt",
+          "type": "timestamp (3)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "completed": {
+          "name": "completed",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "retentionPeriod": {
+          "name": "retentionPeriod",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "kpiPoints": {
+          "name": "kpiPoints",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp (3)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp (3)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "user_nested_levels_userId_idx": {
+          "name": "user_nested_levels_userId_idx",
+          "columns": [
+            {
+              "expression": "userId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "user_nested_levels_partnershipLevel_idx": {
+          "name": "user_nested_levels_partnershipLevel_idx",
+          "columns": [
+            {
+              "expression": "partnershipName",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "user_nested_levels_createdAt_idx": {
+          "name": "user_nested_levels_createdAt_idx",
+          "columns": [
+            {
+              "expression": "createdAt",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "selectPartnership_userId_users_uid_fk": {
+          "name": "selectPartnership_userId_users_uid_fk",
+          "tableFrom": "selectPartnership",
+          "tableTo": "users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["uid"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "selectPartnership_applicationId_unique": {
+          "name": "selectPartnership_applicationId_unique",
+          "nullsNotDistinct": false,
+          "columns": ["applicationId"]
         }
       },
       "policies": {},

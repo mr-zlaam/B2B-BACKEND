@@ -8,6 +8,20 @@
       "when": 1745688600028,
       "tag": "0000_magical_blockbuster",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1745690538871,
+      "tag": "0001_material_wrecker",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1745694725390,
+      "tag": "0002_milky_ricochet",
+      "breakpoints": true
     }
   ]
 }

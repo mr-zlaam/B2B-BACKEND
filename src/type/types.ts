@@ -25,3 +25,22 @@ export interface IPAGINATION {
   hasNextPage: boolean;
   hasPreviousPage: boolean;
 }
+// ** Vendor partnership enum */
+export type TVENDORPARTNERSHIP =
+  | "DKC_E_COMMERCE"
+  | "DKC_CONSIGNMENT"
+  | "DKC_EXHIBITION"
+  | "DKC_IMPORT_EXPORT"
+  | "DKC_SUBSIDORY"
+  | "DKC_BRICK_AND_MORTAR"
+  | "DKC_FRANCHISE";
+// ** Buyer partnership enum */
+
+export type TBUYERPARTNERSHIP =
+  | "DKC_DROP_SHIPPING"
+  | "DKC_CONSIGNEE"
+  | "DKC_EXHIBITION"
+  | "DKC_IMPORT_EXPORT"
+  | "DKC_INVESTOR"
+  | "DKC_BRICK_AND_MORTAR"
+  | "DKC_FRANCHISE";

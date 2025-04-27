@@ -14,6 +14,7 @@ import { userRepo } from "../../../repository/userRepository/user.repo";
 import { generateVerificationOtpToken } from "../../../util/globalUtil/verificationTokenGenerator.util";
 import { sendVerificationEmail } from "../../../util/quickUtil/sendVerificationEmail.util";
 import { promoteUserToNextLevelInOnboarding } from "../../../util/appUtil/authUtil/promoteUserToNextLevelInOnboarding.util";
+import { unlockPartnership } from "../../../util/appUtil/authUtil/unlockPartnership.util";
 export const usrAuthService = (db: DatabaseClient) => {
   const checkExistingUser = async ({ email, username, phone }: TUSER) => {
     const existingUser = await db
@@ -73,6 +74,7 @@ export const usrAuthService = (db: DatabaseClient) => {
 
     const { accessToken, refreshToken } = setTokensAndCookies(updatedUser, res, true);
     await promoteUserToNextLevelInOnboarding(db, updatedUser);
+    await unlockPartnership(db, updatedUser, updatedUser.role === "VENDOR" ? "DKC_E_COMMERCE" : "DKC_DROP_SHIPPING");
     return { accessToken, refreshToken };
   };
   const resendOTPToken = async (email: string, res: Response) => {
