@@ -1,7 +1,7 @@
 import { eq, or } from "drizzle-orm";
 import type { Response } from "express";
 import { type DatabaseClient } from "../../../db/db";
-import { onboardingSchema, type TUSER, userSchema } from "../../../db/schemas";
+import { type TUSER, userSchema } from "../../../db/schemas";
 import envConfig from "../../../config/env.config";
 import reshttp from "reshttp";
 import { verifyToken } from "../../../util/globalUtil/tokenGenerator.util";
@@ -14,7 +14,7 @@ import { userRepo } from "../../../repository/userRepository/user.repo";
 import { generateVerificationOtpToken } from "../../../util/globalUtil/verificationTokenGenerator.util";
 import { sendVerificationEmail } from "../../../util/quickUtil/sendVerificationEmail.util";
 import { promoteUserToNextLevelInOnboarding } from "../../../util/appUtil/authUtil/promoteUserToNextLevelInOnboarding.util";
-import { unlockPartnership } from "../../../util/appUtil/authUtil/unlockPartnership.util";
+import { unlockPartnershipWithoutPayment } from "../../../util/appUtil/authUtil/unlockPartnership.util";
 export const usrAuthService = (db: DatabaseClient) => {
   const checkExistingUser = async ({ email, username, phone }: TUSER) => {
     const existingUser = await db
@@ -74,14 +74,7 @@ export const usrAuthService = (db: DatabaseClient) => {
 
     const { accessToken, refreshToken } = setTokensAndCookies(updatedUser, res, true);
     // ** we are creating them for first time so we will pass raw number
-    const onboarding = await db.query.onboarding.findFirst({ where: eq(onboardingSchema.userId, updatedUser.uid) });
-    if (!onboarding) {
-      return throwError(reshttp.notFoundCode, "Onboarding not found");
-    }
-    await Promise.all([
-      await promoteUserToNextLevelInOnboarding(db, updatedUser, onboarding.currentOnboardingStageIndex),
-      await unlockPartnership(db, updatedUser, 1)
-    ]);
+    await Promise.all([await promoteUserToNextLevelInOnboarding(db, updatedUser, 1), await unlockPartnershipWithoutPayment(db, updatedUser, 0)]);
     return { accessToken, refreshToken };
   };
   const resendOTPToken = async (email: string, res: Response) => {

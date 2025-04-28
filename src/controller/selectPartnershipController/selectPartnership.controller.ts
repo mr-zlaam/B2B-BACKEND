@@ -14,7 +14,7 @@ export class SelectPartnershipController {
   }
 
   // ** Unlock Partnership by fullfilling the requirements
-  public unlockPartnershipWithoutPayment = asyncHandler(async (req: _Request, res) => {
+  public updateKpiAndRetenionAndunlockPartnershipLevelWithoutPayment = asyncHandler(async (req: _Request, res) => {
     const { kpiPointsAchievedByUser, retentionPeriodAchievedByUser } = req.body as TSELECTPARTERSHIP;
     const { applicationId } = req.params;
     if (!kpiPointsAchievedByUser || !retentionPeriodAchievedByUser) {
@@ -26,7 +26,7 @@ export class SelectPartnershipController {
       logger.info("userid is required!");
       return throwError(reshttp.notFoundCode, "User not found");
     }
-    await selectPartnershipService(this._db).unlockPartnershipLevelWithoutPayment(
+    await selectPartnershipService(this._db).updateKpiAndRetenionAndunlockPartnershipLevelWithoutPayment(
       req,
       res,
       userId,

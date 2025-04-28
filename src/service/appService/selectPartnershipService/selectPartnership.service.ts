@@ -4,7 +4,7 @@ import { userRepo } from "../../../repository/userRepository/user.repo";
 import { onboardingSchema, selectPartnershipSchema } from "../../../db/schemas";
 import { canAccessNextLevel } from "../../../util/appUtil/selectPartnershipUtil/selectPartnership.util";
 import { eq } from "drizzle-orm";
-import { unlockPartnership } from "../../../util/appUtil/authUtil/unlockPartnership.util";
+import { unlockPartnershipWithPayment, unlockPartnershipWithoutPayment } from "../../../util/appUtil/authUtil/unlockPartnership.util";
 import envConfig from "../../../config/env.config";
 import logger from "../../../util/globalUtil/logger.util";
 import { throwError } from "../../../util/globalUtil/throwError.util";
@@ -17,7 +17,7 @@ export class SelectPartnershipService {
   constructor(db: DatabaseClient) {
     this._db = db;
   }
-  public async unlockPartnershipLevelWithoutPayment(
+  public async updateKpiAndRetenionAndunlockPartnershipLevelWithoutPayment(
     req: Request,
     res: Response,
     userId: string,
@@ -44,7 +44,6 @@ export class SelectPartnershipService {
       .set({
         completed: true,
         kpiPointsAchievedByUser,
-        unlockedByPayment: false,
         retentionPeriodAchievedByUser,
         updatedAt: new Date()
       })
@@ -63,20 +62,31 @@ export class SelectPartnershipService {
       });
       return;
     }
-    if (updatedParternship.partnershipLevelIndex < 5) {
-      await unlockPartnership(this._db, user, updatedParternship.partnershipLevelIndex + 1);
+    if (updatedParternship.partnershipLevelIndex < 4) {
+      await unlockPartnershipWithoutPayment(this._db, user, updatedParternship.partnershipLevelIndex);
     }
-    const allUserPartnerships = await this._db.query.selectPartnership.findMany({ where: eq(selectPartnershipSchema.userId, user.uid) });
-    const allInccompletedPartnerships = allUserPartnerships.filter((selectPartnership) => !selectPartnership.completed);
-    if (allInccompletedPartnerships.length >= 4) {
-      const maximumIndex = Math.max(...allUserPartnerships.map((selectPartnership) => selectPartnership.partnershipLevelIndex));
-      await unlockPartnership(this._db, user, maximumIndex + 1);
+    const allPartnerships = await this._db.query.selectPartnership.findMany({
+      where: eq(selectPartnershipSchema.userId, user.uid)
+    });
+
+    const mandatoryLevels = [1, 2, 3, 4];
+    const allMandatoryCompleted = mandatoryLevels.every((level) => allPartnerships.some((p) => p.partnershipLevelIndex === level && p.completed));
+
+    if (!allMandatoryCompleted) {
+      logger.info("Blocked: Levels 1-4 are not all completed.");
+      return;
     }
+
+    const highestIndex = Math.max(...allPartnerships.map((p) => p.partnershipLevelIndex), 0);
+
+    logger.info(`Proceeding with highest index: ${highestIndex}`);
+    await unlockPartnershipWithoutPayment(this._db, user, highestIndex);
+    return;
   }
 
   public async unlockPartnershipWithPayment(userId: string, partnershipLevelIndex: number) {
     const user = await userRepo(this._db).getUserByuid(userId);
-    await unlockPartnership(this._db, user, partnershipLevelIndex, false, true);
+    await unlockPartnershipWithPayment(this._db, user, partnershipLevelIndex, false, true);
   }
 }
 export const selectPartnershipService = (db: DatabaseClient) => new SelectPartnershipService(db);

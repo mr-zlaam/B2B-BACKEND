@@ -7,11 +7,11 @@ import { selectPartnershipMiddleware } from "../../middleware/appMiddleware/sele
 export const selectPartnershipRouter: Router = Router();
 
 selectPartnershipRouter
-  .route("/unlockPartnershipWithoutPayment/:applicationId")
+  .route("/updateKpiAndRetenionAndunlockPartnershipLevelWithoutPayment/:applicationId")
   .post(
     authMiddleware(database.db).checkToken,
     selectPartnershipMiddleware(database.db).processLevelWithoutPayment,
-    selectPartnershipController(database.db).unlockPartnershipWithoutPayment
+    selectPartnershipController(database.db).updateKpiAndRetenionAndunlockPartnershipLevelWithoutPayment
   );
 selectPartnershipRouter
   .route("/unlockPartnershipByPayment/:partnershipLevelIndex")
