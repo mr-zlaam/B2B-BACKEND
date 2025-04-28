@@ -14,7 +14,7 @@ export class SelectPartnershipController {
   }
 
   // ** Unlock Partnership by fullfilling the requirements
-  public unlockPartnershipByRequirements = asyncHandler(async (req: _Request, res) => {
+  public unlockPartnershipWithoutPayment = asyncHandler(async (req: _Request, res) => {
     const { kpiPointsAchievedByUser, retentionPeriodAchievedByUser } = req.body as TSELECTPARTERSHIP;
     const { applicationId } = req.params;
     if (!kpiPointsAchievedByUser || !retentionPeriodAchievedByUser) {
@@ -27,11 +27,26 @@ export class SelectPartnershipController {
       return throwError(reshttp.notFoundCode, "User not found");
     }
     await selectPartnershipService(this._db).unlockPartnershipLevelWithoutPayment(
+      req,
+      res,
       userId,
       applicationId,
       retentionPeriodAchievedByUser,
       kpiPointsAchievedByUser
     );
+    httpResponse(req, res, reshttp.okCode, reshttp.okMessage, {
+      message: "Partnership level has been completed successfully and User have been promoted to next level"
+    });
+  });
+  // ** unlockPartnershipByPayment
+  public unlockPartnershipByPayment = asyncHandler(async (req: _Request, res) => {
+    const { partnershipLevelIndex } = req.params;
+    const userId = req.userFromToken?.uid;
+    if (!userId) {
+      logger.info("userid is required!");
+      return throwError(reshttp.notFoundCode, "User not found");
+    }
+    await selectPartnershipService(this._db).unlockPartnershipWithPayment(userId, +partnershipLevelIndex);
     httpResponse(req, res, reshttp.okCode, reshttp.okMessage, {
       message: "Partnership level has been completed successfully and User have been promoted to next level"
     });

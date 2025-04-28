@@ -10,6 +10,13 @@ selectPartnershipRouter
   .route("/unlockPartnershipWithoutPayment/:applicationId")
   .post(
     authMiddleware(database.db).checkToken,
-    selectPartnershipMiddleware(database.db).checkApplicationId,
-    selectPartnershipController(database.db).unlockPartnershipByRequirements
+    selectPartnershipMiddleware(database.db).processLevelWithoutPayment,
+    selectPartnershipController(database.db).unlockPartnershipWithoutPayment
+  );
+selectPartnershipRouter
+  .route("/unlockPartnershipByPayment/:partnershipLevelIndex")
+  .post(
+    authMiddleware(database.db).checkToken,
+    selectPartnershipMiddleware(database.db).processLevelWithPayment,
+    selectPartnershipController(database.db).unlockPartnershipByPayment
   );

@@ -1,7 +1,7 @@
 import { eq, or } from "drizzle-orm";
 import type { Response } from "express";
 import { type DatabaseClient } from "../../../db/db";
-import { type TUSER, userSchema } from "../../../db/schemas";
+import { onboardingSchema, type TUSER, userSchema } from "../../../db/schemas";
 import envConfig from "../../../config/env.config";
 import reshttp from "reshttp";
 import { verifyToken } from "../../../util/globalUtil/tokenGenerator.util";
@@ -74,7 +74,14 @@ export const usrAuthService = (db: DatabaseClient) => {
 
     const { accessToken, refreshToken } = setTokensAndCookies(updatedUser, res, true);
     // ** we are creating them for first time so we will pass raw number
-    await Promise.all([await promoteUserToNextLevelInOnboarding(db, updatedUser, 1), await unlockPartnership(db, updatedUser, 1)]);
+    const onboarding = await db.query.onboarding.findFirst({ where: eq(onboardingSchema.userId, updatedUser.uid) });
+    if (!onboarding) {
+      return throwError(reshttp.notFoundCode, "Onboarding not found");
+    }
+    await Promise.all([
+      await promoteUserToNextLevelInOnboarding(db, updatedUser, onboarding.currentOnboardingStageIndex),
+      await unlockPartnership(db, updatedUser, 1)
+    ]);
     return { accessToken, refreshToken };
   };
   const resendOTPToken = async (email: string, res: Response) => {
