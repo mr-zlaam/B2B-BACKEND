@@ -1,5 +1,5 @@
 import { pgTable, serial, uuid, timestamp, index } from "drizzle-orm/pg-core";
-import { userSchema } from "../authSchema";
+import { userSchema } from "../authSchema/index";
 
 export const applicationSubmissionSchema = pgTable(
   "applicationSubmission",

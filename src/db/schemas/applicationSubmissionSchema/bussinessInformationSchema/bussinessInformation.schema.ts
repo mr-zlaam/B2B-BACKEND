@@ -1,6 +1,6 @@
 import { index, integer, pgTable, serial, varchar } from "drizzle-orm/pg-core";
 import { bussinessLegalStructureEnum, bussinessTypeEnum } from "../../shared/enums";
-import { applicationSubmissionSchema } from "../index";
+import { applicationSubmissionSchema } from "../applicationSubmission.schema";
 
 export const bussinessInformationSchema = pgTable(
   "bussinessInformation",
