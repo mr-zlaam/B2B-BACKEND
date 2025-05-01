@@ -13,5 +13,6 @@ void (async function () {
       logger.error("Error running migrations", { error: err });
       if (err instanceof Error) throwError(500, err.message);
       throwError(500, "Something went wrong while migrating to the database");
+      process.exit(1);
     });
 })();

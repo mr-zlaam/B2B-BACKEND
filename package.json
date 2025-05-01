@@ -26,6 +26,7 @@
     "db:push": "drizzle-kit push --force",
     "db:rollback": "drizzle-kit rollback",
     "db:studio": "drizzle-kit studio",
+    "db:reset": "bun run  ./scripts/db-reset.script.ts",
     "postinstall": "[ -z \"$CI\" ] && husky || echo \"Skipping husky in CI\"",
     "prepare": "husky"
   },

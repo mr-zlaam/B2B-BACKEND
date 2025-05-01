@@ -3,7 +3,7 @@ import { pgEnum } from "drizzle-orm/pg-core";
 //** Auth enum */
 export const userRoleEnum = pgEnum("role", ["ADMIN", "MODERATOR", "VENDOR", "BUYER"]);
 
-export type TCURRENTROLE = typeof onboardingCurrentStageEnum.enumValues;
+export type TCURRENTROLE = (typeof userRoleEnum.enumValues)[number];
 // ** Onboarding enum */
 
 export const onboardingCurrentStageEnum = pgEnum("currentOnboardingStage", [
@@ -17,4 +17,18 @@ export const onboardingCurrentStageEnum = pgEnum("currentOnboardingStage", [
   "PARTNERSHIP_ACTIVATION"
 ]);
 
-export type TCURRENTSTAGE = typeof onboardingCurrentStageEnum.schema;
+export type TCURRENTSTAGE = (typeof onboardingCurrentStageEnum.enumValues)[number];
+// ** applicaiton submission enums
+export const bussinessLegalStructureEnum = pgEnum("bussinessLegalStructure", [
+  "SOLE_PROPRIETORSHIP",
+  "PARTNERSHIP",
+  "LIMITED_LIABILITY_PARTNERSHIP",
+  "PRIVATE_LIMITED",
+  "PUBLIC_LIMITED",
+  "COOPERATIVE_SOCIETY"
+]);
+// type
+export type TBUSINESSLEGALSTRUCTURE = (typeof bussinessLegalStructureEnum.enumValues)[number];
+export const bussinessTypeEnum = pgEnum("bussinessType", ["ONLINE", "STORE_FRONT", "MANUFACTURER", "WHOLE_SALER", "DISTRIBUTOR", "ARTISAN"]);
+// type
+export type TBUSINESSTYPE = (typeof bussinessTypeEnum.enumValues)[number];

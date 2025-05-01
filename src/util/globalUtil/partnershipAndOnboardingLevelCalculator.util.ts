@@ -1,4 +1,5 @@
-import type { TBUYERPARTNERSHIP, TCURRENTROLE, TCURRENTSTAGE, TVENDORPARTNERSHIP } from "../../type/types";
+import type { TCURRENTROLE, TCURRENTSTAGE } from "../../db/schemas/shared/enums";
+import type { TBUYERPARTNERSHIP, TVENDORPARTNERSHIP } from "../../type/types";
 
 export function ReturnOnboardingLevelBasedOnSerialNumber(onboardingIndex: number): TCURRENTSTAGE {
   switch (Math.min(onboardingIndex, 7)) {

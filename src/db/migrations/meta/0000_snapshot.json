@@ -1,9 +1,294 @@
 {
-  "id": "e47c6ac2-269f-4e5f-9dc8-8ac0f4f4e57c",
+  "id": "7c185774-1700-4e42-8cde-857da17687df",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "public.applicationSubmission": {
+      "name": "applicationSubmission",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp (3)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp (3)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "applicationSubmission_createdAt_idx": {
+          "name": "applicationSubmission_createdAt_idx",
+          "columns": [
+            {
+              "expression": "createdAt",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "applicationSubmission_userId_users_uid_fk": {
+          "name": "applicationSubmission_userId_users_uid_fk",
+          "tableFrom": "applicationSubmission",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "uid"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "applicationSubmission_userId_unique": {
+          "name": "applicationSubmission_userId_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "userId"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.bussinessInformation": {
+      "name": "bussinessInformation",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "applicationSubmissionId": {
+          "name": "applicationSubmissionId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bussinessInformation": {
+          "name": "bussinessInformation",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bussinessLegalStructure": {
+          "name": "bussinessLegalStructure",
+          "type": "bussinessLegalStructure",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bussinessType": {
+          "name": "bussinessType",
+          "type": "bussinessType",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bussinessRegistrationNumber": {
+          "name": "bussinessRegistrationNumber",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "brandAffiliation": {
+          "name": "brandAffiliation",
+          "type": "varchar(150)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "streetLine1": {
+          "name": "streetLine1",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "city": {
+          "name": "city",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "stateORRegion": {
+          "name": "stateORRegion",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "country": {
+          "name": "country",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "postalCode": {
+          "name": "postalCode",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "websiteURI": {
+          "name": "websiteURI",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "annualTurnover": {
+          "name": "annualTurnover",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "gstNumber": {
+          "name": "gstNumber",
+          "type": "varchar(15)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "taxIdentificationNumber": {
+          "name": "taxIdentificationNumber",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "bussinessInformation_bussinessName_idx": {
+          "name": "bussinessInformation_bussinessName_idx",
+          "columns": [
+            {
+              "expression": "bussinessInformation",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "bussinessInformation_bussinessType_idx": {
+          "name": "bussinessInformation_bussinessType_idx",
+          "columns": [
+            {
+              "expression": "bussinessType",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "bussinessInformation_country_idx": {
+          "name": "bussinessInformation_country_idx",
+          "columns": [
+            {
+              "expression": "country",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "bussinessInformation_city_idx": {
+          "name": "bussinessInformation_city_idx",
+          "columns": [
+            {
+              "expression": "city",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "bussinessInformation_applicationSubmissionId_applicationSubmission_id_fk": {
+          "name": "bussinessInformation_applicationSubmissionId_applicationSubmission_id_fk",
+          "tableFrom": "bussinessInformation",
+          "tableTo": "applicationSubmission",
+          "columnsFrom": [
+            "applicationSubmissionId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "bussinessInformation_bussinessRegistrationNumber_unique": {
+          "name": "bussinessInformation_bussinessRegistrationNumber_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "bussinessRegistrationNumber"
+          ]
+        },
+        "bussinessInformation_gstNumber_unique": {
+          "name": "bussinessInformation_gstNumber_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "gstNumber"
+          ]
+        },
+        "bussinessInformation_taxIdentificationNumber_unique": {
+          "name": "bussinessInformation_taxIdentificationNumber_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "taxIdentificationNumber"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.users": {
       "name": "users",
       "schema": "",
@@ -170,13 +455,6 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "users_uid_unique": {
-          "name": "users_uid_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "uid"
-          ]
-        },
         "users_username_unique": {
           "name": "users_username_unique",
           "nullsNotDistinct": false,
@@ -579,6 +857,30 @@
     }
   },
   "enums": {
+    "public.bussinessLegalStructure": {
+      "name": "bussinessLegalStructure",
+      "schema": "public",
+      "values": [
+        "SOLE_PROPRIETORSHIP",
+        "PARTNERSHIP",
+        "LIMITED_LIABILITY_PARTNERSHIP",
+        "PRIVATE_LIMITED",
+        "PUBLIC_LIMITED",
+        "COOPERATIVE_SOCIETY"
+      ]
+    },
+    "public.bussinessType": {
+      "name": "bussinessType",
+      "schema": "public",
+      "values": [
+        "ONLINE",
+        "STORE_FRONT",
+        "MANUFACTURER",
+        "WHOLE_SALER",
+        "DISTRIBUTOR",
+        "ARTISAN"
+      ]
+    },
     "public.currentOnboardingStage": {
       "name": "currentOnboardingStage",
       "schema": "public",

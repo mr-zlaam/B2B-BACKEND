@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import envConfig from "../../config/env.config";
 import appConstant from "../../constant/app.constant";
 import logger from "./logger.util";
-import type { TCURRENTROLE } from "../../type/types";
+import type { TCURRENTROLE } from "../../db/schemas/shared/enums";
 export interface IPAYLOAD {
   uid: string;
   OTP_TOKEN_VERSION: number;

@@ -4,7 +4,7 @@ import { userRoleEnum } from "../shared/enums";
 export const userSchema = pgTable(
   "users",
   {
-    uid: uuid("uid").defaultRandom().notNull().primaryKey().unique(),
+    uid: uuid("uid").defaultRandom().notNull().primaryKey(),
     username: varchar("username", { length: 50 }).notNull().unique(),
     fullName: varchar("fullName", { length: 50 }).notNull(),
     email: varchar("email", { length: 100 }).notNull().unique(),
