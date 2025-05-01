@@ -1,5 +1,5 @@
 import type { TUSER } from "../db/schemas";
-import type { TSELECTPARTERSHIP } from "../db/schemas/selectPartnership/selectpartnership.schema";
+import type { TSELECTPARTERSHIP } from "../db/schemas/selectPartnershipSchema/selectpartnership.schema";
 import type { TBUYERPARTNERSHIP, TVENDORPARTNERSHIP } from "../type/types";
 
 export const userData = [

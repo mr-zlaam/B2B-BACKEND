@@ -5,7 +5,7 @@ import { partnershipData, userData } from "../../data/random.data";
 import { promoteUserToNextLevelInOnboarding } from "../../util/appUtil/authUtil/promoteUserToNextLevelInOnboarding.util";
 import { database, type DatabaseClient } from "../db";
 import { userSchema } from "./authSchema";
-import { selectPartnershipSchema } from "./selectPartnership";
+import { selectPartnershipSchema } from "./selectPartnershipSchema";
 
 // ** seeding user
 export class Seeder {

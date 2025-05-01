@@ -1,7 +1,7 @@
 import { relations } from "drizzle-orm";
 import { onboardingSchema } from "../onboardingSchema";
 import { userSchema } from "./user.schema";
-import { selectPartnershipSchema } from "../selectPartnership";
+import { selectPartnershipSchema } from "../selectPartnershipSchema";
 // schema/users.ts
 export const userRelations = relations(userSchema, ({ one, many }) => ({
   onboarding: one(onboardingSchema, {
