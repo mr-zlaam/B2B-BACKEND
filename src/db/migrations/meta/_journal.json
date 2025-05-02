@@ -15,6 +15,13 @@
       "when": 1746136588758,
       "tag": "0001_high_vanisher",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1746144145404,
+      "tag": "0002_tan_hellfire_club",
+      "breakpoints": true
     }
   ]
 }

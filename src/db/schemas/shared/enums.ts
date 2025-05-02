@@ -32,3 +32,15 @@ export type TBUSINESSLEGALSTRUCTURE = (typeof bussinessLegalStructureEnum.enumVa
 export const bussinessTypeEnum = pgEnum("bussinessType", ["ONLINE", "STORE_FRONT", "MANUFACTURER", "WHOLE_SALER", "DISTRIBUTOR", "ARTISAN"]);
 // type
 export type TBUSINESSTYPE = (typeof bussinessTypeEnum.enumValues)[number];
+export const productAuthenticityCertificationsEnum = pgEnum("productAuthenticityCertifications", [
+  "GIFT_CERTIFICATE",
+  "HANDLOOM_MARK",
+  "CRAFT_MARK",
+  "INDIA_HANDMADE",
+  "QUALITY_COUNCIL",
+  "EXPORT_COUNCIL",
+  "BLOCK_CHAIN",
+  "NONE"
+]);
+// type
+export type TPRODUCTAUTHENTICITYCERTIFICATIONS = (typeof productAuthenticityCertificationsEnum.enumValues)[number];

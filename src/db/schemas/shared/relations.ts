@@ -5,6 +5,7 @@ import { selectPartnershipSchema } from "../selectPartnershipSchema";
 import { applicationSubmissionSchema } from "../applicationSubmissionSchema";
 import { bussinessInformationSchema } from "../applicationSubmissionSchema/bussinessInformationSchema";
 import { bussinessContactInformationSchema } from "../applicationSubmissionSchema/bussinessContactInformationSchema";
+import { businessCredibilityAssessmentSchema } from "../applicationSubmissionSchema/businessCredibilityAssessmentSchema";
 
 export const userRelations = relations(userSchema, ({ one, many }) => ({
   onboarding: one(onboardingSchema, {
@@ -30,5 +31,9 @@ export const applicationSubmissionRelation = relations(applicationSubmissionSche
   bussinessContactInformation: one(bussinessContactInformationSchema, {
     fields: [applicationSubmissionSchema.id],
     references: [bussinessContactInformationSchema.id]
+  }),
+  businessCredibilityAssessment: one(businessCredibilityAssessmentSchema, {
+    fields: [applicationSubmissionSchema.id],
+    references: [businessCredibilityAssessmentSchema.id]
   })
 }));
