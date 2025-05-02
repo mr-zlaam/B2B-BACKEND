@@ -12,6 +12,8 @@ import reshttp from "reshttp";
 import { promoteUserToNextLevelInOnboarding } from "../../../util/appUtil/authUtil/promoteUserToNextLevelInOnboarding.util";
 import { httpResponse } from "../../../util/globalUtil/apiResponse.util";
 import type { Request, Response } from "express";
+import { verifyPassword } from "../../../util/globalUtil/passwordHasher.util";
+import { setTokensAndCookies } from "../../../util/globalUtil/setCookies.util";
 export class SelectPartnershipService {
   private readonly _db: DatabaseClient;
   constructor(db: DatabaseClient) {
@@ -87,6 +89,22 @@ export class SelectPartnershipService {
   public async unlockPartnershipWithPayment(userId: string, partnershipLevelIndex: number) {
     const user = await userRepo(this._db).getUserByuid(userId);
     await unlockPartnershipWithPayment(this._db, user, partnershipLevelIndex, false, true);
+  }
+  // ** login into application
+  public async loginIntoApplication(applicationId: string, email: string, password: string, res: Response) {
+    const partnership = await selectPartnershipRepo(this._db).getUserSelectPartnershipByApplicationId(applicationId);
+    if (!partnership) {
+      logger.info("Partnership not found");
+      return throwError(reshttp.notFoundCode, "Invalid applicationId");
+    }
+    const user = await userRepo(this._db).getUserByEmail(email, "User not found", "Invalid credentials");
+    const checkIsPasswordCorrect = await verifyPassword(password, user.password, res);
+    if (!checkIsPasswordCorrect) {
+      logger.info("Incorrect password");
+      return throwError(reshttp.notFoundCode, "Invalid Credentials");
+    }
+    const { accessToken, refreshToken } = setTokensAndCookies(user, res, true, true);
+    return { accessToken, refreshToken };
   }
 }
 export const selectPartnershipService = (db: DatabaseClient) => new SelectPartnershipService(db);

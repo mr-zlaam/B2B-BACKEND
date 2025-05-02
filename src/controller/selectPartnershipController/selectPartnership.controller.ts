@@ -7,6 +7,7 @@ import logger from "../../util/globalUtil/logger.util";
 import { throwError } from "../../util/globalUtil/throwError.util";
 import { httpResponse } from "../../util/globalUtil/apiResponse.util";
 import { selectPartnershipService } from "../../service/appService/selectPartnershipService/selectPartnership.service";
+import type { IAPPLICATIONLOGIN } from "../../type/types";
 export class SelectPartnershipController {
   private readonly _db: DatabaseClient;
   constructor(db: DatabaseClient) {
@@ -50,6 +51,12 @@ export class SelectPartnershipController {
     httpResponse(req, res, reshttp.okCode, reshttp.okMessage, {
       message: "Partnership level has been completed successfully and User have been promoted to next level"
     });
+  });
+  // ** Login into the application user applicationid
+  public loginIntoApplication = asyncHandler(async (req, res) => {
+    const { applicationId, email, password } = req.body as IAPPLICATIONLOGIN;
+    const { accessToken, refreshToken } = await selectPartnershipService(this._db).loginIntoApplication(applicationId, email, password, res);
+    httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "User has been logged in successfully", accessToken, refreshToken });
   });
 }
 

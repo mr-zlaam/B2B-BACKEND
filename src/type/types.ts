@@ -4,6 +4,12 @@ export interface ICOOKIEOPTIONS {
   sameSite: "none";
   expires: Date;
 }
+// ** login through application id
+export interface IAPPLICATIONLOGIN {
+  applicationId: string;
+  password: string;
+  email: string;
+}
 // ** Enums
 
 // ** Pagination types

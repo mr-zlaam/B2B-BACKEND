@@ -30,8 +30,8 @@ export class SelectPartnershipRepo {
       .where(eq(selectPartnershipSchema.applicationId, applicationId))
       .limit(1);
     if (!selectCurrentPartnership) {
-      logger.info("User not found");
-      return throwError(reshttp.notFoundCode, "User not found");
+      logger.info("Invalid application id");
+      return throwError(reshttp.notFoundCode, "Invalid application id");
     }
     return selectCurrentPartnership;
   }

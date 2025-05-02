@@ -27,7 +27,8 @@ export class UserRepository {
     if (!user) {
       logger.info(
         loggerErrorMessage ||
-          "User not found while checking user exist in db or not. because he/she sent invalid email which doesn't exist in database(getUserByEmail)"
+          "User not found while checking user exist in db or not. because he/she sent invalid email which doesn't exist in database(getUserByEmail)",
+        { email }
       );
       throwError(reshttp.notFoundCode, orignalErrorMessage ?? reshttp.notFoundMessage);
     }
