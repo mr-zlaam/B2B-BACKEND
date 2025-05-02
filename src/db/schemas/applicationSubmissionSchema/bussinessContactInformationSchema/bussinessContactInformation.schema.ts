@@ -8,7 +8,7 @@ export const bussinessContactInformationSchema = pgTable(
     // fk
     applicationSubmissionId: integer("applicationSubmissionId")
       .notNull()
-      .references(() => applicationSubmissionSchema.id),
+      .references(() => applicationSubmissionSchema.id, { onDelete: "cascade" }),
     name: varchar("name", { length: 100 }).notNull(),
     email: varchar("email", { length: 100 }).notNull().unique(),
     bussinessRegistrationNumber: integer("bussinessRegistrationNumber").notNull().unique(),

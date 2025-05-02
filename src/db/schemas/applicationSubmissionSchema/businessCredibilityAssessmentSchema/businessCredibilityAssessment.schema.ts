@@ -6,7 +6,7 @@ export const businessCredibilityAssessmentSchema = pgTable("businessCredibilityA
   id: serial("id").primaryKey().notNull(),
   applicationSubmissionId: integer("applicationSubmissionId")
     .notNull()
-    .references(() => applicationSubmissionSchema.id),
+    .references(() => applicationSubmissionSchema.id, { onDelete: "cascade" }),
   qualityLevel: varchar("qualityLevel", { length: 100 }).notNull(),
   materialStandard: varchar("materialStandard", { length: 100 }).notNull(),
   serviceLevel: varchar("serviceLevel", { length: 100 }).notNull(),

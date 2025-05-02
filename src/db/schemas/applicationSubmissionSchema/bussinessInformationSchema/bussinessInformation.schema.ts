@@ -9,7 +9,7 @@ export const bussinessInformationSchema = pgTable(
     // fk
     applicationSubmissionId: integer("applicationSubmissionId")
       .notNull()
-      .references(() => applicationSubmissionSchema.id),
+      .references(() => applicationSubmissionSchema.id, { onDelete: "cascade" }),
     bussinessName: varchar("bussinessInformation", { length: 100 }).notNull(),
     bussinessLegalStructure: bussinessLegalStructureEnum().notNull(),
     bussinessType: bussinessTypeEnum().notNull(),

@@ -7,7 +7,7 @@ export const bankingInformationSchema = pgTable("bankingInformation", {
 
   applicationSubmissionId: integer("applicationSubmissionId")
     .notNull()
-    .references(() => applicationSubmissionSchema.id),
+    .references(() => applicationSubmissionSchema.id, { onDelete: "cascade" }),
   bankName: varchar("bankName", { length: 100 }).notNull(),
   accountType: varchar("accountType", { length: 100 }).notNull(),
   accountNumber: varchar("accountNumber", { length: 20 }).notNull().unique(),
