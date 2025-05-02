@@ -1,4 +1,4 @@
-import { eq, or } from "drizzle-orm";
+import { eq, or, ne, and } from "drizzle-orm";
 import type { DatabaseClient } from "../../../db/db";
 import {
   bankingInformationSchema,
@@ -79,6 +79,103 @@ class CheckForUniqueExistantInApplicationSubmissionMiddleware {
       logger.info("Banking information already exists");
       throwError(reshttp.conflictCode, reshttp.conflictMessage);
     }
+    return next();
+  });
+  // ** check for unique update
+  public checkBusinessInfoUniqueness = asyncHandler(async (req, _, next) => {
+    const bunssinessInformation = req.body as TBUSSINESSINFORMATION;
+    const id = Number(req.params.id);
+
+    if (!id) {
+      throwError(reshttp.badRequestCode, reshttp.badRequestMessage);
+    }
+    const [checkIfbunssinessInformationExist] = await this._db
+      .select()
+      .from(bussinessInformationSchema)
+      .where(
+        and(
+          or(
+            eq(bussinessInformationSchema.bussinessRegistrationNumber, bunssinessInformation.bussinessRegistrationNumber),
+            eq(bussinessInformationSchema.gstNumber, bunssinessInformation.gstNumber),
+            eq(bussinessInformationSchema.taxIdentificationNumber, bunssinessInformation.taxIdentificationNumber)
+          ),
+          ne(bussinessInformationSchema.id, id)
+        )
+      )
+      .limit(1);
+
+    if (checkIfbunssinessInformationExist) {
+      logger.info("bunssinessInformation already exist", {
+        checkIfbunssinessInformationExist
+      });
+      throwError(reshttp.conflictCode, reshttp.conflictMessage);
+    }
+
+    return next();
+  });
+
+  // 2. Middleware to check Business Contact Information uniqueness
+  public checkBusinessContactUniqueness = asyncHandler(async (req, _, next) => {
+    const bussinessContactInformation = req.body as TBUSINESSCONTACTINFORMATION;
+    const id = Number(req.params.id);
+    if (!id) {
+      throwError(reshttp.badRequestCode, reshttp.badRequestMessage);
+    }
+    const contactConditions = [
+      eq(bussinessContactInformationSchema.email, bussinessContactInformation.email),
+      eq(bussinessContactInformationSchema.phoneNumber, bussinessContactInformation.phoneNumber),
+      eq(bussinessContactInformationSchema.bussinessRegistrationNumber, bussinessContactInformation.bussinessRegistrationNumber)
+    ];
+
+    if (bussinessContactInformation.whatsappNumber) {
+      contactConditions.push(eq(bussinessContactInformationSchema.whatsappNumber, bussinessContactInformation.whatsappNumber));
+    }
+
+    const [checkIfContactInfoExists] = await this._db
+      .select()
+      .from(bussinessContactInformationSchema)
+      .where(and(or(...contactConditions), ne(bussinessContactInformationSchema.id, id)))
+      .limit(1);
+
+    if (checkIfContactInfoExists) {
+      logger.info("Business contact information already exists", {
+        checkIfContactInfoExists
+      });
+      throwError(reshttp.conflictCode, reshttp.conflictMessage);
+    }
+
+    return next();
+  });
+
+  // 3. Middleware to check Banking Information uniqueness
+  public checkBankingInfoUniqueness = asyncHandler(async (req, _, next) => {
+    const bankingInformation = req.body as TBANKINGINFORMATION;
+    const id = req.params.id;
+
+    if (!id) {
+      throwError(reshttp.badRequestCode, reshttp.badRequestMessage);
+    }
+    const [checkIfBankingInfoExists] = await this._db
+      .select()
+      .from(bankingInformationSchema)
+      .where(
+        and(
+          or(
+            eq(bankingInformationSchema.accountNumber, bankingInformation.accountNumber),
+            eq(bankingInformationSchema.ibanCode, bankingInformation.ibanCode)
+          ),
+          ne(bankingInformationSchema.id, id)
+        )
+      )
+      .limit(1);
+
+    if (checkIfBankingInfoExists) {
+      logger.info("Banking information already exists", {
+        checkIfBankingInfoExists
+      });
+      throwError(reshttp.conflictCode, reshttp.conflictMessage);
+    }
+
     return next();
   });
 }
