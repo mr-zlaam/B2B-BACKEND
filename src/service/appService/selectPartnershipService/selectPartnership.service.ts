@@ -14,7 +14,7 @@ import { httpResponse } from "../../../util/globalUtil/apiResponse.util";
 import type { Request, Response } from "express";
 import { verifyPassword } from "../../../util/globalUtil/passwordHasher.util";
 import { setTokensAndCookies } from "../../../util/globalUtil/setCookies.util";
-export class SelectPartnershipService {
+class SelectPartnershipService {
   private readonly _db: DatabaseClient;
   constructor(db: DatabaseClient) {
     this._db = db;

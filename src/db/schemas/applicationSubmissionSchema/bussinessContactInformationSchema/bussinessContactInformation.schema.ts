@@ -21,3 +21,4 @@ export const bussinessContactInformationSchema = pgTable(
   },
   (table) => [index("bussinessInformation_name_idx").on(table.name)]
 );
+export type TBUSINESSCONTACTINFORMATION = typeof bussinessContactInformationSchema.$inferSelect;

@@ -4,3 +4,5 @@ export * from "./authSchema";
 export * from "./onboardingSchema/";
 // ** select partnership schema
 export * from "./selectPartnershipSchema";
+
+export * from "./applicationSubmissionSchema";

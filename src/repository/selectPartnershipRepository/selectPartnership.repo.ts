@@ -5,7 +5,7 @@ import logger from "../../util/globalUtil/logger.util";
 import { throwError } from "../../util/globalUtil/throwError.util";
 import reshttp from "reshttp";
 
-export class SelectPartnershipRepo {
+class SelectPartnershipRepo {
   private readonly _db: DatabaseClient;
   constructor(db: DatabaseClient) {
     this._db = db;

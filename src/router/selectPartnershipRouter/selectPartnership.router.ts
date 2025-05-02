@@ -4,7 +4,7 @@ import { database } from "../../db/db";
 import { authMiddleware } from "../../middleware/globalMiddleware/auth.middleware";
 import { selectPartnershipMiddleware } from "../../middleware/appMiddleware/selectPartnershipMiddleware/selectPartnership.middleware";
 import { validator } from "../../middleware/globalMiddleware/validation.middleware";
-import { loginIntoApplicationSchema } from "../../validation/selectPartnershipValidation/selectPartnership.validatation";
+import { loginIntoApplicationSchemaZ } from "../../validation/selectPartnershipValidation/selectPartnership.validatation";
 
 export const selectPartnershipRouter: Router = Router();
 
@@ -24,4 +24,4 @@ selectPartnershipRouter
   );
 selectPartnershipRouter
   .route("/loginIntoApplication")
-  .post(validator(loginIntoApplicationSchema), selectPartnershipController(database.db).loginIntoApplication);
+  .post(validator(loginIntoApplicationSchemaZ), selectPartnershipController(database.db).loginIntoApplication);

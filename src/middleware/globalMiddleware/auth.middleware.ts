@@ -10,7 +10,7 @@ import type { DatabaseClient } from "../../db/db";
 export type _Request = Request & {
   userFromToken?: IPAYLOAD;
 };
-export class Authmiddleware {
+class Authmiddleware {
   private readonly _db: DatabaseClient;
   constructor(db: DatabaseClient) {
     this._db = db;

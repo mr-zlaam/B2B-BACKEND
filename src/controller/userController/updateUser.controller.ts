@@ -26,7 +26,7 @@ interface IUpdateUserController {
   // eslint-disable-next-line no-unused-vars
   deleteUserService: (uid: string) => Promise<void>;
 }
-export class UpdateUserController {
+class UpdateUserController {
   private readonly _db: DatabaseClient;
   private readonly _userUpdateService: IUpdateUserController;
 
@@ -96,3 +96,4 @@ export class UpdateUserController {
     httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "User has been deleted successfully!!" });
   });
 }
+export const updateUserController = (db: DatabaseClient) => new UpdateUserController(db);

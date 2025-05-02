@@ -21,7 +21,7 @@ import { eq } from "drizzle-orm";
 import { setTokensAndCookies } from "../../util/globalUtil/setCookies.util";
 import { isAdmin } from "../../util/appUtil/authUtil/checkIfUserIsAdmin.util";
 
-export class AuthController {
+class AuthController {
   private readonly _db: DatabaseClient;
 
   constructor(db: DatabaseClient) {
@@ -181,3 +181,4 @@ export class AuthController {
     });
   });
 }
+export const authController = (db: DatabaseClient) => new AuthController(db);

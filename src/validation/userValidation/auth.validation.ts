@@ -11,7 +11,7 @@ export const phoneSchema = z.string({ message: "phone must be string" }).refine(
   }
 );
 
-export const registerUserSchema = z.object({
+export const registerUserSchemaZ = z.object({
   username: z
     .string({ message: "username must be string" })
     .trim()
@@ -52,7 +52,7 @@ export const registerUserSchema = z.object({
     .optional()
 });
 
-export const resendOTPSchema = z.object({ email: z.string({ message: "email must be string" }).email().toLowerCase() });
+export const resendOTPSchemaZ = z.object({ email: z.string({ message: "email must be string" }).email().toLowerCase() });
 export const loginUserSchema = z.object({
   email: z.string({ message: "email must be string" }).email().toLowerCase(),
   password: z.string({ message: "password must be string" })

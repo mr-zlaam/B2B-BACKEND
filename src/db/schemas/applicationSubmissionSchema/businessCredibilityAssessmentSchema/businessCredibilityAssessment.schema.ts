@@ -13,3 +13,4 @@ export const businessCredibilityAssessmentSchema = pgTable("businessCredibilityA
   standardsLevel: varchar("standardsLevel", { length: 100 }).notNull(),
   productAuthenticityCertifications: productAuthenticityCertificationsEnum().array().default(["NONE"])
 });
+export type TBUSSINESSCREDIBILITYASSESSMENT = typeof businessCredibilityAssessmentSchema.$inferSelect;

@@ -103,7 +103,7 @@ class RateLimiterDrizzle {
   }
 }
 
-export class RateLimiterMiddleware {
+class RateLimiterMiddleware {
   private rateLimiter: RateLimiterDrizzle | null = null;
   private currentTotalPoints: number | null = null;
   private currentDuration: number | null = null;

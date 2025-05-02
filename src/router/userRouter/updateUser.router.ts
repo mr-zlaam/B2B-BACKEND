@@ -1,68 +1,69 @@
 import { Router } from "express";
-import { UpdateUserController } from "../../controller/userController/updateUser.controller";
+import { updateUserController } from "../../controller/userController/updateUser.controller";
 import { database } from "../../db/db";
 import { validator } from "../../middleware/globalMiddleware/validation.middleware";
 import {
-  forgetPasswordSchema,
-  resetPasswordSchema,
-  updateUserEmailSchema,
-  updateUserPasswordSchema,
-  updateUserSchema
+  forgetPasswordSchemaZ,
+  resetPasswordSchemaZ,
+  updateUserEmailSchemaZ,
+  updateUserPasswordSchemaZ,
+  updateUserSchemaZ
 } from "../../validation/userValidation/updateUser.validation";
-import { Authmiddleware } from "../../middleware/globalMiddleware/auth.middleware";
+import { authMiddleware } from "../../middleware/globalMiddleware/auth.middleware";
 import rateLimiterMiddleware from "../../middleware/globalMiddleware/ratelimiter.middleware";
-import { UserUpdateMiddleware } from "../../middleware/appMiddleware/userMiddleware/updateUser.middleware";
+import { userUpdateMiddleware } from "../../middleware/appMiddleware/userMiddleware/updateUser.middleware";
 
 // ** classess
-const userUpdateController = new UpdateUserController(database.db);
-const authMiddleware = new Authmiddleware(database.db);
-const userUpdateMiddleware = new UserUpdateMiddleware(database.db);
 export const updateUserRouter: Router = Router();
 // ** Update user details (username,fullName,phone,companyName(optional), companyURI(optional)) ** //
 updateUserRouter.route("/updateBasicInfo").patch(
-  validator(updateUserSchema),
+  validator(updateUserSchemaZ),
   // Rate limiter will double the time every time user  will hit the limit
-  authMiddleware.checkToken,
-  userUpdateMiddleware.checkIfUserCanUpdateBasicInfo,
+  authMiddleware(database.db).checkToken,
+  userUpdateMiddleware(database.db).checkIfUserCanUpdateBasicInfo,
   async (req, res, next) => {
     await rateLimiterMiddleware.handle(req, res, next, 1, undefined, 1, 86400);
   },
-  userUpdateController.updateBasicInfo
+  updateUserController(database.db).updateBasicInfo
 );
 // ** Update user email ** //
 updateUserRouter.route("/updateUserEmail").patch(
-  validator(updateUserEmailSchema),
+  validator(updateUserEmailSchemaZ),
   // Rate limiter will double the time every time user  will hit the limit
-  authMiddleware.checkToken,
-  userUpdateMiddleware.checkIfUserCanUpdateEmail,
+  authMiddleware(database.db).checkToken,
+  userUpdateMiddleware(database.db).checkIfUserCanUpdateEmail,
   async (req, res, next) => {
     await rateLimiterMiddleware.handle(req, res, next, 1, undefined, 1, 86400);
   },
-  userUpdateController.updateUserEmail
+  updateUserController(database.db).updateUserEmail
 );
 // ** Update user email ** //
 updateUserRouter.route("/updateUserPassword").patch(
   // Rate limiter will double the time every time user  will hit the limit
-  validator(updateUserPasswordSchema),
-  authMiddleware.checkToken,
-  userUpdateMiddleware.checkIfUserCanUpdatePassword,
+  validator(updateUserPasswordSchemaZ),
+  authMiddleware(database.db).checkToken,
+  userUpdateMiddleware(database.db).checkIfUserCanUpdatePassword,
   async (req, res, next) => {
     await rateLimiterMiddleware.handle(req, res, next, 1, undefined, 1, 86400);
   },
-  userUpdateController.updateUserPassword
+  updateUserController(database.db).updateUserPassword
 );
 updateUserRouter.route("/forgetUserPasswordRequest").patch(
-  validator(forgetPasswordSchema),
+  validator(forgetPasswordSchemaZ),
   // Rate limiter will double the time every time user  will hit the limit
-  userUpdateMiddleware.checkIfUserCanForgetPassword,
+  userUpdateMiddleware(database.db).checkIfUserCanForgetPassword,
   async (req, res, next) => {
     await rateLimiterMiddleware.handle(req, res, next, 1, undefined, 1, 86400);
   },
-  userUpdateController.forgotPasswordRequestFromUser
+  updateUserController(database.db).forgotPasswordRequestFromUser
 );
 // ** Reset  and update password ** //
-updateUserRouter.route("/resetAndUpdateNewPassword").patch(validator(resetPasswordSchema), userUpdateController.resetAndUpdateNewPassword);
+updateUserRouter
+  .route("/resetAndUpdateNewPassword")
+  .patch(validator(resetPasswordSchemaZ), updateUserController(database.db).resetAndUpdateNewPassword);
 // ** Delete User **//
-updateUserRouter.route("/deleteUser/:uid").delete(authMiddleware.checkToken, authMiddleware.checkIfUserIsAdmin, userUpdateController.deleteUser);
+updateUserRouter
+  .route("/deleteUser/:uid")
+  .delete(authMiddleware(database.db).checkToken, authMiddleware(database.db).checkIfUserIsAdmin, updateUserController(database.db).deleteUser);
 // ** Logout User **//
-updateUserRouter.route("/logoutUser").post(authMiddleware.checkToken, userUpdateController.logoutUser);
+updateUserRouter.route("/logoutUser").post(authMiddleware(database.db).checkToken, updateUserController(database.db).logoutUser);

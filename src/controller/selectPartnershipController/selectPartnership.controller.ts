@@ -8,7 +8,7 @@ import { throwError } from "../../util/globalUtil/throwError.util";
 import { httpResponse } from "../../util/globalUtil/apiResponse.util";
 import { selectPartnershipService } from "../../service/appService/selectPartnershipService/selectPartnership.service";
 import type { IAPPLICATIONLOGIN } from "../../type/types";
-export class SelectPartnershipController {
+class SelectPartnershipController {
   private readonly _db: DatabaseClient;
   constructor(db: DatabaseClient) {
     this._db = db;

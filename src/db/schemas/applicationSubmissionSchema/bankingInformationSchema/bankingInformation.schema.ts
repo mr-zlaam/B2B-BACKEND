@@ -16,3 +16,4 @@ export const bankingInformationSchema = pgTable("bankingInformation", {
   ibanCode: varchar("ibanCode", { length: 34 }).notNull().unique(),
   bankingComplaints: jsonb("bankingComplaints").$type<Record<string, boolean>>().notNull().default({})
 });
+export type TBANKINGINFORMATION = typeof bankingInformationSchema.$inferInsert;

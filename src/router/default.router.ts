@@ -4,6 +4,7 @@ import { countryDetectorRouter } from "./countryDetectorRouter/countryDetector.r
 import { authRouter } from "./userRouter/auth.router";
 import { updateUserRouter } from "./userRouter/updateUser.router";
 import { selectPartnershipRouter } from "./selectPartnershipRouter/selectPartnership.router";
+import { applicationSubmissionRouter } from "./applicationSubmissionRouter/applicationSubmission.router";
 
 export const defaultRouter: Router = Router();
 
@@ -12,4 +13,7 @@ defaultRouter.use("/detect-country", countryDetectorRouter);
 // *** User
 defaultRouter.use("/user", authRouter);
 defaultRouter.use("/user", updateUserRouter);
+// *** Select Partnership
 defaultRouter.use("/selectPartnership", selectPartnershipRouter);
+// *** Application Submission
+defaultRouter.use("/applicationSubmission", applicationSubmissionRouter);

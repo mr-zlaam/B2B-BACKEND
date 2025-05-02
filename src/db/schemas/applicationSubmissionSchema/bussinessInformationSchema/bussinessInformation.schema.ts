@@ -34,3 +34,4 @@ export const bussinessInformationSchema = pgTable(
     index("bussinessInformation_city_idx").on(table.city)
   ]
 );
+export type TBUSSINESSINFORMATION = typeof bussinessInformationSchema.$inferSelect;

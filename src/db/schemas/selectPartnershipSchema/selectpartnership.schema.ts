@@ -39,7 +39,7 @@ export const selectPartnershipSchema = pgTable(
   },
   (table) => [
     index("user_nested_levels_userId_idx").on(table.userId),
-    index("user_nested_levels_partnershipLevel_idx").on(table.partnershipName),
+    index("user_nested_levels_partnershipLevel_idx").on(table.partnershipLevelIndex),
     index("user_nested_levels_createdAt_idx").on(table.createdAt)
   ]
 );

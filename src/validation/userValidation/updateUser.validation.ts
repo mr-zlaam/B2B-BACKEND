@@ -2,7 +2,7 @@ import { z } from "zod";
 import { phoneSchema } from "./auth.validation";
 import { validateAndFormatPhone } from "../../util/appUtil/authUtil/phonevalidator.util";
 // ** @description: This file contains the validation schema for updating user information username,fullName, phone,companyURI(optional), companyName(optional).
-export const updateUserSchema = z.object({
+export const updateUserSchemaZ = z.object({
   username: z
     .string({ message: "username must be string" })
     .trim()
@@ -29,7 +29,7 @@ export const updateUserSchema = z.object({
 });
 
 // ** @description: This file contains the validation schema for updating user information about email.
-export const updateUserEmailSchema = z.object({
+export const updateUserEmailSchemaZ = z.object({
   email: z
     .string({ message: "email must be string" })
     .trim()
@@ -39,7 +39,7 @@ export const updateUserEmailSchema = z.object({
 });
 // ** @description: This file contains the validation schema for updating user information about password.
 
-export const updateUserPasswordSchema = z.object({
+export const updateUserPasswordSchemaZ = z.object({
   oldPassword: z
     .string({ message: "oldPassword must be string" })
     .min(8, "password must be atleast 8 characters")
@@ -47,8 +47,8 @@ export const updateUserPasswordSchema = z.object({
   newPassword: z.string().min(8, "newPassword must be atleast 8 characters").max(100, "password can only have 100 characters")
 });
 
-export const forgetPasswordSchema = updateUserEmailSchema;
-export const resetPasswordSchema = z.object({
+export const forgetPasswordSchemaZ = updateUserEmailSchemaZ;
+export const resetPasswordSchemaZ = z.object({
   newPassword: z
     .string({ message: "newPassword must be string" })
     .min(8, "newPassword must be atleast 8 characters")

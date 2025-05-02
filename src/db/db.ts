@@ -9,7 +9,7 @@ export type DatabaseClient = NodePgDatabase<TSCHEMA> & {
   $client: pg.Pool;
 };
 
-export class Database {
+class Database {
   private pool: pg.Pool;
   private _db: DatabaseClient | null = null;
 

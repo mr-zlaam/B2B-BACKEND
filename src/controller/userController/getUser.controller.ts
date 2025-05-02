@@ -11,7 +11,7 @@ import appConstant from "../../constant/app.constant";
 import type { _Request } from "../../middleware/globalMiddleware/auth.middleware";
 import logger from "../../util/globalUtil/logger.util";
 
-export class GetUserController {
+class GetUserController {
   private _db: DatabaseClient;
   public constructor(db: DatabaseClient) {
     this._db = db;
@@ -116,3 +116,5 @@ export class GetUserController {
     httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { data: user });
   });
 }
+export const getUserController = (db: DatabaseClient) => new GetUserController(db);
+export default getUserController;

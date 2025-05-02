@@ -10,7 +10,7 @@ import { userRepo } from "../../../repository/userRepository/user.repo";
 import { verifyPassword } from "../../../util/globalUtil/passwordHasher.util";
 import { generateVerificationOtpToken } from "../../../util/globalUtil/verificationTokenGenerator.util";
 
-export class UserUpdateMiddleware {
+class UserUpdateMiddleware {
   private readonly _db: DatabaseClient;
   constructor(db: DatabaseClient) {
     this._db = db;
@@ -84,3 +84,4 @@ export class UserUpdateMiddleware {
     return next();
   });
 }
+export const userUpdateMiddleware = (db: DatabaseClient) => new UserUpdateMiddleware(db);

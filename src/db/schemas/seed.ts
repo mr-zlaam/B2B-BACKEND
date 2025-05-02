@@ -8,7 +8,7 @@ import { userSchema } from "./authSchema";
 import { selectPartnershipSchema } from "./selectPartnershipSchema";
 
 // ** seeding user
-export class Seeder {
+class Seeder {
   private _db: DatabaseClient;
   constructor(db: DatabaseClient) {
     this._db = db;
