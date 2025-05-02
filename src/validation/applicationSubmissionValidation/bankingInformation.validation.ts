@@ -1,34 +1,45 @@
 import { z } from "zod";
 
 export const bankingInformationSchemaZ = z.object({
-  applicationSubmissionId: z.number({ message: "applicationSubmissionId must be a number" }),
   bankName: z
-    .string({ message: "bankName must be string" })
+    .string({ message: "Bank name is required" })
     .trim()
-    .min(2, "bankName must be at least 2 characters")
-    .max(100, "bankName can only have 100 characters"),
+    .min(1, "Bank name is required")
+    .max(100, "Bank name must be at most 100 characters"),
+
   accountType: z
-    .string({ message: "accountType must be string" })
+    .string({ message: "Account type is required" })
     .trim()
-    .min(2, "accountType must be at least 2 characters")
-    .max(100, "accountType can only have 100 characters"),
+    .min(1, "Account type is required")
+    .max(100, "Account type must be at most 100 characters"),
+
   accountNumber: z
-    .string({ message: "accountNumber must be string" })
+    .string({ message: "Account number is required" })
     .trim()
-    .min(6, "accountNumber must be at least 6 digits")
-    .max(20, "accountNumber can only have 20 characters")
-    .regex(/^\d+$/, "accountNumber must be numeric"),
+    .min(8, "Account number must be at least 8 characters")
+    .max(20, "Account number must be at most 20 characters"),
+
   ifscCode: z
-    .string({ message: "ifscCode must be string" })
+    .string({ message: "IFSC code is required" })
     .trim()
-    .length(11, "ifscCode must be exactly 11 characters")
+    .length(11, "IFSC code must be exactly 11 characters")
     .regex(/^[A-Z]{4}0[A-Z0-9]{6}$/, "Invalid IFSC Code format"),
-  swiftORBISCode: z.string({ message: "swiftORBISCode must be string" }).trim().length(11, "swiftORBISCode must be 11 characters"),
-  ibanCode: z
-    .string({ message: "ibanCode must be string" })
+
+  swiftORBISCode: z
+    .string({ message: "SWIFT/OR BIS code is required" })
     .trim()
-    .min(15, "ibanCode must be at least 15 characters")
-    .max(34, "ibanCode can only have 34 characters")
-    .regex(/^[A-Z0-9]+$/, "ibanCode must be alphanumeric"),
-  bankingComplaints: z.record(z.boolean()).default({})
+    .min(8, "SWIFT/OR BIS code must be at least 8 characters")
+    .max(11, "SWIFT/OR BIS code must be at most 11 characters"),
+
+  ibanCode: z
+    .string({ message: "IBAN code is required" })
+    .trim()
+    .min(15, "IBAN code must be at least 15 characters")
+    .max(34, "IBAN code must be at most 34 characters"),
+
+  bankingComplaints: z
+    .record(z.boolean(), {
+      message: "Banking complaints must be a record of boolean flags"
+    })
+    .default({})
 });

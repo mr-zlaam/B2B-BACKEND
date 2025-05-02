@@ -3,10 +3,10 @@ import { authMiddleware } from "../../middleware/globalMiddleware/auth.middlewar
 import { database } from "../../db/db";
 import { validator } from "../../middleware/globalMiddleware/validation.middleware";
 import { businessInformationSchemaZ } from "../../validation/applicationSubmissionValidation/bussinessInformation.validation";
-import { businessContactInformationSchemaZ } from "../../validation/applicationSubmissionValidation/bussinessContactInformation.validation";
+import { applicationSubmissionController } from "../../controller/applicationSubmissionController/applicationSubmission.controller";
 import { businessCredibilityAssessmentSchemaZ } from "../../validation/applicationSubmissionValidation/businessCredibilityAssessment.validation";
 import { bankingInformationSchemaZ } from "../../validation/applicationSubmissionValidation/bankingInformation.validation";
-import { applicationSubmissionController } from "../../controller/applicationSubmissionController/applicationSubmission.controller";
+import { businessContactInformationSchemaZ } from "../../validation/applicationSubmissionValidation/bussinessContactInformation.validation";
 
 export const applicationSubmissionRouter: Router = Router();
 

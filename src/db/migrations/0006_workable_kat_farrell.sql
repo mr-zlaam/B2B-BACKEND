@@ -1,0 +1,1 @@
+ALTER TABLE "bussinessInformation" ADD COLUMN "streetLine2" varchar(500) NOT NULL;

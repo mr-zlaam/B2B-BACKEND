@@ -17,7 +17,7 @@ export const bussinessInformationSchema = pgTable(
     brandAffiliations: varchar("brandAffiliation", { length: 150 }),
     // address
     streetLine1: varchar("streetLine1", { length: 500 }).notNull(),
-    streetLine2: varchar("streetLine1", { length: 500 }).notNull(),
+    streetLine2: varchar("streetLine2", { length: 500 }).notNull(),
     city: varchar("city", { length: 100 }).notNull(),
     stateORRegion: varchar("stateORRegion", { length: 100 }).notNull(),
     country: varchar("country", { length: 100 }).notNull(),
@@ -25,7 +25,7 @@ export const bussinessInformationSchema = pgTable(
     websiteURI: varchar("websiteURI", { length: 200 }),
     annualTurnover: varchar("annualTurnover", { length: 200 }).notNull(),
     gstNumber: varchar("gstNumber", { length: 15 }).notNull().unique(),
-    taxIdentificationNumber: varchar("taxIdentificationNumber", { length: 10 }).notNull().unique()
+    taxIdentificationNumber: varchar("taxIdentificationNumber", { length: 25 }).notNull().unique()
   },
   (table) => [
     index("bussinessInformation_bussinessName_idx").on(table.bussinessName),

@@ -1,0 +1,1 @@
+ALTER TABLE "bussinessInformation" ALTER COLUMN "taxIdentificationNumber" SET DATA TYPE varchar(25);
