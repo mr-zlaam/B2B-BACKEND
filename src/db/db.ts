@@ -20,7 +20,8 @@ export class Database {
       idleTimeoutMillis: 30000,
 
       connectionTimeoutMillis: 5000,
-      ssl: envConfig.NODE_ENV === "production" ? { rejectUnauthorized: envConfig.NODE_ENV === "production" } : false
+      // ssl: envConfig.NODE_ENV === "production" ? { rejectUnauthorized: envConfig.NODE_ENV === "production" } : false
+      ssl: false
     });
     this._db = drizzle(this.pool, { logger: false, schema: { ...schema } });
   }
