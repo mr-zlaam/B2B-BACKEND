@@ -130,7 +130,6 @@ export class AuthController {
     if (password === null || password === undefined) return throwError(reshttp.badRequestCode, "password is required");
 
     const { loginUser } = usrAuthService(this._db);
-
     const { accessToken, refreshToken } = await loginUser(email, password, res);
 
     httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "User has been logged in", accessToken, refreshToken });
