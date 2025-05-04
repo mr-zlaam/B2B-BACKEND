@@ -57,6 +57,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "cloudinary": "^2.6.0",
     "colorette": "^2.0.20",
     "concurrently": "^9.1.2",
     "cors": "^2.8.5",

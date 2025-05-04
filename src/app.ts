@@ -5,6 +5,7 @@ import { errorHandler, notFoundHandler } from "./middleware/globalMiddleware/err
 import endPointsConstant from "./constant/endPoints.constant";
 import { defaultRouter } from "./router/default.router";
 import appConstant from "./constant/app.constant";
+import path from "node:path";
 export const app: Application = express();
 
 //  * Default Middlewares
@@ -14,7 +15,8 @@ app.disable("x-powered-by");
 app.use(helmet());
 app.use(cors(appConstant.CORS_OPTIONS));
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("../public"));
+app.use(express.static(path.resolve(__dirname, "../public")));
+
 // * Custom Middlewares
 app.use(endPointsConstant.DEFAULT_ENDPOINT, defaultRouter);
 // * Error handling Middleware
