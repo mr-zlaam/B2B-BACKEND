@@ -57,6 +57,13 @@
       "when": 1746189902371,
       "tag": "0007_absurd_blue_blade",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1746384097034,
+      "tag": "0008_good_winter_soldier",
+      "breakpoints": true
     }
   ]
 }
