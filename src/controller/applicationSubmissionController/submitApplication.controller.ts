@@ -12,8 +12,11 @@ import {
   bussinessInformationSchema,
   bussinessContactInformationSchema,
   businessCredibilityAssessmentSchema,
-  bankingInformationSchema
+  bankingInformationSchema,
+  userSchema
 } from "../../db/schemas";
+import { promoteUserToNextLevelInOnboarding } from "../../util/appUtil/authUtil/promoteUserToNextLevelInOnboarding.util";
+import { eq } from "drizzle-orm";
 class ApplicationSubmissionController {
   private readonly _db: DatabaseClient;
   constructor(db: DatabaseClient) {
@@ -39,6 +42,8 @@ class ApplicationSubmissionController {
         .values({ ...businessCredibilityAssessment, applicationSubmissionId: applicationSubmissionResult.id });
       await tx.insert(bankingInformationSchema).values({ ...bankingInformation, applicationSubmissionId: applicationSubmissionResult.id });
     });
+    const user = await this._db.query.users.findFirst({ where: eq(userSchema.uid, userId), with: { onboarding: true } });
+    await promoteUserToNextLevelInOnboarding(this._db, user!, user!.onboarding.currentOnboardingStageIndex);
     httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { message: "Application has been submitted successfully!!" });
   });
 }
