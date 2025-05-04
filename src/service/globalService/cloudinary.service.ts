@@ -17,14 +17,18 @@ const uploadOnCloudinary = async (localFilePath: string, fileName: string, forma
     const response = await cloudinary.uploader.upload(localFilePath, {
       resource_type: "raw",
       filename_override: fileName,
-      folder: "hireUsDocs",
+      folder: "b2b",
       format: format
     });
+    fs.unlinkSync(localFilePath);
     return response;
   } catch (error: unknown) {
     fs.unlinkSync(localFilePath);
     if (error instanceof Error) throw { status: 500, message: error.message };
-    else throwError(reshttp.internalServerErrorCode, `Error while uploading files:: ${error as string}`);
+    else {
+      logger.info(`Error while uploading files`, error);
+      throwError(reshttp.internalServerErrorCode, `Error while uploading files:: ${error as string}`);
+    }
   }
 };
 const deleteFromCloudinary = async (publicId: string) => {

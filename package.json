@@ -8,7 +8,7 @@
   "scripts": {
     "lint": "concurrently \"bun run type-check\" \"eslint .\" && prettier --write .",
     "type-check": "tsc --noEmit",
-    "copy": "copyfiles -u 1 ./templates/* ./dist/templates/",
+    "copy": "concurrently \"copyfiles -u 1 ./templates/* ./dist/templates/\"  \"copyfiles -u 1 ./public/* ./dist/public/\"",
     "prebuild": "concurrently \"bun run lint\" \"rimraf ./dist\"",
     "build": "bun run tsc --build",
     "predev": "bun run prebuild",

@@ -1,0 +1,1 @@
+ALTER TABLE "documentSubmission" ALTER COLUMN "artisanIdCardDocument" SET DEFAULT '';

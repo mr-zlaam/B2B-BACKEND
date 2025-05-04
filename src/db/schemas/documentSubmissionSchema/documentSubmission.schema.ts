@@ -7,15 +7,28 @@ export const documentSubmissionSchema = pgTable("documentSubmission", {
     .notNull()
     .references(() => userSchema.uid, { onDelete: "cascade" })
     .unique(),
-  bussinessRegisterationDocument: text("bussinessRegisterationDocument").notNull(),
-  businessLicenseDocument: text("businessLicenseDocument").notNull(),
-  ContactPersonAdhaarCardDocment: text("businessLicenseDocument").notNull(),
-  artisanIdCardDocument: text("businessLicenseDocument"),
-  bankStatementDocument: text("businessLicenseDocument").notNull(),
-  productCatalogueDocument: text("businessLicenseDocument").notNull(),
-  certificationsDocument: text("businessLicenseDocument").notNull(),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().notNull()
+  bussinessRegisterationDocument: text("bussinessRegisterationDocument").notNull().unique(),
+  businessLicenseDocument: text("businessLicenseDocument").notNull().unique(),
+  ContactPersonAdhaarCardDocment: text("ContactPersonAdhaarCardDocment").notNull().unique(),
+  artisanIdCardDocument: text("artisanIdCardDocument").default("").unique(),
+  bankStatementDocument: text("bankStatementDocument").notNull().unique(),
+  productCatalogueDocument: text("productCatalogueDocument").notNull().unique(),
+  certificationsDocument: text("certificationsDocument").notNull().unique(),
+  createdAt: timestamp("createdAt", {
+    mode: "date",
+    withTimezone: true,
+    precision: 3
+  })
+    .notNull()
+    .defaultNow(),
+
+  updatedAt: timestamp("updatedAt", {
+    mode: "date",
+    withTimezone: true,
+    precision: 3
+  })
+    .notNull()
+    .defaultNow()
 });
 
 export type TDOCUMENTSUBMISSION = typeof documentSubmissionSchema.$inferSelect;

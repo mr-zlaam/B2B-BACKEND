@@ -1,12 +1,17 @@
 import multer from "multer";
 import path from "node:path";
+import { cleanFileName, generateRandomStrings } from "../../util/quickUtil/slugStringGenerator.util";
 
-export const supportedFileTypes = ["pdf", "txt", "doc", "docx", "dot", "dotx", "odt", "ott", "wps", "rtf", "wpd"];
+export const supportedFileTypes = ["pdf"];
 
 const storage = multer.diskStorage({
   filename: function (_, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, `${file.originalname}-${uniqueSuffix}`);
+    const uniqueSuffix = generateRandomStrings(5);
+    cb(null, `${uniqueSuffix}-${cleanFileName(file.originalname)}`);
+  },
+
+  destination: function (_, __, cb) {
+    cb(null, path.join(process.cwd(), "public/upload/"));
   }
 });
 
@@ -18,14 +23,18 @@ const fileFilter = (_: Express.Request, file: Express.Multer.File, cb: multer.Fi
   cb(null, true);
 };
 
-const upload = multer({
+export const upload = multer({
   storage,
-  dest: path.resolve(__dirname, "public/temp"),
   limits: {
-    fileSize: 5 * 1024 * 1024,
-    files: 5
+    fileSize: 20 * 1024 * 1024
   },
   fileFilter
-});
-
-export const fileUploader = (maxFilescount?: number) => upload.array("docs", maxFilescount ?? 1);
+}).fields([
+  { name: "bussinessRegisterationDocument", maxCount: 1 },
+  { name: "businessLicenseDocument", maxCount: 1 },
+  { name: "ContactPersonAdhaarCardDocment", maxCount: 1 },
+  { name: "artisanIdCardDocument", maxCount: 1 },
+  { name: "bankStatementDocument", maxCount: 1 },
+  { name: "productCatalogueDocument", maxCount: 1 },
+  { name: "certificationsDocument", maxCount: 1 }
+]);

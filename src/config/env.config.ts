@@ -25,8 +25,10 @@ export default {
   HOST_EMAIL_SECRET: process.env.HOST_EMAIL_SECRET ? process.env.HOST_EMAIL_SECRET : "Unable to fetch HOST_EMAIL_SECRET from .env file",
   WHITE_LIST_MAILS: process.env.WHITE_LIST_MAILS ? process.env.WHITE_LIST_MAILS : "Unable to fetch WHITE_LIST_MAILS from .env file",
   ALLOWED_REGIONS: process.env.ALLOWED_REGIONS ? process.env.ALLOWED_REGIONS : "Unable to fetch ALLOWED_REGIONS from .env file",
-  CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET ? process.env.ALLOWED_REGIONS : "Unable to fetch CLOUDINARY_API_SECRET from .env file",
-  CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY ? process.env.ALLOWED_REGIONS : "Unable to fetch CLOUDINARY_API_KEY from .env file",
-  CLOUDINARY_NAME: process.env.CLOUDINARY_NAME ? process.env.ALLOWED_REGIONS : "Unable to fetch CLOUDINARY_NAME from .env file",
-  CLOUDINARY_URI: process.env.CLOUDINARY_URI ? process.env.ALLOWED_REGIONS : "Unable to fetch CLOUDINARY_URI from .env file"
+  CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET
+    ? process.env.CLOUDINARY_API_SECRET
+    : "Unable to fetch CLOUDINARY_API_SECRET from .env file",
+  CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY ? process.env.CLOUDINARY_API_KEY : "Unable to fetch CLOUDINARY_API_KEY from .env file",
+  CLOUDINARY_NAME: process.env.CLOUDINARY_NAME ? process.env.CLOUDINARY_NAME : "Unable to fetch CLOUDINARY_NAME from .env file",
+  CLOUDINARY_URI: process.env.CLOUDINARY_URI ? process.env.CLOUDINARY_URI : "Unable to fetch CLOUDINARY_URI from .env file"
 } as IENVIRONMENTCONFIG;

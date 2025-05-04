@@ -62,3 +62,15 @@ export function generateUsername(fullName: string): string {
 export function lowerCase(text: string): string {
   return text.toLowerCase();
 }
+
+export function cleanFileName(path: string) {
+  const lastDotIndex = path.lastIndexOf(".");
+  const filename = lastDotIndex >= 0 ? path.substring(0, lastDotIndex) : path;
+  const extension = lastDotIndex >= 0 ? path.substring(lastDotIndex) : "";
+
+  const cleaned = filename
+    .replace(/\.([a-zA-Z])/g, (_, letter: string) => letter.toUpperCase()) // camelCase
+    .replace(/[^a-zA-Z0-9]+/g, ""); // Remove all non-alphanumeric chars
+
+  return cleaned + extension;
+}

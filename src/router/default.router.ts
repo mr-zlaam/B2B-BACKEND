@@ -5,6 +5,7 @@ import { authRouter } from "./userRouter/auth.router";
 import { updateUserRouter } from "./userRouter/updateUser.router";
 import { selectPartnershipRouter } from "./selectPartnershipRouter/selectPartnership.router";
 import { applicationSubmissionRouter } from "./applicationSubmissionRouter/applicationSubmission.router";
+import { documentSubmissionRouter } from "./documentSubmissionRouter/documentSubmission.router";
 
 export const defaultRouter: Router = Router();
 
@@ -17,3 +18,5 @@ defaultRouter.use("/user", updateUserRouter);
 defaultRouter.use("/selectPartnership", selectPartnershipRouter);
 // *** Application Submission
 defaultRouter.use("/applicationSubmission", applicationSubmissionRouter);
+// *** Docuement submission router
+defaultRouter.use("/documentSubmission", documentSubmissionRouter);
