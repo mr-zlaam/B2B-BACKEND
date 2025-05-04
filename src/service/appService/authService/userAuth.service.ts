@@ -74,7 +74,11 @@ export const usrAuthService = (db: DatabaseClient) => {
 
     const { accessToken, refreshToken } = setTokensAndCookies(updatedUser, res, true);
     // ** we are creating them for first time so we will pass raw number
-    await Promise.all([await promoteUserToNextLevelInOnboarding(db, updatedUser, 1), await unlockPartnershipWithoutPayment(db, updatedUser, 0)]);
+    if (updatedUser.OTP_TOKEN_VERSION === 1) {
+      await Promise.all([await promoteUserToNextLevelInOnboarding(db, updatedUser, 1), await unlockPartnershipWithoutPayment(db, updatedUser, 0)]);
+      await promoteUserToNextLevelInOnboarding(db, updatedUser, 2);
+    }
+
     return { accessToken, refreshToken };
   };
   const resendOTPToken = async (email: string, res: Response) => {
