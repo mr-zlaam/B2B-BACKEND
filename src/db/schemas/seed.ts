@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { eq } from "drizzle-orm";
 import envConfig from "../../config/env.config";
 import { partnershipData, userData } from "../../data/random.data";

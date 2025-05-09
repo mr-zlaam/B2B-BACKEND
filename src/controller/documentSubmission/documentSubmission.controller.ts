@@ -42,10 +42,6 @@ class DocumentSubmissionController {
       certificationsDocument: [Express.Multer.File];
     };
     const { uid } = req.userFromToken!;
-    const documents = await this._db.select().from(documentSubmissionSchema).where(eq(documentSubmissionSchema.userId, uid)).limit(1);
-    if (documents.length > 0) {
-      throwError(reshttp.conflictCode, "Documents has been uploaded already");
-    }
     const newFiles = { files };
     // Upload all files in parallel with explicit field mapping
     const [

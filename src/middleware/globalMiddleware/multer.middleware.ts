@@ -3,6 +3,7 @@ import path from "node:path";
 import { cleanFileName, generateRandomStrings } from "../../util/quickUtil/slugStringGenerator.util";
 
 export const supportedFileTypes = ["pdf"];
+const uploadDirectory = path.join(process.cwd(), "public/upload/");
 
 const storage = multer.diskStorage({
   filename: function (_, file, cb) {
@@ -11,7 +12,7 @@ const storage = multer.diskStorage({
   },
 
   destination: function (_, __, cb) {
-    cb(null, path.join(process.cwd(), "public/upload/"));
+    cb(null, uploadDirectory);
   }
 });
 
