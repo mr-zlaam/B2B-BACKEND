@@ -7,7 +7,7 @@ export const vendorOrBuyerAgreementSchema = pgTable("vendorAgreement", {
     .notNull()
     .references(() => userSchema.uid, { onDelete: "cascade" })
     .unique(),
-  agreementName: varchar("agreementName", { length: 100 }).unique().notNull(),
+  agreementName: varchar("agreementName", { length: 100 }).notNull(),
   isSigned: boolean("isSigned").notNull().default(false),
   createdAt: timestamp("createdAt", {
     mode: "date",
@@ -23,4 +23,4 @@ export const vendorOrBuyerAgreementSchema = pgTable("vendorAgreement", {
     .defaultNow()
 });
 
-export type TVendorOrBuyerAgreementSchema = typeof vendorOrBuyerAgreementSchema;
+export type TVendorOrBuyerAgreementSchema = typeof vendorOrBuyerAgreementSchema.$inferSelect;

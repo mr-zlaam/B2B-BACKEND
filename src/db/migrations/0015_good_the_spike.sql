@@ -1,0 +1,1 @@
+ALTER TABLE "vendorAgreement" DROP CONSTRAINT "vendorAgreement_agreementName_unique";
