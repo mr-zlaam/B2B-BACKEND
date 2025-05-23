@@ -88,14 +88,14 @@ class GetUserController {
       pagination
     });
   });
-  // ** Get single user with all children table details
+  // ** Get single user with all children table details for Admin
   public getSingleUser = asyncHandler(async (req, res) => {
     const { username } = req.params;
     if (!username) return throwError(reshttp.badRequestCode, "username is required");
     const user = await this._db.query.users.findFirst({
       where: eq(userSchema.username, username),
       columns: appConstant.SELECTED_COLUMNS.FROM.USER,
-      with: { onboarding: true, selectPartnership: true, applicationSubmission: true }
+      with: { onboarding: true, selectPartnership: true, applicationSubmission: true, documentSubmission: true, vendorOrBuyerAgreement: true }
     });
     if (!user) return throwError(reshttp.notFoundCode, "User not found");
     httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { data: user });
@@ -111,7 +111,7 @@ class GetUserController {
     const user = await this._db.query.users.findFirst({
       where: eq(userSchema.uid, uid),
       columns: appConstant.SELECTED_COLUMNS.FROM.USER,
-      with: { onboarding: true, selectPartnership: true }
+      with: { onboarding: true, selectPartnership: true, applicationSubmission: true, vendorOrBuyerAgreement: true }
     });
     httpResponse(req, res, reshttp.okCode, reshttp.okMessage, { data: user });
   });
