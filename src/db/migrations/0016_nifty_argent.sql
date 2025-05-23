@@ -1,0 +1,1 @@
+ALTER TABLE "onboarding" ADD COLUMN "onboardingStatusPercentage" integer DEFAULT 0 NOT NULL;

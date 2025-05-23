@@ -14,6 +14,7 @@ export const onboardingSchema = pgTable(
     })
       .notNull()
       .defaultNow(),
+    onboardingStatusPercentage: integer("onboardingStatusPercentage").notNull().default(0),
     updatedAt: timestamp("updatedAt", {
       mode: "date",
       precision: 3

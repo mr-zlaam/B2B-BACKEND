@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { onboardingSchema, type TUSER } from "../../../db/schemas";
 import type { DatabaseClient } from "../../../db/db";
 import { ReturnOnboardingLevelBasedOnSerialNumber } from "../../globalUtil/partnershipAndOnboardingLevelCalculator.util";
+import { updateOnboardingPercentage } from "../onboardingPercentageUtil/onboardingPercentage.util";
 
 export const promoteUserToNextLevelInOnboarding = async (db: DatabaseClient, user: TUSER, currentOnboardingStageIndex: number) => {
   const [currentONboardingStatus] = await db.select().from(onboardingSchema).where(eq(onboardingSchema.userId, user.uid)).limit(1);
@@ -14,6 +15,8 @@ export const promoteUserToNextLevelInOnboarding = async (db: DatabaseClient, use
         currentOnboardingStageIndex
       })
       .onConflictDoNothing();
+    await updateOnboardingPercentage(user.uid, currentOnboardingStageIndex, db);
+    return;
   } else {
     await db
       .update(onboardingSchema)
@@ -22,5 +25,7 @@ export const promoteUserToNextLevelInOnboarding = async (db: DatabaseClient, use
         currentOnboardingStageIndex: currentONboardingStatus.currentOnboardingStageIndex + 1
       })
       .where(eq(onboardingSchema.userId, user.uid));
+    await updateOnboardingPercentage(user.uid, currentOnboardingStageIndex, db);
+    return;
   }
 };
