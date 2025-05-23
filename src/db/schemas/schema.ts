@@ -4,6 +4,7 @@ import { documentSubmissionSchema } from "./documentSubmissionSchema";
 import { onboardingSchema } from "./onboardingSchema";
 import { selectPartnershipSchema } from "./selectPartnershipSchema";
 import { applicationSubmissionRelation, userRelations } from "./shared/relations";
+import { vendorOrBuyerAgreementSchema } from "./vendorAgreementSchema/vendorAgreement.schema";
 
 export const schema = {
   users: userSchema,
@@ -12,6 +13,7 @@ export const schema = {
   selectPartnership: selectPartnershipSchema,
   applicationSubmission: applicationSubmissionSchema,
   applicationSubmissionRelation,
-  documentSubmissionSchema
+  documentSubmissionSchema,
+  vendorOrBuyerAgreementSchema
 };
 export type TSCHEMA = typeof schema;

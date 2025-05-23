@@ -1,0 +1,1 @@
+ALTER TABLE "vendorAgreement" ADD COLUMN "isSigned" boolean DEFAULT false NOT NULL;
