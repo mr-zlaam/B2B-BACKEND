@@ -8,7 +8,7 @@ import { bussinessContactInformationSchema } from "../applicationSubmissionSchem
 import { businessCredibilityAssessmentSchema } from "../applicationSubmissionSchema/businessCredibilityAssessmentSchema";
 import { bankingInformationSchema } from "../applicationSubmissionSchema/bankingInformationSchema";
 import { documentSubmissionSchema } from "../documentSubmissionSchema";
-import { vendorOrBuyerAgreementSchema } from "../vendorAgreementSchema/vendorAgreement.schema";
+import { vendorOrBuyerAgreementSchema } from "../vendorOrBuyerAgreementSchema/vendorOrBuyerAgreement.schema";
 
 export const userRelations = relations(userSchema, ({ one, many }) => ({
   onboarding: one(onboardingSchema, {

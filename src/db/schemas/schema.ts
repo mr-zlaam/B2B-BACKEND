@@ -4,7 +4,7 @@ import { documentSubmissionSchema } from "./documentSubmissionSchema";
 import { onboardingSchema } from "./onboardingSchema";
 import { selectPartnershipSchema } from "./selectPartnershipSchema";
 import { applicationSubmissionRelation, userRelations } from "./shared/relations";
-import { vendorOrBuyerAgreementSchema } from "./vendorAgreementSchema/vendorAgreement.schema";
+import { vendorOrBuyerAgreementSchema } from "./vendorOrBuyerAgreementSchema/vendorOrBuyerAgreement.schema";
 
 export const schema = {
   users: userSchema,
